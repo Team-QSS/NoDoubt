@@ -6,7 +6,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -23,12 +24,15 @@ public class Server extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	Socket socket;
-	Gson gson=new Gson();
-	JsonParser parser=new JsonParser();
-	ArrayList<BufferedWriter> writers=new ArrayList<BufferedWriter>();
+	private Socket socket;
+	private Gson gson=new Gson();
+	private JsonParser parser=new JsonParser();
 	
-	JTextArea ta=new JTextArea();
+	private final int MAX_THREAD_NUM=20;
+	private ExecutorService threadPool=Executors.newFixedThreadPool(MAX_THREAD_NUM);
+	private ArrayList<BufferedWriter> writers=new ArrayList<BufferedWriter>();
+	//gui
+	private JTextArea ta=new JTextArea();
 	
 	public Server(){
 		setDisplay();
@@ -53,25 +57,24 @@ public class Server extends JFrame{
 	
 	private void init(){
 		try{
-			// ¼­¹ö¼ÒÄÏÀ» »ı¼º
+			// ì„œë²„ì†Œì¼“ì„ ìƒì„±
 			ServerSocket serverSocket = new ServerSocket(5000);
 			printLog("server start port:"+serverSocket.getLocalPort());
 			Thread gameLoop=new Thread(new GameLoop());
 			gameLoop.start();
 			while(true){
-				// ¼­¹ö ¼ÒÄÏÀÇ accept() ¸Ş¼­µå¸¦ È£ÃâÇÏ¿©
-				// Á¢¼Ó°¨½Ã »óÅÂ·Î µé¾î°¨.
-				// Á¢¼ÓÀÌ ÀÏ¾î³ª¸é ¼ÒÄÏ Å¬·¡½º °´Ã¼°¡ »ı¼ºµÊ
+				// ì„œë²„ ì†Œì¼“ì˜ accept() ë©”ì„œë“œë¥¼ í˜¸ì¶œí•˜ì—¬
+				// ì ‘ì†ê°ì‹œ ìƒíƒœë¡œ ë“¤ì–´ê°.
+				// ì ‘ì†ì´ ì¼ì–´ë‚˜ë©´ ì†Œì¼“ í´ë˜ìŠ¤ ê°ì²´ê°€ ìƒì„±ë¨
 				socket = serverSocket.accept();
-				 // ¼ÒÄÏ Å¬·¡½º °´Ã¼¿¡¼­ PrintStreamÀ» »ı¼ºÇÔ
+				 // ì†Œì¼“ í´ë˜ìŠ¤ ê°ì²´ì—ì„œ PrintStreamì„ ìƒì„±í•¨
 				BufferedWriter writer= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 				writers.add(writer);
 				
 				writer.write("s");
 				writer.newLine();
 				writer.flush();
-				ClientManager t=new ClientManager(socket,writer);
-				t.start();
+				threadPool.execute(new ClientManager(socket,writer));
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -82,7 +85,7 @@ public class Server extends JFrame{
 		public void run(){
 			try{
 				while(true){
-					printLog("¹è¿ëÈ£");
+					printLog("ë°°ìš©í˜¸");
 					Thread.sleep(1000/60);
 				}
 			}catch(Exception e){
@@ -91,7 +94,7 @@ public class Server extends JFrame{
 		}
 	}
 	
-	class ClientManager extends Thread{
+	class ClientManager implements Runnable{
 		Socket clientSocket;
 		BufferedReader reader;
 		BufferedWriter writer;
@@ -112,14 +115,16 @@ public class Server extends JFrame{
 					String data;
 					data=reader.readLine();
 					
-					//Ã³¸®·ÎÁ÷
+					//ì²˜ë¦¬ë¡œì§
 					
 					writer.write("s");
 					writer.newLine();
 					writer.flush();
 				}
 			}catch(Exception e){
-				this.interrupt();
+				e.printStackTrace();
+			}finally{
+				
 			}
 		}
 	}
@@ -136,6 +141,7 @@ public class Server extends JFrame{
 		}
 	}
 	
+	//ëª¨ë“  ì„œë²„ìƒì˜ ë¡œê·¸ëŠ” ì´í•¨ìˆ˜ë¥¼ ì´ìš©í•˜ì—¬ ì¶œë ¥
 	private void printLog(Object content){
 		ta.append(content.toString()+"\n");
 		System.out.println(content);
