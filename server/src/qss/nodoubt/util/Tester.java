@@ -3,13 +3,11 @@ package qss.nodoubt.util;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.net.Socket;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.*;
 
@@ -21,14 +19,15 @@ public class Tester extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int WIDTH=640,HEIGHT=480;
+	private static final int WIDTH=640,HEIGHT=480;
 	
 	private Gson gson=new Gson();
 	private BufferedWriter writer;
 	private BufferedReader reader;
 	private Socket socket;
 	
-	private MyPanel contentPane=new MyPanel();
+	//gui
+	private JTextArea mainTextArea=new JTextArea();
 	
 	private boolean[] keyInput=new boolean[300];
 	
@@ -48,7 +47,7 @@ public class Tester extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		
-		setContentPane(contentPane);
+		setContentPane(new MyPanel());
 		setSize(WIDTH,HEIGHT);
 		setResizable(false);
 		setVisible(true);
@@ -56,9 +55,9 @@ public class Tester extends JFrame{
 	
 	private void networking(){
 		try{
-			socket = new Socket("10.156.145.110",5000);//¼ÒÄÏ»ı¼º
+			socket = new Socket("localhost",5000);//ï¿½ï¿½ï¿½Ï»ï¿½ï¿½ï¿½
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));//¾²´Â ¶óÀÎ »ı¼º
+			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		}
 		catch(IOException ioe){
 			ioe.printStackTrace();
@@ -69,9 +68,6 @@ public class Tester extends JFrame{
 		public void run(){
 			try{
 				while(true){
-					writer.write("s");
-					writer.newLine();
-					writer.flush();
 					Thread.sleep(1000/60);
 				}
 			}catch(Exception e){
@@ -103,6 +99,7 @@ public class Tester extends JFrame{
 				while(true){
 					String data;
 					data=reader.readLine();
+					printLog(data);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -119,7 +116,7 @@ public class Tester extends JFrame{
 		public MyPanel(){
 			setBackground(Color.WHITE);
 			setLayout(null);
-			//ÀÌº¥Æ® Ãß°¡
+			//ï¿½Ìºï¿½Æ® ï¿½ß°ï¿½
 			addKeyListener(new MyKeyListener());
 			addMouseListener(new MyMouseListener());
 			addMouseMotionListener(new MyMouseMotionListener());
@@ -127,13 +124,40 @@ public class Tester extends JFrame{
 			setFocusable(true);
 			requestFocus();
 			
-			setButton();
+			setComponent();
 		}
 		
-		private void setButton(){
+		private void setComponent(){
+			//addTextArea
+			addJScrollPane(this,mainTextArea,Tester.WIDTH-200, 0, 200, Tester.HEIGHT);
+			
+			//addButton
 			JButton j=new JButton("shit");
 			j.setBounds(100, 100, 200, 200);
-			this.add(j);
+			j.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						writer.write("shit");
+						writer.newLine();
+						writer.flush();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+			});
+			add(j);
+			
+		}
+		
+		private void addJScrollPane(Container contentPane,JTextArea jTextArea,int x,int y,int width,int height){
+			jTextArea.setLineWrap(true);
+			jTextArea.setEditable(false);
+			JScrollPane scrollPane=new JScrollPane(jTextArea);
+			scrollPane.setBounds(x,y,width,height);
+			contentPane.add(scrollPane);
 		}
 	}
 	
@@ -162,11 +186,19 @@ public class Tester extends JFrame{
 	
 	class MyMouseMotionListener extends MouseMotionAdapter{
 		public void mouseMoved(MouseEvent e){
+			
 		}
 		
 		public void mouseDragged(MouseEvent e){
 			
 		}
+	}
+	
+	//ëª¨ë“  ì„œë²„ìƒì˜ ë¡œê·¸ëŠ” ì´í•¨ìˆ˜ë¥¼ ì´ìš©í•˜ì—¬ ì¶œë ¥
+	private void printLog(Object content){
+		mainTextArea.append(content.toString()+"\n");
+		System.out.println(content);
+		mainTextArea.setCaretPosition(mainTextArea.getDocument().getLength());
 	}
 
 	public static void main(String args[]){

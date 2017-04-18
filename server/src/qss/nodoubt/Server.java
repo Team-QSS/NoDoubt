@@ -2,7 +2,8 @@ package qss.nodoubt;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -30,9 +32,11 @@ public class Server extends JFrame{
 	
 	private final int MAX_THREAD_NUM=20;
 	private ExecutorService threadPool=Executors.newFixedThreadPool(MAX_THREAD_NUM);
-	private ArrayList<BufferedWriter> writers=new ArrayList<BufferedWriter>();
+	private ArrayList<Client> clients=new ArrayList<>();
 	//gui
-	private JTextArea ta=new JTextArea();
+	private final int WIDTH=640,HEIGHT=480;
+	private JTextArea mainTextArea=new JTextArea();
+	private JTextArea enterTextArea=new JTextArea();
 	
 	public Server(){
 		setDisplay();
@@ -46,13 +50,20 @@ public class Server extends JFrame{
 		setContentPane(contentPane);
 		contentPane.setBackground(Color.WHITE);
 		
-		ta.setSize(this.getWidth(), this.getHeight());
-		JScrollPane scrollPane=new JScrollPane(ta);
-		contentPane.add(scrollPane);
-		
 		setSize(500,500);
 		setResizable(false);
 		setVisible(true);
+		
+		addJScrollPane(contentPane,mainTextArea,200,0,WIDTH-200,HEIGHT);
+		addJScrollPane(contentPane,enterTextArea,0,0,200,HEIGHT);
+	}
+	
+	private void addJScrollPane(Container contentPane,JTextArea jTextArea,int x,int y,int width,int height){
+		jTextArea.setLineWrap(true);
+		jTextArea.setEditable(false);
+		JScrollPane scrollPane=new JScrollPane(jTextArea);
+		scrollPane.setBounds(x,y,width,height);
+		contentPane.add(scrollPane);
 	}
 	
 	private void init(){
@@ -68,13 +79,12 @@ public class Server extends JFrame{
 				// 접속이 일어나면 소켓 클래스 객체가 생성됨
 				socket = serverSocket.accept();
 				 // 소켓 클래스 객체에서 PrintStream을 생성함
-				BufferedWriter writer= new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-				writers.add(writer);
+				printLog(enterTextArea,"클라이언트접속");
+				Client client=new Client(socket);
+				clients.add(client);
 				
-				writer.write("s");
-				writer.newLine();
-				writer.flush();
-				threadPool.execute(new ClientManager(socket,writer));
+				client.send("hello Nodoubt");
+				threadPool.execute(new ClientManager(client));
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -85,7 +95,6 @@ public class Server extends JFrame{
 		public void run(){
 			try{
 				while(true){
-					printLog("배용호");
 					Thread.sleep(1000/60);
 				}
 			}catch(Exception e){
@@ -93,17 +102,15 @@ public class Server extends JFrame{
 			}
 		}
 	}
-	
+	//Client가 listen하는 클래스
 	class ClientManager implements Runnable{
-		Socket clientSocket;
+		Client client;
 		BufferedReader reader;
-		BufferedWriter writer;
 		
-		ClientManager(Socket clientSocket,BufferedWriter writer){
+		ClientManager(Client client){
 			try{
-				this.clientSocket=clientSocket;
-				reader=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				this.writer=writer;
+				this.client=client;
+				reader=new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -111,15 +118,18 @@ public class Server extends JFrame{
 		
 		public void run(){
 			try{
-				while(clientSocket.isConnected()){
+				while(client.getSocket().isConnected()){
 					String data;
 					data=reader.readLine();
 					
+					printLog(data);
+					
 					//처리로직
 					
-					writer.write("s");
-					writer.newLine();
-					writer.flush();
+					
+					//전송
+					client.send(data);
+					broadCast(data);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -130,22 +140,22 @@ public class Server extends JFrame{
 	}
 	
 	private void broadCast(String content){
-		for(BufferedWriter writer:writers){
-			try {
-				writer.write(content);
-				writer.newLine();
-				writer.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		for(Client client:clients){
+			client.send(content);
 		}
 	}
 	
 	//모든 서버상의 로그는 이함수를 이용하여 출력
 	private void printLog(Object content){
-		ta.append(content.toString()+"\n");
+		mainTextArea.append(content.toString()+"\n");
 		System.out.println(content);
-		ta.setCaretPosition(ta.getDocument().getLength());
+		mainTextArea.setCaretPosition(mainTextArea.getDocument().getLength());
+	}
+	
+	private void printLog(JTextArea textArea,Object content){
+		textArea.append(content.toString()+"\n");
+		System.out.println(content);
+		textArea.setCaretPosition(textArea.getDocument().getLength());
 	}
 	
 	
