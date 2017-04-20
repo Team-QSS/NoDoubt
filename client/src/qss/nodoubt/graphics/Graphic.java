@@ -2,6 +2,8 @@ package qss.nodoubt.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.lwjgl.opengl.GL;
+
 public class Graphic {
 	private Graphic() {}
 	
@@ -9,6 +11,7 @@ public class Graphic {
 	 * OpenGL초기화
 	 */
 	public static void initialize() {
+		GL.createCapabilities();
 		
 	}
 	

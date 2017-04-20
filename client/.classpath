@@ -8,43 +8,43 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-glfw.jar" sourcepath="lwjgl/src/lwjgl-glfw-sources.jar">
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-glfw.jar" sourcepath="lwjgl/jar/lwjgl-glfw.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/NoDoubtClient/lwjgl/doc/lwjgl-glfw-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-jemalloc.jar" sourcepath="lwjgl/src/lwjgl-jemalloc-sources.jar">
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-jemalloc.jar" sourcepath="lwjgl/jar/lwjgl-jemalloc.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/NoDoubtClient/lwjgl/doc/lwjgl-jemalloc-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-openal.jar" sourcepath="lwjgl/src/lwjgl-openal-sources.jar">
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-openal.jar" sourcepath="lwjgl/jar/lwjgl-openal.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/NoDoubtClient/lwjgl/doc/lwjgl-openal-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-opengl.jar" sourcepath="lwjgl/src/lwjgl-opengl-sources.jar">
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-opengl.jar" sourcepath="lwjgl/jar/lwjgl-opengl.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/NoDoubtClient/lwjgl/doc/lwjgl-opengl-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-stb.jar" sourcepath="lwjgl/src/lwjgl-stb-sources.jar">
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-stb.jar" sourcepath="lwjgl/jar/lwjgl-stb.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/NoDoubtClient/lwjgl/doc/lwjgl-stb-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-xxhash.jar" sourcepath="lwjgl/src/lwjgl-xxhash-sources.jar">
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl-xxhash.jar" sourcepath="lwjgl/jar/lwjgl-xxhash.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/NoDoubtClient/lwjgl/doc/lwjgl-xxhash-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl.jar" sourcepath="lwjgl/src/lwjgl-sources.jar">
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl.jar" sourcepath="lwjgl/jar/lwjgl.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/NoDoubtClient/lwjgl/doc/lwjgl-javadoc.jar!/"/>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
