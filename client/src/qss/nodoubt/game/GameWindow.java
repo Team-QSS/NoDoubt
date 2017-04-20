@@ -7,9 +7,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class GameWindow {
 	private GameWindow() { }
-	private static long monitor;
-	private static long window;
-	private static GLFWErrorCallback errorCallback = null;
+	private static long s_Window;
+	private static GLFWErrorCallback s_ErrorCallback = null;
 	
 	/**
 	 * 윈도우 초기화 및 생성
@@ -19,25 +18,25 @@ public class GameWindow {
 	 * @exception RuntimeException 윈도우 생성에 실패했을 때 호출
 	 */
 	public static void initialize() {
-		errorCallback = GLFWErrorCallback.createPrint(System.err);
-		glfwSetErrorCallback(errorCallback);
+		s_ErrorCallback = GLFWErrorCallback.createPrint(System.err);
+		glfwSetErrorCallback(s_ErrorCallback);
 		
 		if(!glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
 		
-		monitor = glfwGetPrimaryMonitor();
+		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode vidMode = glfwGetVideoMode(monitor);
 		int monitorWidth = vidMode.width();
 		int monitorHeight = vidMode.height();
 		
-		window = glfwCreateWindow(monitorWidth, monitorHeight, "No Doubt", monitor, NULL);
-		if(window == NULL) {
+		s_Window = glfwCreateWindow(monitorWidth, monitorHeight, "No Doubt", monitor, NULL);
+		if(s_Window == NULL) {
 			glfwTerminate();
 			throw new RuntimeException("Fail to create GLFW window");
 		}
 		
-		glfwMakeContextCurrent(window);
+		glfwMakeContextCurrent(s_Window);
 		
 		glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
 	}
@@ -48,8 +47,8 @@ public class GameWindow {
 	public static void shutdown() {
 		glfwTerminate();
 		glfwSetErrorCallback(null);
-		errorCallback.free();
-		errorCallback = null;
+		s_ErrorCallback.free();
+		s_ErrorCallback = null;
 	}
 
 	/**
@@ -65,7 +64,7 @@ public class GameWindow {
 	 * 프레임 등이 갱신됨
 	 */
 	public static void updateWindow() {
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(s_Window);
 	}
 	
 	/**
@@ -73,7 +72,7 @@ public class GameWindow {
 	 * @return true일시 닫힐 예정, false일시 닫히지 않을 예정
 	 */
 	public static boolean getWindowShouldClose() {
-		return glfwWindowShouldClose(window);
+		return glfwWindowShouldClose(s_Window);
 	}
 	
 	/**
@@ -82,7 +81,7 @@ public class GameWindow {
 	 * @param mouseCallback 마우스버튼 콜백 메소드
 	 */
 	public static void setCallback(GLFWKeyCallback keyCallback, GLFWMouseButtonCallback mouseCallback) {
-		glfwSetKeyCallback(window, keyCallback);
-		glfwSetMouseButtonCallback(window, mouseCallback);
+		glfwSetKeyCallback(s_Window, keyCallback);
+		glfwSetMouseButtonCallback(s_Window, mouseCallback);
 	}
 }

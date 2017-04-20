@@ -8,6 +8,8 @@ public class GameTimer {
 	private long m_BaseTime;
 	private long m_PausedTime;
 	private long m_StoppedTime;
+	private long m_TimerFrequency;
+	private double m_CountTime;
 	private boolean m_IsPaused;
 	
 	public GameTimer() {
@@ -17,6 +19,8 @@ public class GameTimer {
 		m_PausedTime = 0;
 		m_StoppedTime = 0;
 		m_IsPaused = false;
+		m_TimerFrequency = glfwGetTimerFrequency();
+		m_CountTime = 1.0 / m_TimerFrequency;
 	}
 	
 	/**
@@ -34,10 +38,10 @@ public class GameTimer {
 	 */
 	public float totalTime() {
 		if(m_IsPaused) {
-			return (float)(1 / glfwGetTimerFrequency()) * (m_StoppedTime - m_BaseTime - m_PausedTime);
+			return (float)m_CountTime * (m_StoppedTime - m_BaseTime - m_PausedTime);
 		}
 		else {
-			return (float)(1 / glfwGetTimerFrequency()) * (m_CurrentTime - m_BaseTime - m_PausedTime);
+			return (float)m_CountTime * (m_CurrentTime - m_BaseTime - m_PausedTime);
 		}
 	}
 	
@@ -50,7 +54,7 @@ public class GameTimer {
 			return 0.0f;
 		}
 		else {
-			return (float)(1 / glfwGetTimerFrequency()) * (m_CurrentTime - m_PreviousTime);
+			return (float)m_CountTime * (m_CurrentTime - m_PreviousTime);
 		}
 	}
 	
