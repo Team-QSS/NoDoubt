@@ -31,6 +31,7 @@ public class Game {
 	 */
 	public static void run() {
 		boolean running = true;
+		GameWindow window = GameWindow.getInstance();
 		
 		s_FrameTimer.reset();
 		s_FrameTimer.start();
@@ -45,13 +46,13 @@ public class Game {
 				s_FrameCounter = 0;
 			}
 			
-			GameWindow.pollEvents();
+			window.pollEvents();
 			
 			Graphic.beginDraw();
 			
-			GameWindow.updateWindow();
+			window.updateWindow();
 			
-			if(GameWindow.getWindowShouldClose()) {
+			if(window.getWindowShouldClose()) {
 				running = false;
 			}
 		}

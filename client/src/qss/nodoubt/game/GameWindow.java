@@ -6,9 +6,17 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class GameWindow {
-	private GameWindow() { }
-	private static long s_Window;
-	private static GLFWErrorCallback s_ErrorCallback = null;
+	
+	private static GameWindow s_Instance  = null;
+	private long m_Window;
+	private GLFWErrorCallback m_ErrorCallback = null;
+	
+	public static GameWindow getInstance() {
+		if(s_Instance == null) {
+			s_Instance = new GameWindow();
+		}
+		return s_Instance;
+	}
 	
 	/**
 	 * 윈도우 초기화 및 생성
@@ -18,8 +26,26 @@ public class GameWindow {
 	 * @exception RuntimeException 윈도우 생성에 실패했을 때 호출
 	 */
 	public static void initialize() {
-		s_ErrorCallback = GLFWErrorCallback.createPrint(System.err);
-		glfwSetErrorCallback(s_ErrorCallback);
+		if(s_Instance == null) {
+			s_Instance = new GameWindow();
+		}
+	}
+	
+	/**
+	 *  윈도우 종료
+	 */
+	public static void shutdown() {
+		glfwTerminate();
+		if(s_Instance != null) {
+			s_Instance.release();
+			s_Instance = null;
+		}
+	}
+	
+	
+	private GameWindow() {
+		m_ErrorCallback = GLFWErrorCallback.createPrint(System.err);
+		glfwSetErrorCallback(m_ErrorCallback);
 		
 		if(!glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
@@ -30,32 +56,31 @@ public class GameWindow {
 		int monitorWidth = vidMode.width();
 		int monitorHeight = vidMode.height();
 		
-		s_Window = glfwCreateWindow(monitorWidth, monitorHeight, "No Doubt", monitor, NULL);
-		if(s_Window == NULL) {
+		m_Window = glfwCreateWindow(monitorWidth, monitorHeight, "No Doubt", monitor, NULL);
+		if(m_Window == NULL) {
 			glfwTerminate();
 			throw new RuntimeException("Fail to create GLFW window");
 		}
 		
-		glfwMakeContextCurrent(s_Window);
+		glfwMakeContextCurrent(m_Window);
 		
 		glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
 	}
-	
-	/**
-	 *  윈도우 종료
-	 */
-	public static void shutdown() {
-		glfwTerminate();
-		glfwSetErrorCallback(null);
-		s_ErrorCallback.free();
-		s_ErrorCallback = null;
-	}
 
+	/**
+	 * 에러 콜백 할당 해제
+	 */
+	private void release() {
+		glfwSetErrorCallback(null);
+		m_ErrorCallback.free();
+		m_ErrorCallback = null;
+	}
+	
 	/**
 	 * 윈도우 입력과 입력장치 입력 받음
 	 * 이 메소드가 호출 된 뒤 Input클래스에 넣은 Callback들이 호출됨
 	 */
-	public static void pollEvents() {
+	public void pollEvents() {
 		glfwPollEvents();
 	}
 	
@@ -63,16 +88,16 @@ public class GameWindow {
 	 * 윈도우 업데이트
 	 * 프레임 등이 갱신됨
 	 */
-	public static void updateWindow() {
-		glfwSwapBuffers(s_Window);
+	public void updateWindow() {
+		glfwSwapBuffers(m_Window);
 	}
 	
 	/**
 	 * 윈도우가 닫힐지 여부를 확인
 	 * @return true일시 닫힐 예정, false일시 닫히지 않을 예정
 	 */
-	public static boolean getWindowShouldClose() {
-		return glfwWindowShouldClose(s_Window);
+	public boolean getWindowShouldClose() {
+		return glfwWindowShouldClose(m_Window);
 	}
 	
 	/**
@@ -80,8 +105,8 @@ public class GameWindow {
 	 * @param keyCallback 키보드 콜백 메소드
 	 * @param mouseCallback 마우스버튼 콜백 메소드
 	 */
-	public static void setCallback(GLFWKeyCallback keyCallback, GLFWMouseButtonCallback mouseCallback) {
-		glfwSetKeyCallback(s_Window, keyCallback);
-		glfwSetMouseButtonCallback(s_Window, mouseCallback);
+	public void setCallback(GLFWKeyCallback keyCallback, GLFWMouseButtonCallback mouseCallback) {
+		glfwSetKeyCallback(m_Window, keyCallback);
+		glfwSetMouseButtonCallback(m_Window, mouseCallback);
 	}
 }
