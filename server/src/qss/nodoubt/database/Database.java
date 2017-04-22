@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class Database {
 	
 	/*
-	 * 서버 내의 데이터베이스를 다루는 싱글톤 객체
+	 * 서버 내의 데이터베이스를 다루는 싱글톤 객체 
 	 */
 	
 	private Connection connection;
@@ -22,7 +22,8 @@ public class Database {
     	try {
     		
     		Class.forName("com.mysql.jdbc.Driver");
-    		connection = DriverManager.getConnection("", "", "");    // 서버의 데이터베이스와 연결 
+    		connection = DriverManager.getConnection("", "", "");
+            // 서버 내의 데이터베이스와 연결
     		
     	} catch (ClassNotFoundException cne) {
     		cne.printStackTrace();
@@ -85,4 +86,28 @@ public class Database {
     	
     }
     
+    public static void main(String[] args) {
+    	
+    	/*
+    	 * 데이터베이스 테스트 전용 메인 메서드
+    	 */
+    	
+    	try {
+			
+    		ResultSet result = Database.getInstance()
+    				                   .executeAndGet("SELECT * FROM member WHERE id=?", new String[] {"user001"});
+			
+    		while (result.next()) {
+    			
+    			System.out.println("id : " + result.getString("id"));
+    			System.out.println("password : " + result.getString("password"));
+    			System.out.println("name : " + result.getString("name"));
+    			
+    		}
+    		
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}    	
+    	
+    }
 }
