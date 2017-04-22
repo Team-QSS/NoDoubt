@@ -1,17 +1,23 @@
 package qss.nodoubt.util;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
-import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.net.Socket;
 
 import javax.swing.*;
 
-import org.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.google.gson.Gson;
+
+import qss.nodoubt.Client;
+import qss.nodoubt.Network;
+import qss.nodoubt.room.RoomManager;
+import qss.nodoubt.room.User;
 
 public class Tester extends JFrame{
 	/**
@@ -21,12 +27,16 @@ public class Tester extends JFrame{
 	
 	private static final int WIDTH=640,HEIGHT=480;
 	
-	private Gson gson=new Gson();
+	private Gson gson=Network.gson;
+	private JSONParser parser=Network.jsonParser;
 	private BufferedWriter writer;
 	private BufferedReader reader;
 	private Socket socket;
 	
+	private User user;
+	
 	//gui
+	private MyPanel contentPane;
 	private JTextArea mainTextArea=new JTextArea();
 	
 	private boolean[] keyInput=new boolean[300];
@@ -47,7 +57,8 @@ public class Tester extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		
-		setContentPane(new MyPanel());
+		contentPane=new MyPanel();
+		setContentPane(contentPane);
 		setSize(WIDTH,HEIGHT);
 		setResizable(false);
 		setVisible(true);
@@ -83,7 +94,6 @@ public class Tester extends JFrame{
 					if(keyInput[27]){
 						System.exit(0);
 					}
-//					contentPane.repaint();
 					Thread.sleep(1000/60);
 				}
 			}catch(Exception e){
@@ -95,11 +105,17 @@ public class Tester extends JFrame{
 	
 	class InDataReader implements Runnable{
 		public void run(){
+			JSONObject receiveData;
 			try{
 				while(true){
-					String data;
-					data=reader.readLine();
-					printLog(data);
+					String data=reader.readLine();
+					receiveData=(JSONObject)parser.parse(data);
+					
+					//처리
+					process(receiveData);
+					
+					//디버깅용 로그 출력
+					Util.printLog(mainTextArea, data);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -107,11 +123,74 @@ public class Tester extends JFrame{
 		}
 	}
 	
+	private void process(JSONObject data){
+		switch((String)data.get("Protocol")){
+			case "Connect":{
+				Util.printLog(mainTextArea,data.get("connectMessage"));
+			}break;
+		
+			case "Register":{
+				if(!(boolean)data.get("isExist")){
+					Util.printLog(mainTextArea, "회원가입완료");
+				}else{
+					Util.printLog(mainTextArea, "회원가입실패");
+				}
+			}break;
+			
+			case "Login":{
+				if((boolean)data.get("isExist")){
+					Util.printLog(mainTextArea, "로그인성공");
+					user=(User) gson.fromJson((String) data.get("user"), User.class);
+					
+					Util.printLog(mainTextArea, user.getCurrentRoomId());
+					//채팅창 생성
+					contentPane.chattingForm=new JTextField();
+					contentPane.chattingForm.setBounds(300,100,100,50);
+					contentPane.add(contentPane.chattingForm);
+					
+					//버튼생성
+					JButton chat=new JButton("chat");
+					chat.setBounds(200, 100, 100, 100);
+					chat.addActionListener(new ActionListener(){
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							JSONObject data=new JSONObject();
+							data.put("Protocol", "Chat");
+							data.put("user", gson.toJson(user));
+							data.put("content", contentPane.chattingForm.getText());
+							Network.send(writer,data);
+							contentPane.chattingForm.setText("");
+						}
+						
+					});
+					contentPane.add(chat);
+					contentPane.repaint();
+				}else{
+					Util.printLog(mainTextArea, "로그인실패");
+				}
+			}break;
+			
+			case "Chat":{
+				User user=(User) gson.fromJson((String) data.get("user"), User.class);
+				String content=(String) data.get("content");
+				Util.printLog(mainTextArea,user.getID()+":"+content);
+			}break;
+			
+			default:{
+				Util.printLog(mainTextArea, "알지못하는 프로토콜입니다.");
+			}
+		}
+	}
+
+	//gui 관련코드
 	class MyPanel extends JPanel{
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+		
+		public JTextField chattingForm;
 		
 		public MyPanel(){
 			setBackground(Color.WHITE);
@@ -131,24 +210,52 @@ public class Tester extends JFrame{
 			//addTextArea
 			addJScrollPane(this,mainTextArea,Tester.WIDTH-200, 0, 200, Tester.HEIGHT);
 			
+			//addTextField
+			JTextField ID=new JTextField();
+			ID.setBounds(0,200,100,20);
+			add(ID);
+			
+			JTextField password=new JTextField();
+			password.setBounds(0,225,100,20);
+			add(password);
+			
+			JTextField roomNum=new JTextField();
+			roomNum.setBounds(110,200,30,20);
+			add(roomNum);
+			
 			//addButton
-			JButton j=new JButton("shit");
-			j.setBounds(100, 100, 200, 200);
-			j.addActionListener(new ActionListener(){
+			JButton register=new JButton("register");
+			register.setBounds(000, 100, 100, 100);
+			register.addActionListener(new ActionListener(){
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try {
-						writer.write("shit");
-						writer.newLine();
-						writer.flush();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+					JSONObject data=new JSONObject();
+					data.put("Protocol", "Register");
+					data.put("ID", ID.getText());
+					data.put("password", password.getText());
+					Network.send(writer,data);
 				}
 				
 			});
-			add(j);
+			add(register);
+			
+			JButton login=new JButton("login");
+			login.setBounds(100, 100, 100, 100);
+			login.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JSONObject data=new JSONObject();
+					data.put("Protocol", "Login");
+					data.put("ID", ID.getText());
+					data.put("password", password.getText());
+					data.put("roomNum", Double.parseDouble(roomNum.getText()));
+					Network.send(writer,data);
+				}
+				
+			});
+			add(login);
 			
 		}
 		
@@ -194,13 +301,6 @@ public class Tester extends JFrame{
 		}
 	}
 	
-	//모든 서버상의 로그는 이함수를 이용하여 출력
-	private void printLog(Object content){
-		mainTextArea.append(content.toString()+"\n");
-		System.out.println(content);
-		mainTextArea.setCaretPosition(mainTextArea.getDocument().getLength());
-	}
-
 	public static void main(String args[]){
 		new Tester();
 	}
