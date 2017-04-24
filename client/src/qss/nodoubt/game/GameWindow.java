@@ -6,11 +6,14 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class GameWindow {
-	
 	private static GameWindow s_Instance  = null;
 	private long m_Window;
 	private GLFWErrorCallback m_ErrorCallback = null;
 	
+	/**
+	 * @exception IllegalStateException glfw초기화에 실패했을 때 호출
+	 * @exception RuntimeException 윈도우 생성에 실패했을 때 호출
+	 */
 	public static GameWindow getInstance() {
 		if(s_Instance == null) {
 			s_Instance = new GameWindow();
@@ -19,27 +22,13 @@ public class GameWindow {
 	}
 	
 	/**
-	 * 윈도우 초기화 및 생성
-	 * 이 메소드를 실행 한 이후부터 윈도우가 생성됨
-	 * 
-	 * @exception IllegalStateException glfw초기화에 실패했을 때 호출
-	 * @exception RuntimeException 윈도우 생성에 실패했을 때 호출
-	 */
-	public static void initialize() {
-		if(s_Instance == null) {
-			s_Instance = new GameWindow();
-		}
-	}
-	
-	/**
 	 *  윈도우 종료
 	 */
-	public static void shutdown() {
+	public void shutdown() {
 		glfwTerminate();
-		if(s_Instance != null) {
-			s_Instance.release();
-			s_Instance = null;
-		}
+		glfwSetErrorCallback(null);
+		m_ErrorCallback.free();
+		m_ErrorCallback = null;
 	}
 	
 	
@@ -65,15 +54,6 @@ public class GameWindow {
 		glfwMakeContextCurrent(m_Window);
 		
 		glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
-	}
-
-	/**
-	 * 에러 콜백 할당 해제
-	 */
-	private void release() {
-		glfwSetErrorCallback(null);
-		m_ErrorCallback.free();
-		m_ErrorCallback = null;
 	}
 	
 	/**

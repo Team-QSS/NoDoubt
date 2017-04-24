@@ -1,61 +1,69 @@
 package qss.nodoubt.game;
 
 import qss.nodoubt.graphics.Graphic;
+import qss.nodoubt.sounds.Sound;
 import qss.nodoubt.utils.GameTimer;
 
 public class Game {
-	private Game() {}
-	private static GameTimer s_FrameTimer = null;
-	private static int s_FrameCounter;
+	private static Game s_Instance = null;
+	private GameTimer m_FrameTimer = null;
+	private Graphic m_Graphic = null;
+	private GameWindow m_Window = null;
+	private Sound m_Sound = null;
+	private int m_FrameCounter;
 	
-	/**
-	 * 게임 초기화
-	 */
-	public static void initialize() {
-		GameWindow.initialize();
-		Graphic.initialize();
-		s_FrameTimer = new GameTimer();
-		s_FrameCounter = 0;
+	public static Game getInstance() {
+		if(s_Instance == null) {
+			s_Instance = new Game();
+		}
+		
+		return s_Instance;
+	}
+	
+	private Game() {
+		m_FrameTimer = new GameTimer();
+		m_FrameCounter = 0;
+		m_Graphic = Graphic.getInstance();
+		m_Window = GameWindow.getInstance();
+		m_Sound = Sound.getInstance();
 	}
 
 	/**
 	 * 게임 종료
 	 */
-	public static void shutdown() {
-		Graphic.shutdown();
-		GameWindow.shutdown();
+	public void shutdown() {
+		m_Window.shutdown();
+		m_Sound.shutdown();
 	}
 	
 	/**
 	 * 게임 진행
 	 */
-	public static void run() {
+	public void run() {
 		boolean running = true;
-		GameWindow window = GameWindow.getInstance();
 		
-		s_FrameTimer.reset();
-		s_FrameTimer.start();
+		m_FrameTimer.reset();
+		m_FrameTimer.start();
 		
 		while(running) {
-			s_FrameTimer.tick();
-			s_FrameCounter += 1;
+			m_FrameTimer.tick();
+			m_FrameCounter += 1;
 			
-			if(s_FrameTimer.totalTime() > 1.0f) {
-				System.out.println("FPS : " + s_FrameCounter + ", mSPF : " + (1000.0f * s_FrameTimer.totalTime() / s_FrameCounter));
-				s_FrameTimer.reset();
-				s_FrameCounter = 0;
+			if(m_FrameTimer.totalTime() > 1.0f) {
+				System.out.println("FPS : " + m_FrameCounter + ", mSPF : " + (1000.0f * m_FrameTimer.totalTime() / m_FrameCounter));
+				m_FrameTimer.reset();
+				m_FrameCounter = 0;
 			}
 			
-			window.pollEvents();
+			m_Window.pollEvents();
 			
-			Graphic.beginDraw();
+			m_Graphic.beginDraw();
 			
-			window.updateWindow();
+			m_Window.updateWindow();
 			
-			if(window.getWindowShouldClose()) {
+			if(m_Window.getWindowShouldClose()) {
 				running = false;
 			}
 		}
 	}
-
 }
