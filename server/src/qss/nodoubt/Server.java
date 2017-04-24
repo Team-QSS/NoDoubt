@@ -50,7 +50,11 @@ public class Server extends JFrame{
 	private JTextArea mainTextArea=new JTextArea();
 	private JTextArea enterTextArea=new JTextArea();
 	
+	//Debug
+	private boolean DEBUG_MODE;
+	
 	public Server(){
+		DEBUG_MODE=true;
 		setDisplay();
 		init();
 	}
@@ -235,8 +239,7 @@ public class Server extends JFrame{
 			}
 			
 			//디버깅용 로그 출력
-			Util.printLog(mainTextArea, (String)data.get("Protocol"));
-			
+			Util.printDebugLog(DEBUG_MODE,mainTextArea, (String)data.get("Protocol"));
 		}
 		
 	}

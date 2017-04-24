@@ -41,7 +41,11 @@ public class Tester extends JFrame{
 	
 	private boolean[] keyInput=new boolean[300];
 	
+	//Debug
+	private boolean DEBUG_MODE;
+	
 	public Tester(){
+		DEBUG_MODE=false;
 		setDisplay();
 		networking();
 		Thread loop=new Thread(new GameLoop());
@@ -115,7 +119,7 @@ public class Tester extends JFrame{
 					process(receiveData);
 					
 					//디버깅용 로그 출력
-					Util.printLog(mainTextArea, data);
+					Util.printDebugLog(DEBUG_MODE,mainTextArea, data);
 				}
 			}catch(Exception e){
 				e.printStackTrace();

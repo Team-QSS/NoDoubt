@@ -22,7 +22,7 @@ public class Database {
     	try {
     		
     		Class.forName("com.mysql.jdbc.Driver");
-    		connection = DriverManager.getConnection("", "", "");
+    		connection = DriverManager.getConnection("jdbc:mysql://10.156.145.105:3306/nodoubt","testuser","testpassword");
             // 서버 내의 데이터베이스와 연결
     		
     	} catch (ClassNotFoundException cne) {
