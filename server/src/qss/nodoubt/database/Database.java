@@ -27,24 +27,11 @@ public class Database {
     	try {
     		// 객체 생성 시 서버의 데이터베이스와 연결 
     		Class.forName("com.mysql.jdbc.Driver");
-<<<<<<< HEAD
-    		connection = DriverManager.getConnection("jdbc:mysql://10.156.145.105:3306/nodoubt","testuser","test");
+    		connection = DriverManager.getConnection("jdbc:mysql://10.156.145.105:3306/nodoubt","testuser","testpassword");
             // 서버 내의 데이터베이스와 연결
-    		
-    	} catch (ClassNotFoundException cne) {
-    		cne.printStackTrace();
-    	} catch (SQLException sqle) {
-    		sqle.printStackTrace();
-    	}
-    	
-=======
-    		    // Driver 클래스를 동적 로딩 및 생성
-    		connection = DriverManager.getConnection("","", "");
-                // 서버 내의 데이터베이스와의 커넥션 생성
     	} catch (ClassNotFoundException | SQLException e) {
     		e.printStackTrace();
     	} 
->>>>>>> origin/master
     }
     
     public static Database getInstance(){
@@ -175,12 +162,9 @@ public class Database {
     		
     		JSONArray results = Database.getInstance()
                                         .executeAndGet("SELECT * FROM member");
-    		
-    		Iterator<?> iterator = results.iterator();
-    		
-    		while (iterator.hasNext()) {
+    		for(Object obj:results) {
     			// 결과로 반환된 튜플의 데이터들을 조회
-    			JSONObject result = (JSONObject) iterator.next();
+    			JSONObject result = (JSONObject)obj;
     			
     			for (Object key : result.keySet()) {
     				// 튜플의 데이터를 조회
