@@ -27,7 +27,7 @@ public class Database {
     	try {
     		// 객체 생성 시 서버의 데이터베이스와 연결 
     		Class.forName("com.mysql.jdbc.Driver");
-    		connection = DriverManager.getConnection("jdbc:mysql://10.156.145.105:3306/nodoubt","testuser","testpassword");
+    		connection = DriverManager.getConnection("","","");
             // 서버 내의 데이터베이스와 연결
     	} catch (ClassNotFoundException | SQLException e) {
     		e.printStackTrace();
