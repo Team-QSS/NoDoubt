@@ -1,5 +1,6 @@
 package qss.nodoubt.game;
 
+import qss.nodoubt.game.level.GameLevel;
 import qss.nodoubt.graphics.Graphic;
 import qss.nodoubt.sounds.Sound;
 import qss.nodoubt.utils.GameTimer;
@@ -10,6 +11,7 @@ public class Game {
 	private Graphic m_Graphic = null;
 	private GameWindow m_Window = null;
 	private Sound m_Sound = null;
+	private GameLevel m_CurLevel;
 	private int m_FrameCounter;
 	
 	public static Game getInstance() {
@@ -57,7 +59,11 @@ public class Game {
 			
 			m_Window.pollEvents();
 			
+			m_CurLevel.update(m_FrameTimer.deltaTime());
+			
 			m_Graphic.beginDraw();
+			
+			m_CurLevel.draw(m_Graphic.getOrtho());
 			
 			m_Window.updateWindow();
 			

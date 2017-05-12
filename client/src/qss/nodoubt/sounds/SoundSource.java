@@ -6,14 +6,14 @@ public class SoundSource {
 	private int m_Source;
 	private int m_Buffer;
 	
-	public SoundSource() {
+	SoundSource() {
 		m_Source = alGenSources();
 		alSourcef(m_Source, AL_GAIN, 1);
 		alSourcef(m_Source, AL_PITCH, 1);
 		alSource3f(m_Source, AL_POSITION, 0, 0, 0);
 	}
 	
-	public SoundSource(int buffer) {
+	SoundSource(int buffer) {
 		m_Source = alGenSources();
 		alSourcef(m_Source, AL_GAIN, 1);
 		alSourcef(m_Source, AL_PITCH, 1);
@@ -21,7 +21,7 @@ public class SoundSource {
 		m_Buffer = buffer;
 	}
 	
-	public void setBuffer(int buffer) {
+	void setBuffer(int buffer) {
 		m_Buffer = buffer;
 	}
 	
