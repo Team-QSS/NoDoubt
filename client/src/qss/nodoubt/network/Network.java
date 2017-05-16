@@ -1,13 +1,7 @@
 package qss.nodoubt.network;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
 
 import qss.nodoubt.game.GameConstants;
 
@@ -15,6 +9,8 @@ public class Network {
 	private static Network s_Instance = null;
 	
 	private Socket m_Socket;
+	private DataInputStream m_InputStream;
+	private DataOutputStream m_OutputStream;
 	
 	public static Network getInstance() {
 		if(s_Instance == null) {
@@ -30,8 +26,19 @@ public class Network {
 		}
 	}
 	
+	public void send(Message msg) {
+		try {
+			m_OutputStream.writeChars(msg.toJSONString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void shutdown() {
 		try {
+			m_InputStream.close();
+			m_OutputStream.close();
 			m_Socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,13 +46,11 @@ public class Network {
 	}
 
 	private Network() {
-		
 		try {
 			m_Socket = new Socket(GameConstants.SERVER_IP, GameConstants.NETWORK_PORT);
-			InputStream is = m_Socket.getInputStream();
-			DataInputStream ds = new DataInputStream(is);
+			m_InputStream = new DataInputStream(m_Socket.getInputStream());
+			m_OutputStream = new DataOutputStream(m_Socket.getOutputStream());
 		}catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

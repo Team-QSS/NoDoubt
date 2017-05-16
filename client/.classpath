@@ -50,5 +50,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="NoDoubtClient/lwjgl/natives"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="json/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

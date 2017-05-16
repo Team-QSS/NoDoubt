@@ -2,6 +2,7 @@ package qss.nodoubt.game;
 
 import qss.nodoubt.game.level.GameLevel;
 import qss.nodoubt.graphics.Graphic;
+import qss.nodoubt.network.Network;
 import qss.nodoubt.sounds.Sound;
 import qss.nodoubt.utils.GameTimer;
 
@@ -11,6 +12,7 @@ public class Game {
 	private Graphic m_Graphic = null;
 	private GameWindow m_Window = null;
 	private Sound m_Sound = null;
+	private Network m_Network = null;
 	private GameLevel m_CurLevel;
 	private int m_FrameCounter;
 	
@@ -28,6 +30,7 @@ public class Game {
 		m_Window = GameWindow.getInstance();
 		m_Graphic = Graphic.getInstance();
 		m_Sound = Sound.getInstance();
+		m_Network = Network.getInstance();
 	}
 
 	/**
