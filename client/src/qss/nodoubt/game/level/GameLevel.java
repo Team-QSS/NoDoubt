@@ -35,4 +35,11 @@ public abstract class GameLevel {
 	protected final void removeObject(GameObject obj) {
 		m_ObjectSet.remove(obj);
 	}
+	
+	public final void destroyLevel() {
+		for(GameObject obj : m_ObjectSet) {
+			removeObject(obj);
+		}
+	}
+	
 }

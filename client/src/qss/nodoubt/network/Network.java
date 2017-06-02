@@ -26,11 +26,24 @@ public class Network {
 		}
 	}
 	
+	public Message pollMessage() {
+		Message msg = null;
+		try {
+			if(m_InputStream.available() > 0) {
+				msg = new Message(m_InputStream.readUTF());
+			}else {
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return msg;
+	}
+	
 	public void send(Message msg) {
 		try {
 			m_OutputStream.writeChars(msg.toJSONString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

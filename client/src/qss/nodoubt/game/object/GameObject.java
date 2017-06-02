@@ -5,6 +5,9 @@ import org.joml.*;
 import qss.nodoubt.graphics.Texture;
 import qss.nodoubt.graphics.TextureManager;
 import qss.nodoubt.graphics.VertexArray;
+import qss.nodoubt.input.Input;
+import qss.nodoubt.input.KeyListener;
+import qss.nodoubt.input.MouseListener;
 
 public abstract class GameObject {
 	private Vector3f m_Position;
@@ -12,6 +15,8 @@ public abstract class GameObject {
 	private float m_Angle;
 	private VertexArray m_VertexArray;
 	private Texture m_Texture;
+	private KeyListener m_KeyListener = null;
+	private MouseListener m_MouseListener = null;
 	
 	/**
 	 * 오브젝트 생성
@@ -78,5 +83,27 @@ public abstract class GameObject {
 	
 	protected final Vector2f getSize() {
 		return m_Size;
+	}
+	
+	public final void destroyObject() {
+		Input input = Input.getInstance();
+		if(m_KeyListener != null) {
+			input.removeKeyListener(m_KeyListener);
+		}
+		if(m_MouseListener != null) {
+			input.removeMouseListener(m_MouseListener);
+		}
+	}
+	
+	protected final void setEventListener(KeyListener key, MouseListener mouse) {
+		Input input = Input.getInstance();
+		if(key != null) {
+			input.addKeyListener(key);
+			m_KeyListener = key;
+		}
+		if(mouse != null) {
+			input.addMouseListener(mouse);
+			m_MouseListener = mouse;
+		}
 	}
 }
