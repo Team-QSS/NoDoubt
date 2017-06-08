@@ -3,8 +3,6 @@ package qss.nodoubt.game.level;
 import qss.nodoubt.game.object.*;
 import java.util.*;
 
-import org.joml.Matrix4f;
-
 public abstract class GameLevel {
 	private Set<GameObject> m_ObjectSet = null;
 	
@@ -14,7 +12,7 @@ public abstract class GameLevel {
 	
 	public abstract void update(float deltaTime);
 	
-	public abstract void draw(Matrix4f ortho);
+	public abstract void draw();
 	
 	protected final void updateObjects(float deltaTime) {
 		for(GameObject obj : m_ObjectSet) {
@@ -22,9 +20,9 @@ public abstract class GameLevel {
 		}
 	}
 	
-	protected final void drawObjects(Matrix4f viewOrtho) {
+	protected final void drawObjects() {
 		for(GameObject obj : m_ObjectSet) {
-			obj.draw(viewOrtho);
+			obj.draw();
 		}
 	}
 	

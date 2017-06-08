@@ -39,7 +39,6 @@ public class TextureManager {
 	 */
 	public Texture addTexture(String name, String path) {
 		Texture tex = new Texture(path);
-		
 		m_Textures.put(name, tex);
 		return tex;
 	}

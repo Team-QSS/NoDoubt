@@ -40,17 +40,16 @@ public abstract class GameObject {
 	 * 오브젝트 그림
 	 * @param viewOrtho 세계공간 -> 장치공간 변환 행렬
 	 */
-	public final void draw(Matrix4f viewOrtho) {
+	public final void draw() {
 		Matrix4f translate = new Matrix4f().translate(m_Position);
 		Matrix4f rotate = new Matrix4f().rotate(m_Angle, new Vector3f(0.0f, 0.0f, 1.0f));
 		Matrix4f scale = new Matrix4f().scale(new Vector3f(m_Size, 1.0f));
 		
 		Matrix4f world = scale.mul(rotate).mul(translate);
-		Matrix4f worldViewOrtho = world.mul(viewOrtho);
 		
 		m_Texture.bind();
 		
-		m_VertexArray.draw(worldViewOrtho);
+		m_VertexArray.draw(world);
 	}
 
 	protected final void setPosition(float x, float y, float z) {
