@@ -87,6 +87,11 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * 다음 레벨 설정
+	 * 현재 진행중인 프레임이 끝나고 레벨이 바뀜
+	 * @param level 다음 레벨
+	 */
 	public void setNextLevel(GameLevel level) {
 		m_NextLevel = level;
 	}

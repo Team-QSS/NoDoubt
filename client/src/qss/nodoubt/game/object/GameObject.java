@@ -30,16 +30,8 @@ public abstract class GameObject {
 		m_VertexArray = new VertexArray(m_Texture.getWidth(), m_Texture.getHeight(), 0.0f, 1.0f, 0.0f, 1.0f);
 	}
 	
-	/**
-	 * 오브젝트 변경
-	 * @param deltaTime 프레임당 시간
-	 */
 	public abstract void update(float deltaTime);
 	
-	/**
-	 * 오브젝트 그림
-	 * @param viewOrtho 세계공간 -> 장치공간 변환 행렬
-	 */
 	public final void draw() {
 		Matrix4f translate = new Matrix4f().translate(m_Position);
 		Matrix4f rotate = new Matrix4f().rotate(m_Angle, new Vector3f(0.0f, 0.0f, 1.0f));
@@ -84,6 +76,10 @@ public abstract class GameObject {
 		return m_Size;
 	}
 	
+	/**
+	 * 오브젝트 삭제되기 직전에 호출되어야 할 함수
+	 * 엔진이 알아서 호출하니 호출하지 말것
+	 */
 	public final void destroyObject() {
 		Input input = Input.getInstance();
 		if(m_KeyListener != null) {
@@ -94,6 +90,12 @@ public abstract class GameObject {
 		}
 	}
 	
+	/**
+	 * 이벤트 리스너 설정
+	 * 현재 두번호출하면 상태 이상하니 한번만 호출할것
+	 * @param key 키보드 리스너, 없으면 null넣으셈
+	 * @param mouse 마우스 버튼 리스터, 없으면 null넣으셈
+	 */
 	protected final void setEventListener(KeyListener key, MouseListener mouse) {
 		Input input = Input.getInstance();
 		if(key != null) {

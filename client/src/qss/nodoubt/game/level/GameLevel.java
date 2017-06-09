@@ -14,6 +14,10 @@ public abstract class GameLevel {
 	
 	public abstract void draw();
 	
+	/**
+	 * 
+	 * @param deltaTime
+	 */
 	protected final void updateObjects(float deltaTime) {
 		for(GameObject obj : m_ObjectSet) {
 			obj.update(deltaTime);
