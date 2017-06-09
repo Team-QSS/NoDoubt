@@ -59,6 +59,10 @@ public class Network {
 	}
 
 	private Network() {
+		
+	}
+	
+	private void Connect() {
 		try {
 			m_Socket = new Socket(GameConstants.SERVER_IP, GameConstants.NETWORK_PORT);
 			m_InputStream = new DataInputStream(m_Socket.getInputStream());

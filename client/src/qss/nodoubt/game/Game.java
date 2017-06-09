@@ -21,7 +21,8 @@ public class Game {
 	
 	public static Game getInstance() {
 		if(s_Instance == null) {
-			s_Instance = new Game(new TLevel());
+			s_Instance = new Game();
+			s_Instance.m_CurLevel = new TLevel();
 		}
 		
 		return s_Instance;
@@ -34,16 +35,6 @@ public class Game {
 		m_Graphic = Graphic.getInstance();
 		m_Sound = Sound.getInstance();
 		m_Network = Network.getInstance();
-	}
-	
-	private Game(GameLevel level) {
-		m_FrameTimer = new GameTimer();
-		m_FrameCounter = 0;
-		m_Window = GameWindow.getInstance();
-		m_Graphic = Graphic.getInstance();
-		m_Sound = Sound.getInstance();
-		m_Network = Network.getInstance();
-		m_CurLevel = level;
 	}
 
 	/**
@@ -81,7 +72,7 @@ public class Game {
 			
 			m_Graphic.beginDraw();
 			
-			m_CurLevel.draw(m_Graphic.getOrtho());
+			m_CurLevel.draw();
 			
 			m_Window.updateWindow();
 			

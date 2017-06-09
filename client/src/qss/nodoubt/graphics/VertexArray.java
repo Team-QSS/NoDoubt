@@ -38,10 +38,10 @@ public class VertexArray {
 		};
 			
 		m_UVs = new float[]{
-				right, bottom,
 				right, top,
-				left, bottom,
-				left, top
+				right, bottom,
+				left, top,
+				left, bottom
 		};
 		
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, m_Vertices);
