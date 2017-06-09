@@ -1,12 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\client",
     "\\client\\src",
     "\\client\\src\\qss",
     "\\client\\src\\qss\\nodoubt",
     "\\client\\src\\qss\\nodoubt\\graphics"
   ],
-  "SelectedNode": "\\client\\src\\qss\\nodoubt\\graphics\\Graphic.java",
+  "SelectedNode": "\\client",
   "PreviewInSolutionExplorer": false
 }
