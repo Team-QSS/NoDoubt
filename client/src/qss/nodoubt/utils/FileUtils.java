@@ -24,6 +24,7 @@ public class FileUtils {
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 		return result.toString();
 	}

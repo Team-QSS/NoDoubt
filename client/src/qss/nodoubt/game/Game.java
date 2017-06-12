@@ -6,7 +6,9 @@ import qss.nodoubt.graphics.Graphic;
 import qss.nodoubt.network.Message;
 import qss.nodoubt.network.Network;
 import qss.nodoubt.sounds.Sound;
+import qss.nodoubt.utils.FileUtils;
 import qss.nodoubt.utils.GameTimer;
+import qss.nodoubt.utils.ResourceUtils;
 
 public class Game {
 	private static Game s_Instance = null;
@@ -29,12 +31,15 @@ public class Game {
 	}
 	
 	private Game() {
-		m_FrameTimer = new GameTimer();
-		m_FrameCounter = 0;
 		m_Window = GameWindow.getInstance();
 		m_Graphic = Graphic.getInstance();
 		m_Sound = Sound.getInstance();
 		m_Network = Network.getInstance();
+		m_FrameTimer = new GameTimer();
+		m_FrameCounter = 0;
+		
+		String str = FileUtils.loadTextFile("ImagePaths");
+		ResourceUtils.loadImages(str);
 	}
 
 	/**
