@@ -40,6 +40,11 @@ public class Sound {
 		ALC10.alcCloseDevice(m_SoundDevice);
 	}
 	
+	/**
+	 * 음악 로딩
+	 * @param name 음악 이름
+	 * @param path 음악파일 경로
+	 */
 	public void loadSound(String name, String path){
 		int buffer = alGenBuffers();
 		IntBuffer channels = BufferUtils.createIntBuffer(1);

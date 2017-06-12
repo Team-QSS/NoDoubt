@@ -14,10 +14,6 @@ public abstract class GameLevel {
 	
 	public abstract void draw();
 	
-	/**
-	 * 
-	 * @param deltaTime
-	 */
 	protected final void updateObjects(float deltaTime) {
 		for(GameObject obj : m_ObjectSet) {
 			obj.update(deltaTime);
@@ -30,14 +26,27 @@ public abstract class GameLevel {
 		}
 	}
 	
+	/**
+	 * 오브젝트 등록
+	 * 여기에 등록해야 삭제될 때 오브젝트도 정상적으로 삭제됨. 아마도
+	 * @param obj 등록할 오브젝트
+	 */
 	protected final void addObject(GameObject obj) {
 		m_ObjectSet.add(obj);
 	}
 	
+	/**
+	 * 등록한 오브젝트 삭제
+	 * @param obj 삭제할 오브젝트
+	 */
 	protected final void removeObject(GameObject obj) {
 		m_ObjectSet.remove(obj);
 	}
 	
+	/**
+	 * 레벨 삭제될때 호출되는 함수
+	 * 엔진이 호출하니 사용하지 말 것
+	 */
 	public final void destroyLevel() {
 		for(GameObject obj : m_ObjectSet) {
 			removeObject(obj);
