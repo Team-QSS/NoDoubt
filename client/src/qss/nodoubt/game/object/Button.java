@@ -2,9 +2,9 @@ package qss.nodoubt.game.object;
 
 public class Button extends GameObject {
 
-	public Button(String textureName) {
+	public Button(String textureName,float x, float y, float z) {
 		super(textureName);
-		// TODO Auto-generated constructor stub
+		setPosition(x,y,z);
 	}
 
 	@Override
@@ -12,5 +12,6 @@ public class Button extends GameObject {
 		// TODO Auto-generated method stub
 
 	}
+	
 
 }

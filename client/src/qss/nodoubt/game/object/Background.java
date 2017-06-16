@@ -4,7 +4,7 @@ public class Background extends GameObject {
 
 	public Background(String textureName) {
 		super(textureName);
-		// TODO Auto-generated constructor stub
+		setPosition(0, 0, 0);
 	}
 
 	@Override
