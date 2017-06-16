@@ -1,6 +1,7 @@
 package qss.nodoubt.game;
 
 import qss.nodoubt.game.level.GameLevel;
+import qss.nodoubt.game.level.LobbyLevel;
 import qss.nodoubt.game.level.TLevel;
 import qss.nodoubt.graphics.Graphic;
 import qss.nodoubt.network.Message;
@@ -24,7 +25,7 @@ public class Game {
 	public static Game getInstance() {
 		if(s_Instance == null) {
 			s_Instance = new Game();
-			s_Instance.m_CurLevel = new TLevel();
+			s_Instance.m_CurLevel = new LobbyLevel();
 		}
 		
 		return s_Instance;

@@ -1,1 +1,5 @@
 a:../res/image/Button/1.png
+GameJoinButton:../res/image
+AccountSettingButton:../res/image
+StoreButton:../res/image
+CreditButton:../res/image
