@@ -20,7 +20,7 @@ public abstract class GameObject {
 	
 	/**
 	 * 오브젝트 생성
-	 * @param textureName 텍스쳐 이름
+	 * @param textureName 초기 텍스쳐 이름
 	 */
 	public GameObject(String textureName) {
 		m_Position = new Vector3f(0.0f, 0.0f, 0.0f);
@@ -106,5 +106,14 @@ public abstract class GameObject {
 			input.addMouseListener(mouse);
 			m_MouseListener = mouse;
 		}
+	}
+	
+	/**
+	 * 텍스쳐 설정
+	 * @param textureName 텍스쳐 이름
+	 */
+	protected final void setTexture(String textureName) {
+		m_Texture = TextureManager.getInstance().getTexture(textureName);
+		m_VertexArray.setSize(m_Texture.getWidth(), m_Texture.getHeight());
 	}
 }
