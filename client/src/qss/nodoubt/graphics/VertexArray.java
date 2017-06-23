@@ -6,6 +6,8 @@ import static org.lwjgl.opengl.GL20.*;
 
 import org.joml.*;
 
+import qss.nodoubt.utils.MatrixUtils;
+
 import java.nio.IntBuffer;
 
 public class VertexArray {
@@ -92,10 +94,11 @@ public class VertexArray {
 	 * 사각형 그리기
 	 * @param worldViewOrtho 모델공간에서 장치공간으로 변환하는 행렬
 	 */
-	public void draw(Matrix4f worldViewOrtho){
+	public void draw(Matrix4f world){
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, m_Vertices);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, m_UVs);
-		glUniformMatrix4fv(3, false, worldViewOrtho.get(m_WorldMatrix));
+		//glUniformMatrix4fv(3, false, world.get(m_WorldMatrix));
+		glUniformMatrix4fv(3, false, MatrixUtils.toFloatBuffer(world));
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

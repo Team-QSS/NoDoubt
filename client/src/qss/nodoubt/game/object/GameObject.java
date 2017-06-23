@@ -39,6 +39,8 @@ public abstract class GameObject {
 		
 		Matrix4f world = scale.mul(rotate).mul(translate);
 		
+		
+		
 		m_Texture.bind();
 		
 		m_VertexArray.draw(world);
