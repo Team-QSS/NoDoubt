@@ -10,13 +10,11 @@ import javax.swing.*;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.google.gson.Gson;
 
-import qss.nodoubt.Client;
 import qss.nodoubt.Network;
-import qss.nodoubt.room.RoomManager;
+import qss.nodoubt.room.Room;
 import qss.nodoubt.room.User;
 
 public class Tester extends JFrame{
@@ -146,7 +144,7 @@ public class Tester extends JFrame{
 					Util.printLog(mainTextArea, "로그인성공");
 					user=(User) gson.fromJson((String) data.get("user"), User.class);
 					
-					Util.printLog(mainTextArea, user.getCurrentRoomId());
+					Util.printLog(mainTextArea, user.getCurrentRoomName());
 					//채팅창 생성
 					contentPane.chattingForm=new JTextField();
 					contentPane.chattingForm.setBounds(300,100,100,50);
@@ -169,6 +167,25 @@ public class Tester extends JFrame{
 						
 					});
 					contentPane.add(chat);
+					
+					//버튼생성
+					JButton createRoom=new JButton("createRoom");
+					createRoom.setBounds(200, 200, 100, 100);
+					createRoom.addActionListener(new ActionListener(){
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							JSONObject data=new JSONObject();
+							data.put("Protocol", "CreateRoom");
+							data.put("user", gson.toJson(user));
+							data.put("roomName", contentPane.chattingForm.getText());
+							Network.send(writer,data);
+							contentPane.chattingForm.setText("");
+						}
+						
+					});
+					contentPane.add(createRoom);
+					
 					contentPane.repaint();
 				}else{
 					Util.printLog(mainTextArea, "로그인실패");
@@ -179,6 +196,12 @@ public class Tester extends JFrame{
 				User user=(User) gson.fromJson((String) data.get("user"), User.class);
 				String content=(String) data.get("content");
 				Util.printLog(mainTextArea,user.getID()+":"+content);
+			}break;
+			
+			case "CreateRoom":{
+				Room createdRoom=(Room)gson.fromJson((String)data.get("createdRoom"), Room.class);
+				user.setCurrentRoom(createdRoom);
+				Util.printLog(mainTextArea,"CreateRoom Success");
 			}break;
 			
 			default:{
@@ -223,9 +246,9 @@ public class Tester extends JFrame{
 			password.setBounds(0,225,100,20);
 			add(password);
 			
-			JTextField roomNum=new JTextField();
-			roomNum.setBounds(110,200,30,20);
-			add(roomNum);
+			JTextField roomName=new JTextField();
+			roomName.setBounds(110,200,30,20);
+			add(roomName);
 			
 			//addButton
 			JButton register=new JButton("register");
@@ -254,7 +277,7 @@ public class Tester extends JFrame{
 					data.put("Protocol", "Login");
 					data.put("ID", ID.getText());
 					data.put("password", password.getText());
-					data.put("roomNum", Double.parseDouble(roomNum.getText()));
+					data.put("roomName", roomName.getText());
 					Network.send(writer,data);
 				}
 				
