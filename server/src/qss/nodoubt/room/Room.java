@@ -47,7 +47,7 @@ public class Room {
 	public void setId(double id) {
 		this.id = id;
 	}
-
+    
 	public String getName() {
 		return name;
 	}

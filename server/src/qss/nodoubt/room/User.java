@@ -31,7 +31,6 @@ public class User {
 	
 	@Override
 	public int hashCode(){
-		//���ڷ� ��  ���뿡���� ���̹ٲ��.
 		return Objects.hash(ID,password);
 	}
 
