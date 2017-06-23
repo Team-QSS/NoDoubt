@@ -22,6 +22,7 @@ import org.json.simple.parser.ParseException;
 
 import com.google.gson.Gson;
 
+import qss.nodoubt.room.Room;
 import qss.nodoubt.room.RoomManager;
 import qss.nodoubt.room.User;
 import qss.nodoubt.util.Util;
@@ -40,10 +41,13 @@ public class Server extends JFrame{
 	
 	
 	private RoomManager roomManager;
+	//현재 최대 동시접속 인원수는 4명으로 제한
 	private final int MAX_THREAD_NUM=4;
 	ExecutorService threadPool=Executors.newFixedThreadPool(MAX_THREAD_NUM);
 	
+	//현재 접속된클라이언트의 정보를 담는다
 	private ArrayList<Client> clients=new ArrayList<>();
+	//유저의 정보를 담으며 서버시작시 DB를 통해 유저 데이터를 불러온다.
 	private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
 	//gui
 	private final int WIDTH=640,HEIGHT=480;
@@ -199,7 +203,7 @@ public class Server extends JFrame{
 						if(!u.isOnline()&&u.equals(user)){
 							u.setOnline(true);
 							u.setCurrentClient(client);
-							u.setCurrentRoom(roomManager.getRoom((double)data.get("roomNum")));
+							u.setCurrentRoom(roomManager.getRoom((String)data.get("roomName")));
 							sendData.put("isExist", true);
 							sendData.put("user", gson.toJson(u));
 							break;
@@ -208,7 +212,7 @@ public class Server extends JFrame{
 					
 					//존재하면
 					if((boolean) sendData.get("isExist")){
-						roomManager.getRoom(RoomManager.LOBBY).addUser(user);
+						roomManager.getRoom("Lobby").addUser(user);
 					}
 					
 					client.send(sendData);
@@ -219,14 +223,28 @@ public class Server extends JFrame{
 					sendData=data;
 					for(String key:users.keySet()){
 						User u=users.get(key);
-						if(u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId()){
+						if(u.isOnline()&&u.getCurrentRoomName().equals(user.getCurrentRoomName())){
 							u.getCurrentClient().send(sendData);
 						}
 					}
 				}break;
 				
-				case "EnterRoom":{
+				case "CreateRoom":{
+					User user=gson.fromJson(data.get("user").toString(), User.class);
+					sendData=new JSONObject();
+					Room newRoom=new Room((String)data.get("roomName"));
+					roomManager.addRoom(newRoom);
 					
+					users.get(user.getID()).setCurrentRoom(newRoom);
+					
+					sendData.put("Protocol", "CreateRoom");
+					sendData.put("createdRoom",gson.toJson(newRoom));
+					
+					client.send(sendData);
+				}break;
+				
+				case "EnterRoom":{
+					User user=gson.fromJson(data.get("user").toString(), User.class);
 				}break;
 			
 				case "ExitRoom":{

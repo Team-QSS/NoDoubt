@@ -8,10 +8,12 @@ public class Room {
 	
 	private double id=Math.random();
 	
+	private String name;
+	
 	public ConcurrentHashMap<String,User> list=new ConcurrentHashMap<>();
 	
-	public Room(){
-		
+	public Room(String name){
+		this.name=name;
 	}
 	
 	public void addUser(User user){
@@ -19,12 +21,12 @@ public class Room {
 		isEmpty=false;
 	}
 	
-	public User getUser(double id){
-		return list.get(id);
+	public User getUser(String ID){
+		return list.get(ID);
 	}
 	
-	public void removeUser(double id){
-		list.remove(id);
+	public void removeUser(String ID){
+		list.remove(ID);
 		if(list.size()==0){
 			isEmpty=true;
 		}
@@ -44,6 +46,14 @@ public class Room {
 
 	public void setId(double id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 

@@ -11,7 +11,7 @@ public class User {
 	private String ID;
 	private String password;
 
-	private double currentRoomId;
+	private String currentRoomName;
 	
 	transient private Room currentRoom=null;
 	transient private Client currentClient=null;
@@ -24,7 +24,7 @@ public class User {
 	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof User){
-			return obj.hashCode()==this.hashCode();
+			return ((User)obj).getID().equals(this.getID())&&((User)obj).getPassword().equals(this.getPassword());
 		}
 		return false;
 	}
@@ -59,8 +59,8 @@ public class User {
 		this.password = password;
 	}
 	
-	public double getCurrentRoomId() {
-		return currentRoomId;
+	public String getCurrentRoomName() {
+		return currentRoomName;
 	}
 	
 	public Room getCurrentRoom() {
@@ -69,7 +69,7 @@ public class User {
 
 	public void setCurrentRoom(Room currentRoom) {
 		this.currentRoom = currentRoom;
-		this.currentRoomId=currentRoom.getId();
+		this.currentRoomName=currentRoom.getName();
 	}
 
 	public Client getCurrentClient() {
