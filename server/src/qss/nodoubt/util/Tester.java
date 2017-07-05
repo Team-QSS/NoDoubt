@@ -131,16 +131,16 @@ public class Tester extends JFrame{
 				Util.printLog(mainTextArea,data.get("connectMessage"));
 			}break;
 		
-			case "Register":{
-				if(!(boolean)data.get("isExist")){
+			case Protocol.REGISTER_RESULT:{
+				if(!(boolean)data.get("Value")){
 					Util.printLog(mainTextArea, "회원가입완료");
 				}else{
 					Util.printLog(mainTextArea, "회원가입실패");
 				}
 			}break;
 			
-			case "Login":{
-				if((boolean)data.get("isExist")){
+			case Protocol.LOGIN_RESULT:{
+				if((boolean)data.get("Value")){
 					Util.printLog(mainTextArea, "로그인성공");
 					user=(User) gson.fromJson((String) data.get("user"), User.class);
 					
@@ -175,10 +175,11 @@ public class Tester extends JFrame{
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							JSONObject data=new JSONObject();
-							data.put("Protocol", "CreateRoom");
-							data.put("user", gson.toJson(user));
-							data.put("roomName", contentPane.chattingForm.getText());
+							JSONObject data;
+							data=Util.packetGenerator(Protocol.CREATE_ROOM_REQUEST,
+									new KeyValue("MasterName", gson.toJson(user)),
+									new KeyValue("roomName", contentPane.chattingForm.getText())
+									);
 							Network.send(writer,data);
 							contentPane.chattingForm.setText("");
 						}

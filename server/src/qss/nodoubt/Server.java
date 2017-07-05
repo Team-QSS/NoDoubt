@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import qss.nodoubt.room.Room;
 import qss.nodoubt.room.RoomManager;
 import qss.nodoubt.room.User;
+import qss.nodoubt.util.Protocol;
 import qss.nodoubt.util.Util;
 
 
@@ -176,47 +177,80 @@ public class Server extends JFrame{
 		private void process(JSONObject data,Client client){
 			JSONObject sendData = new JSONObject();
 			switch((String)data.get("Protocol")){
-				case "Register":{
+			
+				case Protocol.REGISTER_REQUEST:{
 					User user=new User((String) data.get("ID"),(String) data.get("password"));
-					sendData.put("Protocol", "Register");
-					sendData.put("isExist", false);
+					sendData.put("Protocol", Protocol.REGISTER_RESULT);
+					sendData.put("Value", false);
 					for(String key:users.keySet()){
 						User u=users.get(key);
 						if(u.getID().equals(user.getID())){
-							sendData.put("isExist", true);
+							sendData.put("Value", true);
 							break;
 						}
 					}
 					//만약 이전에 같은 유저가 존재하지않을시
-					if(!(boolean)sendData.get("isExist")){
+					if(!(boolean)sendData.get("Value")){
 						users.put(user.getID(), user);
 					}
 					client.send(sendData);
 				}break;
 				
-				case "Login":{
+				case Protocol.LOGIN_REQUEST:{
 					User user=new User((String) data.get("ID"),(String) data.get("password"));
-					sendData.put("Protocol", "Login");
-					sendData.put("isExist", false);
+					sendData.put("Protocol", Protocol.LOGIN_RESULT);
+					sendData.put("Value", false);
 					for(String key:users.keySet()){
 						User u=users.get(key);
 						if(!u.isOnline()&&u.equals(user)){
 							u.setOnline(true);
 							u.setCurrentClient(client);
 							u.setCurrentRoom(roomManager.getRoom((String)data.get("roomName")));
-							sendData.put("isExist", true);
+							sendData.put("Value", true);
 							sendData.put("user", gson.toJson(u));
 							break;
 						}
 					}
 					
 					//존재하면
-					if((boolean) sendData.get("isExist")){
+					if((boolean) sendData.get("Value")){
 						roomManager.getRoom("Lobby").addUser(user);
 					}
 					
 					client.send(sendData);
 				}break;
+				
+				//방관련 메서드
+				
+				case Protocol.CREATE_ROOM_REQUEST:{
+					User user=gson.fromJson(data.get("user").toString(), User.class);
+					sendData=new JSONObject();
+					Room newRoom=new Room((String)data.get("roomName"));
+					roomManager.addRoom(newRoom);
+					
+					users.get(user.getID()).setCurrentRoom(newRoom);
+					
+					sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
+					sendData.put("createdRoom",gson.toJson(newRoom));
+					
+					client.send(sendData);
+				}break;
+				
+				case "EnterRoom":{
+					User user=gson.fromJson(data.get("user").toString(), User.class);
+					sendData=new JSONObject();
+					Room newRoom=new Room((String)data.get("roomName"));
+					roomManager.addRoom(newRoom);
+					
+					users.get(user.getID()).setCurrentRoom(newRoom);
+					
+					sendData.put("Protocol", "EnterRoom");
+					sendData.put("",gson.toJson(newRoom));
+					
+					client.send(sendData);
+				}break;
+				
+				//방안에서 사용하는 메서드
 				
 				case "Chat":{// 클라이언트는 자신의 user정보와 채팅정보를 보냄 그러면 서버에서는 user가 속한방의 유저에게 채팅정보를 전달함
 					User user=gson.fromJson(data.get("user").toString(), User.class);
@@ -229,24 +263,6 @@ public class Server extends JFrame{
 					}
 				}break;
 				
-				case "CreateRoom":{
-					User user=gson.fromJson(data.get("user").toString(), User.class);
-					sendData=new JSONObject();
-					Room newRoom=new Room((String)data.get("roomName"));
-					roomManager.addRoom(newRoom);
-					
-					users.get(user.getID()).setCurrentRoom(newRoom);
-					
-					sendData.put("Protocol", "CreateRoom");
-					sendData.put("createdRoom",gson.toJson(newRoom));
-					
-					client.send(sendData);
-				}break;
-				
-				case "EnterRoom":{
-					User user=gson.fromJson(data.get("user").toString(), User.class);
-				}break;
-			
 				case "ExitRoom":{
 					
 				}break;
@@ -254,6 +270,7 @@ public class Server extends JFrame{
 				default:{
 					Util.printLog(mainTextArea, "알지못하는 프로토콜입니다.");
 				}
+				
 			}
 			
 			//디버깅용 로그 출력
