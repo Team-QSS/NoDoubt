@@ -11,7 +11,7 @@ out vec4 color;
 void main(void)
 {
 	color = texture(tex, fs_in.tc);
-	if(color.w < 0.05f) {
+	if(color.a < 0.05f) {
 		discard;
 	}
 }
