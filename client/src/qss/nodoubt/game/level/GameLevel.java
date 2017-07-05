@@ -4,10 +4,10 @@ import qss.nodoubt.game.object.*;
 import java.util.*;
 
 public abstract class GameLevel {
-	private Set<GameObject> m_ObjectSet = null;
+	private List<GameObject> m_ObjectList = null;
 	
 	public GameLevel() {
-		m_ObjectSet = new HashSet<GameObject>();
+		m_ObjectList = new ArrayList<GameObject>();
 	}
 	
 	public abstract void update(float deltaTime);
@@ -15,13 +15,13 @@ public abstract class GameLevel {
 	public abstract void draw();
 	
 	protected final void updateObjects(float deltaTime) {
-		for(GameObject obj : m_ObjectSet) {
+		for(GameObject obj : m_ObjectList) {
 			obj.update(deltaTime);
 		}
 	}
 	
 	protected final void drawObjects() {
-		for(GameObject obj : m_ObjectSet) {
+		for(GameObject obj : m_ObjectList) {
 			obj.draw();
 		}
 	}
@@ -32,7 +32,12 @@ public abstract class GameLevel {
 	 * @param obj 등록할 오브젝트
 	 */
 	protected final void addObject(GameObject obj) {
-		m_ObjectSet.add(obj);
+		m_ObjectList.add(obj);
+		int i = m_ObjectList.size() - 2;
+		for(; i >= 0 && m_ObjectList.get(i).getDepth() < obj.getDepth(); i--) {
+			m_ObjectList.set(i + 1, m_ObjectList.get(i));
+		}
+		m_ObjectList.set(i + 1, obj);
 	}
 	
 	/**
@@ -40,7 +45,7 @@ public abstract class GameLevel {
 	 * @param obj 삭제할 오브젝트
 	 */
 	protected final void removeObject(GameObject obj) {
-		m_ObjectSet.remove(obj);
+		m_ObjectList.remove(obj);
 	}
 	
 	/**
@@ -48,7 +53,7 @@ public abstract class GameLevel {
 	 * 엔진이 호출하니 사용하지 말 것
 	 */
 	public final void destroyLevel() {
-		for(GameObject obj : m_ObjectSet) {
+		for(GameObject obj : m_ObjectList) {
 			removeObject(obj);
 		}
 	}
