@@ -29,4 +29,37 @@ public class Util {
 		return data;
 	}
 	
+	public static String printJSONLookSimple(String json){
+		int depth=0;
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<json.length();i++){
+			
+			if(json.charAt(i)=='}'){
+				sb.append('\n');
+				depth--;
+				for(int j=0;j<depth;j++){
+					sb.append("  ");
+				}
+			}
+			
+			sb.append(json.charAt(i));
+			
+			if(json.charAt(i)=='{'){
+				sb.append('\n');
+				depth++;
+				for(int j=0;j<depth;j++){
+					sb.append("  ");
+				}
+			}
+			
+			if(json.charAt(i)==','){
+				sb.append('\n');
+				for(int j=0;j<depth;j++){
+					sb.append("  ");
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
 }

@@ -1,6 +1,8 @@
 package qss.nodoubt.util;
 
 public interface Protocol {
+	String DUMMY_PACKET="Dummy";
+	
 	String REGISTER_REQUEST="RegisterRequest";
 	String REGISTER_RESULT="RegisterResult";
 	

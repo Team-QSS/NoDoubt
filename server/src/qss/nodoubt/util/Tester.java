@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.Socket;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,6 +17,7 @@ import com.google.gson.Gson;
 
 import qss.nodoubt.Network;
 import qss.nodoubt.room.Room;
+import qss.nodoubt.room.RoomManager;
 import qss.nodoubt.room.User;
 
 public class Tester extends JFrame{
@@ -31,11 +34,15 @@ public class Tester extends JFrame{
 	private BufferedReader reader;
 	private Socket socket;
 	
+	private RoomManager roomManager;
+	
 	private User user;
 	
 	//gui
 	private MyPanel contentPane;
 	private JTextArea mainTextArea=new JTextArea();
+	private JList list;
+	private String currentSelectRoom;
 	
 	private boolean[] keyInput=new boolean[300];
 	
@@ -125,10 +132,28 @@ public class Tester extends JFrame{
 		}
 	}
 	
+	private void createBtn(String name,int x,int y,int width,int height,Function f){
+		//버튼생성
+		JButton btn=new JButton(name);
+		btn.setBounds(x, y, width, height);
+		btn.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				f.execute();
+			}
+		});
+		contentPane.add(btn);
+	}
+	
 	private void process(JSONObject data){
 		switch((String)data.get("Protocol")){
 			case "Connect":{
 				Util.printLog(mainTextArea,data.get("connectMessage"));
+			}break;
+			
+			case Protocol.DUMMY_PACKET:{
+			//씬을 변환하면 그에따라 함수도 같이 변하는데 이과정에서 패킷이 도착하지않으면 다음씬으로 넘어갔지만 계속 InDataReader는 블록 상태이기때문에 문제가 생길수 있다.
+			//그러므로 씬을 변환할때는 더미 패킷을 보내 블로킹 상태를 해제시킨다.
 			}break;
 		
 			case Protocol.REGISTER_RESULT:{
@@ -142,50 +167,79 @@ public class Tester extends JFrame{
 			case Protocol.LOGIN_RESULT:{
 				if((boolean)data.get("Value")){
 					Util.printLog(mainTextArea, "로그인성공");
-					user=(User) gson.fromJson((String) data.get("user"), User.class);
+					user=gson.fromJson((String) data.get("User"), User.class);
+					//초기 방정보 불러옴
+					roomManager=gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
 					
-					Util.printLog(mainTextArea, user.getCurrentRoomName());
+					Util.printLog(mainTextArea, "로비입장");
 					//채팅창 생성
 					contentPane.chattingForm=new JTextField();
 					contentPane.chattingForm.setBounds(300,100,100,50);
 					contentPane.add(contentPane.chattingForm);
 					
-					//버튼생성
-					JButton chat=new JButton("chat");
-					chat.setBounds(200, 100, 100, 100);
-					chat.addActionListener(new ActionListener(){
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							JSONObject data=new JSONObject();
-							data.put("Protocol", "Chat");
-							data.put("user", gson.toJson(user));
-							data.put("content", contentPane.chattingForm.getText());
-							Network.send(writer,data);
-							contentPane.chattingForm.setText("");
-						}
-						
-					});
-					contentPane.add(chat);
 					
 					//버튼생성
-					JButton createRoom=new JButton("createRoom");
-					createRoom.setBounds(200, 200, 100, 100);
-					createRoom.addActionListener(new ActionListener(){
+					createBtn("chat",200,100,100,100,()->{
+						JSONObject sendData=new JSONObject();
+						sendData=Util.packetGenerator(
+								"Chat",
+								new KeyValue("User", gson.toJson(user)),
+								new KeyValue("Content", contentPane.chattingForm.getText())
+								);
+						Network.send(writer,sendData);
+						contentPane.chattingForm.setText("");
+					});
+					
+					
+					//버튼생성
+					createBtn("createRoom",200,200,100,100,()->{
+						JSONObject sendData;
+						sendData=Util.packetGenerator(
+								Protocol.CREATE_ROOM_REQUEST,
+								new KeyValue("MasterID", user.getID()),
+								new KeyValue("RoomName", contentPane.chattingForm.getText()),
+								new KeyValue("Password", null)
+								);
+						Network.send(writer,sendData);
+						
+						contentPane.chattingForm.setText("");
+					});
+					
+					
+					//버튼생성
+					createBtn("joinRoom",200,300,100,100,()->{
+						JSONObject sendData;
+						double id=roomManager.getRooms(room->room.getName().equals(this.currentSelectRoom)).get(0).id;
+						sendData=Util.packetGenerator(
+								Protocol.JOIN_ROOM_REQUEST,
+								new KeyValue("User", gson.toJson(user)),
+								new KeyValue("RoomID", id)
+								);
+						Network.send(writer,sendData);
+						//클라이언트에서 처리
+						roomManager.getRoom(id).enterUser(user);
+						
+						contentPane.chattingForm.setText("");
+					});
+					
+					//방리스트 생성
+					list=new JList(new DefaultListModel());
+					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					
+					list.addListSelectionListener(new ListSelectionListener(){
 
 						@Override
-						public void actionPerformed(ActionEvent e) {
-							JSONObject data;
-							data=Util.packetGenerator(Protocol.CREATE_ROOM_REQUEST,
-									new KeyValue("MasterName", gson.toJson(user)),
-									new KeyValue("roomName", contentPane.chattingForm.getText())
-									);
-							Network.send(writer,data);
-							contentPane.chattingForm.setText("");
+						public void valueChanged(ListSelectionEvent e) {
+							if(e.getSource()==list)
+								currentSelectRoom=list.getSelectedValue().toString();
 						}
-						
+
 					});
-					contentPane.add(createRoom);
+					
+					JScrollPane scroll=new JScrollPane();
+					scroll.setViewportView(list);
+					scroll.setBounds(0,300,70,100);
+					contentPane.add(scroll);
 					
 					contentPane.repaint();
 				}else{
@@ -194,15 +248,45 @@ public class Tester extends JFrame{
 			}break;
 			
 			case "Chat":{
-				User user=(User) gson.fromJson((String) data.get("user"), User.class);
-				String content=(String) data.get("content");
+				User user=gson.fromJson((String)data.get("User"), User.class);
+				String content=(String)data.get("Content");
 				Util.printLog(mainTextArea,user.getID()+":"+content);
 			}break;
 			
-			case "CreateRoom":{
-				Room createdRoom=(Room)gson.fromJson((String)data.get("createdRoom"), Room.class);
-				user.setCurrentRoom(createdRoom);
+			case Protocol.CREATE_ROOM_RESULT:{
+				Room createdRoom=gson.fromJson((String)data.get("Room"), Room.class);
+				roomManager.addRoom(createdRoom);
+				createdRoom.enterUser(user);
+				
+				DefaultListModel listModel=(DefaultListModel)list.getModel();
+				listModel.clear();
+				for(double key:roomManager.list.keySet()){
+					String roomName=roomManager.list.get(key).getName();
+					listModel.addElement(roomName);
+				}
+//1의 방에 2가 들어옴:2_JoinRequest->1//그리고 2는 자신의 방에 속해있지 않으면서 자신의 방으로 들어온 3의 메세지는 받을수 있었다.
+				//2의방에 3이 들어옴:3_JoinRequest->2
+				
 				Util.printLog(mainTextArea,"CreateRoom Success");
+			}break;
+			
+			case Protocol.ADD_ROOM:{
+				Room createdRoom=gson.fromJson((String)data.get("Room"), Room.class);
+				roomManager.addRoom(createdRoom);
+				
+				DefaultListModel listModel=(DefaultListModel)list.getModel();
+				listModel.clear();
+				for(double key:roomManager.list.keySet()){
+					String roomName=roomManager.list.get(key).getName();
+					listModel.addElement(roomName);
+				}
+				
+				Util.printLog(mainTextArea,"방추가");
+			}break;
+			
+			case Protocol.JOIN_ROOM_RESULT:{
+				User joinUser=gson.fromJson((String)data.get("User"),User.class);
+				user.getCurrentRoom().enterUser(joinUser);
 			}break;
 			
 			default:{
@@ -247,10 +331,6 @@ public class Tester extends JFrame{
 			password.setBounds(0,225,100,20);
 			add(password);
 			
-			JTextField roomName=new JTextField();
-			roomName.setBounds(110,200,30,20);
-			add(roomName);
-			
 			//addButton
 			JButton register=new JButton("register");
 			register.setBounds(000, 100, 100, 100);
@@ -259,9 +339,11 @@ public class Tester extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JSONObject data=new JSONObject();
-					data.put("Protocol", "Register");
-					data.put("ID", ID.getText());
-					data.put("password", password.getText());
+					data=Util.packetGenerator(
+							Protocol.REGISTER_REQUEST,
+							new KeyValue("ID", ID.getText()),
+							new KeyValue("Password", password.getText())
+							);
 					Network.send(writer,data);
 				}
 				
@@ -275,10 +357,11 @@ public class Tester extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JSONObject data=new JSONObject();
-					data.put("Protocol", "Login");
-					data.put("ID", ID.getText());
-					data.put("password", password.getText());
-					data.put("roomName", roomName.getText());
+					data=Util.packetGenerator(
+							Protocol.LOGIN_REQUEST,
+							new KeyValue("ID", ID.getText()),
+							new KeyValue("Password", password.getText())
+							);
 					Network.send(writer,data);
 				}
 				

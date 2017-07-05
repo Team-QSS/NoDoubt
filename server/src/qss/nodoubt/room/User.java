@@ -11,7 +11,7 @@ public class User {
 	private String ID;
 	private String password;
 
-	private String currentRoomName;
+	private double currentRoomId;
 	
 	transient private Room currentRoom=null;
 	transient private Client currentClient=null;
@@ -58,8 +58,8 @@ public class User {
 		this.password = password;
 	}
 	
-	public String getCurrentRoomName() {
-		return currentRoomName;
+	public double getCurrentRoomId() {
+		return currentRoomId;
 	}
 	
 	public Room getCurrentRoom() {
@@ -68,7 +68,7 @@ public class User {
 
 	public void setCurrentRoom(Room currentRoom) {
 		this.currentRoom = currentRoom;
-		this.currentRoomName=currentRoom.getName();
+		this.currentRoomId=currentRoom.id;
 	}
 
 	public Client getCurrentClient() {
