@@ -25,7 +25,7 @@ public class Graphic {
 	
 	private Graphic() {
 		GL.createCapabilities();
-		m_OrthoMatrix = new Matrix4f().ortho(-960, 960, -540, 540, 0, 11);
+		m_OrthoMatrix = new Matrix4f().ortho(-960.0f, 960.0f, -540.0f, 540.0f, 0.0f, 11.0f);
 		m_Program = glCreateProgram();
 		Shader.loadShader(m_Program, "./shader/");
 		glUseProgram(m_Program);

@@ -7,6 +7,8 @@ public abstract class GameLevel {
 	private Set<GameObject> m_ObjectSet = null;
 	
 	public GameLevel() {
+		//GameLevel을 상속받은 클래스들에서는 생성자에 오브젝트를 선언하여 addObject 함수를 호출하면
+		//GameLevel 클래스의m_ObjectList가 채워짐
 		m_ObjectSet = new HashSet<GameObject>();
 	}
 	

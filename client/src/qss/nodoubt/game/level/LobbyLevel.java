@@ -2,27 +2,29 @@ package qss.nodoubt.game.level;
 import qss.nodoubt.game.object.*;
 
 public class LobbyLevel extends GameLevel{
+	//버튼
 	private Button m_GameJoinButton = null;
-	private Button m_AccountSettingButton = null;
+	private Button m_SettingButton = null;
 	private Button m_StoreButton = null;
 	private Button m_CreditButton = null;
 	private Button m_QuitButton = null;
-	
+	//배경
 	private Background m_LobbyBG = null;
-	
+	//버튼 텍스처 경로
 	private String[] m_ButtonTexturePath = {
 		"GameJoinButton2",
-		"AccountSettingButton2",
+		"SettingButton2",
 		"StoreButton2",
 		"CreditButton2",
 		"QuitButton2"
 	};	
 	
+	//생성자
 	public LobbyLevel(){
 		
 		Button[] buttons = {
 			m_GameJoinButton,
-			m_AccountSettingButton,
+			m_SettingButton,
 			m_StoreButton,
 			m_CreditButton,
 			m_QuitButton
@@ -34,10 +36,10 @@ public class LobbyLevel extends GameLevel{
 		
 		//버튼 생성
 		for(int i = 0; i < buttons.length; i++){
-			buttons[i] = new Button(m_ButtonTexturePath[0], (-960 + 200) + i*(480-100) , -270 , 0);
+			buttons[i] = new Button(m_ButtonTexturePath[4], (-960 + 200) + i*(480-100), -270 , 0);
 			addObject(buttons[i]);
 		}
-				
+		
 	}
 
 	@Override

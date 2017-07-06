@@ -1,8 +1,6 @@
 package qss.nodoubt.game;
 
-import qss.nodoubt.game.level.GameLevel;
-import qss.nodoubt.game.level.LobbyLevel;
-import qss.nodoubt.game.level.TLevel;
+import qss.nodoubt.game.level.*;
 import qss.nodoubt.graphics.Graphic;
 import qss.nodoubt.network.Message;
 import qss.nodoubt.network.Network;
