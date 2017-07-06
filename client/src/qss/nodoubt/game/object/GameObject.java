@@ -1,7 +1,5 @@
 package qss.nodoubt.game.object;
 
-import org.joml.*;
-
 import qss.nodoubt.graphics.Texture;
 import qss.nodoubt.graphics.TextureManager;
 import qss.nodoubt.graphics.VertexArray;
@@ -9,10 +7,13 @@ import qss.nodoubt.input.Input;
 import qss.nodoubt.input.KeyListener;
 import qss.nodoubt.input.MouseListener;
 
+import org.joml.*;
+
 public abstract class GameObject {
-	private Vector3f m_Position;
-	private Vector2f m_Size;
-	private float m_Angle;
+	private Vector2f m_Position = new Vector2f(0.0f, 0.0f);
+	private Vector2f m_Size = new Vector2f(1.0f, 1.0f);
+	private float m_Angle = 0.0f;
+	private final float m_Depth;
 	private VertexArray m_VertexArray;
 	private Texture m_Texture;
 	private KeyListener m_KeyListener = null;
@@ -21,21 +22,20 @@ public abstract class GameObject {
 	/**
 	 * 오브젝트 생성
 	 * @param textureName 초기 텍스쳐 이름
+	 * @param depth 깊이값 (변하지 않음)
 	 */
-	public GameObject(String textureName) {
-		m_Position = new Vector3f(0.0f, 0.0f, 0.0f);
-		m_Size = new Vector2f(1.0f, 1.0f);
-		m_Angle = 0.0f;
+	public GameObject(String textureName, float depth) {
 		m_Texture = TextureManager.getInstance().getTexture(textureName);
 		m_VertexArray = new VertexArray(m_Texture.getWidth(), m_Texture.getHeight(), 0.0f, 1.0f, 0.0f, 1.0f);
+		m_Depth = depth;
 	}
 	
 	public abstract void update(float deltaTime);
 	
 	public final void draw() {
-		Matrix4f translate = new Matrix4f().translate(m_Position);
+		Matrix4f translate = new Matrix4f().translate(m_Position.x, m_Position.y, 0.0f);
 		Matrix4f rotate = new Matrix4f().rotate(m_Angle, new Vector3f(0.0f, 0.0f, 1.0f));
-		Matrix4f scale = new Matrix4f().scale(new Vector3f(m_Size, 1.0f));
+		Matrix4f scale = new Matrix4f().scale(m_Size.x, m_Size.y, 0.0f);
 		
 		Matrix4f world = scale.mul(rotate).mul(translate);
 		
@@ -44,16 +44,20 @@ public abstract class GameObject {
 		m_VertexArray.draw(world);
 	}
 
-	protected final void setPosition(float x, float y, float z) {
-		m_Position.set(x, y, z);
+	protected final void setPosition(float x, float y) {
+		m_Position.set(x, y);
 	}
 	
-	protected final void setPosition(Vector3f pos) {
-		m_Position.set(pos);
+	protected final void setPosition(Vector2f position) {
+		m_Position.set(position);
 	}
 	
-	protected final Vector3f getPosition() {
+	protected final Vector2f getPosition() {
 		return m_Position;
+	}
+	
+	public final float getDepth() {
+		return m_Depth;
 	}
 	
 	protected final void setAngle(float angle) {

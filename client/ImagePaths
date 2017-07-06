@@ -1,3 +1,8 @@
+//"//"로 시작하는 줄은 주석처리됨
+//빈 줄은 무시함
+// 텍스쳐 이름:경로이름 으로 적음
+// 공백문자도 포함하니 의도가 있는경우가 아니면 띄어쓰기나 탭하지 말것
+
 a:../res/image/Button/1.png
 GameJoinButton1:../res/image/Button/Lobby-Start1.png
 GameJoinButton2:../res/image/Button/Lobby-Start2.png

@@ -13,7 +13,7 @@ public class VertexArray {
 	private final int [] m_Indices;
 	private float [] m_UVs;
 	private IntBuffer m_IndexBuffer;
-	private float [] m_WorldMatrix;
+	private float [] m_WorldMatrixBuffer = new float[16];
 	
 	/**
 	 * 사각형 생성
@@ -50,8 +50,6 @@ public class VertexArray {
 		m_IndexBuffer = createIntBuffer(m_Indices.length);
 		m_IndexBuffer.put(m_Indices);
 		m_IndexBuffer.flip();
-		
-		m_WorldMatrix = new float[16];
 	}
 	
 	/**
@@ -90,12 +88,13 @@ public class VertexArray {
 	
 	/**
 	 * 사각형 그리기
-	 * @param worldViewOrtho 모델공간에서 장치공간으로 변환하는 행렬
+	 * @param world 모델공간에서 세계공간으로 변환하는 행렬
 	 */
-	public void draw(Matrix4f worldViewOrtho){
+	public void draw(Matrix4f world){
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, m_Vertices);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, m_UVs);
-		glUniformMatrix4fv(3, false, worldViewOrtho.get(m_WorldMatrix));
+		//glUniformMatrix4fv(3, false, world.get(m_WorldMatrix));
+		glUniformMatrix4fv(3, false, world.get(m_WorldMatrixBuffer));
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

@@ -1,31 +1,47 @@
 package qss.nodoubt.room;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public class RoomManager {
 	
+	public static RoomManager r;
+	
+	public static RoomManager getInstance(){
+		if(r==null)
+			r=new RoomManager();
+		return r;
+	}
+	
 	public static final double LOBBY=1.1;
 	
-	public ConcurrentHashMap<Double,Room> list=new ConcurrentHashMap<Double,Room>();
+	public ConcurrentHashMap<Double,Room> list=new ConcurrentHashMap<>();
 	
-	public RoomManager(){
+	private RoomManager(){
 		//lobby
-		Room lobby=new Room();
-		lobby.setId(1.1);
+		Room lobby=new Room("Lobby");
+		lobby.id=LOBBY;
 		addRoom(lobby);
-		
-		//lobby2
-		Room lobby2=new Room();
-		lobby2.setId(1.2);
-		addRoom(lobby2);
 	}
 	
 	public void addRoom(Room room){
-		list.put(room.getId(), room);
+		list.put(room.id, room);
 	}
 	
 	public Room getRoom(double id){
 		return list.get(id);
+	}
+	
+	public ArrayList<Room> getRooms(Predicate<Room> p){
+		ArrayList<Room> rooms=new ArrayList<>();
+		for(double id:list.keySet()){
+			Room room=list.get(id);
+			if(p.test(room))
+				rooms.add(room);
+		}
+		return rooms;
 	}
 	
 	public void removeRoom(double id){
