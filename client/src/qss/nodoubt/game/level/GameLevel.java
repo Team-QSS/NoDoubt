@@ -1,10 +1,16 @@
 package qss.nodoubt.game.level;
 
 import qss.nodoubt.game.object.*;
+import qss.nodoubt.input.Input;
+import qss.nodoubt.input.KeyListener;
+import qss.nodoubt.input.MouseListener;
+
 import java.util.*;
 
 public abstract class GameLevel {
 	private List<GameObject> m_ObjectList = null;
+	private KeyListener m_KeyListener = null;
+	private MouseListener m_MouseListener = null;
 	
 	public GameLevel() {
 		m_ObjectList = new ArrayList<GameObject>();
@@ -53,8 +59,34 @@ public abstract class GameLevel {
 	 * 엔진이 호출하니 사용하지 말 것
 	 */
 	public final void destroyLevel() {
+		Input input = Input.getInstance();
+		if(m_KeyListener != null) {
+			input.removeKeyListener(m_KeyListener);
+		}
+		if(m_MouseListener != null) {
+			input.removeMouseListener(m_MouseListener);
+		}
+		
 		for(GameObject obj : m_ObjectList) {
 			removeObject(obj);
+		}
+	}
+	
+	/**
+	 * 이벤트 리스너 설정
+	 * 현재 두번호출하면 상태 이상하니 한번만 호출할것
+	 * @param key 키보드 리스너, 없으면 null넣으셈
+	 * @param mouse 마우스 버튼 리스터, 없으면 null넣으셈
+	 */
+	protected final void setEventListener(KeyListener key, MouseListener mouse) {
+		Input input = Input.getInstance();
+		if(key != null) {
+			input.addKeyListener(key);
+			m_KeyListener = key;
+		}
+		if(mouse != null) {
+			input.addMouseListener(mouse);
+			m_MouseListener = mouse;
 		}
 	}
 	
