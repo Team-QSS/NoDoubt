@@ -3,7 +3,7 @@ package qss.nodoubt.game.object;
 public class Background extends GameObject {
 
 	public Background(String textureName) {
-		super(textureName);
+		super(textureName, 10);
 		setPosition(0, 0);
 	}
 

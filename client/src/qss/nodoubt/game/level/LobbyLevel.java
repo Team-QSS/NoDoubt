@@ -1,6 +1,7 @@
 package qss.nodoubt.game.level;
 import qss.nodoubt.game.object.*;
 
+
 public class LobbyLevel extends GameLevel{
 	//버튼
 	private Button m_GameJoinButton = null;
@@ -36,7 +37,7 @@ public class LobbyLevel extends GameLevel{
 		
 		//버튼 생성
 		for(int i = 0; i < buttons.length; i++){
-			buttons[i] = new Button(m_ButtonTexturePath[4], (-960 + 200) + i*(480-100), -270 , 0);
+			buttons[i] = new Button(m_ButtonTexturePath[i], (-960 + 200) + i*(480-100), -360 , 1);
 			addObject(buttons[i]);
 		}
 		
