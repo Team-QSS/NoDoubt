@@ -1,6 +1,8 @@
 package qss.nodoubt.game.level;
 
+import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
+
 
 public class SettingLevel extends GameLevel{
 	//버튼
@@ -40,8 +42,8 @@ public class SettingLevel extends GameLevel{
 		addObject(m_GeneralBG);
 		
 		for(int i = 0; i < buttons.length; i++){
-			buttons[i] = new Button(m_ButtonTexturePath[i], 0, 0, 0);		//0,0,0 좌표는 임시값
-			addObject(buttons[i]);											//경우에 따라 x좌표, y좌표 배열 만들수도?
+			buttons[i] = new Button(m_ButtonTexturePath[i], 0, 0);
+			addObject(buttons[i]);
 		}
 	}
 	
