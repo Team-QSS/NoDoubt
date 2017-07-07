@@ -19,6 +19,7 @@ public class Game {
 	private GameLevel m_CurLevel = null;
 	private GameLevel m_NextLevel = null;
 	private int m_FrameCounter;
+	private boolean m_ShouldClose = false;
 	
 	public static Game getInstance() {
 		if(s_Instance == null) {
@@ -84,6 +85,10 @@ public class Game {
 				running = false;
 			}
 			
+			if(m_ShouldClose) {
+				running = false;
+			}
+			
 			if(m_NextLevel != null) {
 				m_CurLevel = m_NextLevel;
 				m_NextLevel = null;
@@ -98,5 +103,13 @@ public class Game {
 	 */
 	public void setNextLevel(GameLevel level) {
 		m_NextLevel = level;
+	}
+	
+	/**
+	 * 게임 꺼버림.
+	 * good night
+	 */
+	public void goodBye() {
+		m_ShouldClose = true;
 	}
 }
