@@ -5,13 +5,18 @@ public class Button extends GameObject {
 		void onClick();
 	}
 	
-	private ClickListener m_Listener;
+	private ClickListener m_Listener = null;
 
-	public Button(String textureName, float x, float y, ClickListener listener) {
+	public Button(String textureName, float x, float y) {
 		super(textureName, 0);
 		setPosition(x, y);
+	}
+	
+	public void setListner(ClickListener listener){
 		m_Listener = listener;
 	}
+	
+	
 
 	@Override
 	public void update(float deltaTime) {
@@ -20,6 +25,8 @@ public class Button extends GameObject {
 	}
 	
 	public void click() {
-		m_Listener.onClick();
+		if(m_Listener != null){
+			m_Listener.onClick();
+		}
 	}
 }
