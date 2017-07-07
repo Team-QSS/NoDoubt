@@ -41,6 +41,7 @@ public class LobbyLevel extends GameLevel{
 			buttons[i] = new Button(m_ButtonTexturePath[i], (-960 + 200) + i*(480-100), -360);
 			//일단 임시로 이렇게 넣어놈. 알아서 잘 바꾸셈
 			//버튼 클릭하는거 인식은 버튼 내부의 생성자에서 입력 리스너 넣어주거나 하면 될듯.
+			//buttons[i].click(); 이렇게 하면 클릭되었을때 내용이 실행됨.
 			addObject(buttons[i]);
 		}
 		buttons[0].setListner(() -> {Game.getInstance().setNextLevel(new WaitingRoomLevel());});
