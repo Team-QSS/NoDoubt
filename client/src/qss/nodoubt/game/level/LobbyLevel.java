@@ -1,4 +1,5 @@
 package qss.nodoubt.game.level;
+import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 
 
@@ -37,7 +38,10 @@ public class LobbyLevel extends GameLevel{
 		
 		//버튼 생성
 		for(int i = 0; i < buttons.length; i++){
-			buttons[i] = new Button(m_ButtonTexturePath[i], (-960 + 200) + i*(480-100), -360 , 1);
+			buttons[i] = new Button(m_ButtonTexturePath[i], (-960 + 200) + i*(480-100), -360 , 
+					()->{Game.getInstance().setNextLevel(new SettingLevel());});
+			//일단 임시로 이렇게 넣어놈. 알아서 잘 바꾸셈
+			//버튼 클릭하는거 인식은 버튼 내부의 생성자에서 입력 리스너 넣어주거나 하면 될듯.
 			addObject(buttons[i]);
 		}
 		
