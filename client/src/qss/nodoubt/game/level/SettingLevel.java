@@ -42,8 +42,8 @@ public class SettingLevel extends GameLevel{
 		addObject(m_GeneralBG);
 		
 		for(int i = 0; i < buttons.length; i++){
-			buttons[i] = new Button(m_ButtonTexturePath[i], 0, 0);
-			addObject(buttons[i]);
+	//		buttons[i] = new Button(m_ButtonTexturePath[i], 0, 0);
+	//		addObject(buttons[i]);
 		}
 	}
 	

@@ -1,6 +1,11 @@
 package qss.nodoubt.game.level;
+import static org.lwjgl.glfw.GLFW.*;
+
+import java.util.Set;
+
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
+import org.lwjgl.glfw.*;
 
 
 public class LobbyLevel extends GameLevel{
@@ -24,6 +29,30 @@ public class LobbyLevel extends GameLevel{
 	//생성자
 	public LobbyLevel(){
 		
+		
+						
+		//배경 생성
+		m_LobbyBG = new Background("LobbyBackground");
+		addObject(m_LobbyBG);
+		
+		//버튼 생성
+
+		m_GameJoinButton = new Button(m_ButtonTexturePath[0], -760, -360, 
+				(GLFW_PRESS, GLFW_KEY_ENTER) -> {Game.getInstance().setNextLevel(new WaitingRoomLevel());},
+				(GLFW_PRESS, GLFW_MOUSE_BUTTON_LEFT) -> {Game.getInstance().setNextLevel(new WaitingRoomLevel());});
+		m_SettingButton = new Button(m_ButtonTexturePath[1], -380, -360,
+				(GLFW_PRESS, GLFW_KEY_ENTER) -> {Game.getInstance().setNextLevel(new SettingLevel());},
+				(GLFW_PRESS, GLFW_MOUSE_BUTTON_LEFT) -> {Game.getInstance().setNextLevel(new SettingLevel());});
+		m_StoreButton = new Button(m_ButtonTexturePath[2], 0, -360,
+				(GLFW_PRESS, GLFW_KEY_ENTER) -> {Game.getInstance().setNextLevel(new StoreLevel());},
+				(GLFW_PRESS, GLFW_MOUSE_BUTTON_LEFT) -> {Game.getInstance().setNextLevel(new StoreLevel());});
+		m_CreditButton = new Button(m_ButtonTexturePath[3], 380, -360,
+				(GLFW_PRESS, GLFW_KEY_ENTER) -> {Game.getInstance().setNextLevel(new CreditLevel());},
+				(GLFW_PRESS, GLFW_MOUSE_BUTTON_LEFT) -> {Game.getInstance().setNextLevel(new CreditLevel());});
+		m_QuitButton = new Button(m_ButtonTexturePath[4], 760, -360,
+				(GLFW_PRESS, GLFW_KEY_ENTER) -> {Game.getInstance().goodBye();},
+				(GLFW_PRESS, GLFW_MOUSE_BUTTON_LEFT) -> {Game.getInstance().goodBye();});
+		
 		Button[] buttons = {
 			m_GameJoinButton,
 			m_SettingButton,
@@ -31,25 +60,11 @@ public class LobbyLevel extends GameLevel{
 			m_CreditButton,
 			m_QuitButton
 		};
-						
-		//배경 생성
-		m_LobbyBG = new Background("LobbyBackground");
-		addObject(m_LobbyBG);
 		
-		//버튼 생성
 		for(int i = 0; i < buttons.length; i++){
-			buttons[i] = new Button(m_ButtonTexturePath[i], (-960 + 200) + i*(480-100), -360);
-			//일단 임시로 이렇게 넣어놈. 알아서 잘 바꾸셈
-			//버튼 클릭하는거 인식은 버튼 내부의 생성자에서 입력 리스너 넣어주거나 하면 될듯.
-			//buttons[i].click(); 이렇게 하면 클릭되었을때 내용이 실행됨.
 			addObject(buttons[i]);
 		}
-		buttons[0].setListner(() -> {Game.getInstance().setNextLevel(new WaitingRoomLevel());});
-		buttons[1].setListner(() -> {Game.getInstance().setNextLevel(new SettingLevel());});
-		buttons[2].setListner(() -> {Game.getInstance().setNextLevel(new StoreLevel());});
-		buttons[3].setListner(() -> {Game.getInstance().setNextLevel(new CreditLevel());});
-		buttons[4].setListner(() -> {Game.getInstance().shutdown();});
-
+		
 	}
 
 	@Override
