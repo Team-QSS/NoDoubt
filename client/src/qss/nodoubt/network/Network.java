@@ -34,9 +34,24 @@ public class Network {
 	
 	private void shutdown() {
 		try {
+			m_InputThread.interrupt();
+			m_OutputThread.interrupt();
+			
+			while(!m_OutputQueue.isEmpty()) {
+				try {
+					m_OutputStream.writeChars(m_OutputQueue.poll().toJSONString());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			
 			m_InputStream.close();
 			m_OutputStream.close();
 			m_Socket.close();
+			
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,6 +78,8 @@ public class Network {
 				}
 			});
 			
+			m_InputThread.start();
+			
 			m_OutputThread = new Thread( () -> {
 				while(true) {
 					if(!m_OutputQueue.isEmpty()) {
@@ -75,6 +92,8 @@ public class Network {
 					}
 				}
 			});
+			
+			m_OutputThread.start();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
