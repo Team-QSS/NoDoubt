@@ -89,4 +89,8 @@ public class GameWindow {
 		glfwSetKeyCallback(m_Window, keyCallback);
 		glfwSetMouseButtonCallback(m_Window, mouseCallback);
 	}
+	
+	public long getWindow() {
+		return m_Window;
+	}
 }
