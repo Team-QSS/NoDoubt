@@ -2,9 +2,12 @@ package qss.nodoubt.input;
 
 import java.util.*;
 
+import org.joml.Vector2f;
 import org.lwjgl.glfw.*;
 
 import qss.nodoubt.game.GameWindow;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Input {
 	private static Input s_Instance = null;
@@ -64,5 +67,13 @@ public class Input {
 		if(m_MouseListenerSet.contains(listener)) {
 			m_MouseListenerSet.remove(listener);
 		}
+	}
+	
+	public Vector2f getCursorPosition() {
+		double xpos[] = new double[1];
+		double ypos[] = new double[1];
+		glfwGetCursorPos(GameWindow.getInstance().getWindow(), xpos, ypos);
+		
+		return new Vector2f((float) xpos[0], (float) ypos[0]);
 	}
 }
