@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\client",
+    "\\client\\shader"
   ],
-  "SelectedNode": "\\client",
+  "SelectedNode": "\\client\\shader",
   "PreviewInSolutionExplorer": false
 }

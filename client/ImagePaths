@@ -6,10 +6,10 @@
 a:../res/image/Button/1.png
 GameJoinButton1:../res/image/Button/Lobby-Start1.png
 GameJoinButton2:../res/image/Button/Lobby-Start2.png
-SettingButton1:../res/image/Button/
-SettingButton2:../res/image/Button/
-StoreButton1:../res/image
-StoreButton2:../res/image
+SettingButton1:../res/image/Button/Lobby-Setting1.png
+SettingButton2:../res/image/Button/Lobby-Setting2.png
+StoreButton1:../res/image/Button/Lobby-Store1.png
+StoreButton2:../res/image/Button/Lobby-Store2.png
 CreditButton1:../res/image/Button/Lobby-Credit1.png
 CreditButton2:../res/image/Button/Lobby-Credit2.png
 QuitButton1:../res/image/Button/Lobby-Quit1.png
