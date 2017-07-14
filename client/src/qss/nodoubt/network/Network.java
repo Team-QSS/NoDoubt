@@ -2,15 +2,21 @@ package qss.nodoubt.network;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import qss.nodoubt.game.GameConstants;
 
 public class Network {
 	private static Network s_Instance = null;
 	
-	private Socket m_Socket;
-	private DataInputStream m_InputStream;
-	private DataOutputStream m_OutputStream;
+	private Socket m_Socket = null;
+	private DataInputStream m_InputStream = null;
+	private DataOutputStream m_OutputStream = null;
+	private Thread m_InputThread = null;
+	private Thread m_OutputThread = null;
+	private Queue<Message> m_InputQueue = new ConcurrentLinkedQueue<Message>();
+	private Queue<Message> m_OutputQueue = new ConcurrentLinkedQueue<Message>();
 	
 	public static Network getInstance() {
 		if(s_Instance == null) {
@@ -26,33 +32,26 @@ public class Network {
 		}
 	}
 	
-	public Message pollMessage() {
-		Message msg = null;
-		try {
-			if(m_InputStream.available() > 0) {
-				msg = new Message(m_InputStream.readUTF());
-			}else {
-				
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return msg;
-	}
-	
-	public void send(Message msg) {
-		try {
-			m_OutputStream.writeChars(msg.toJSONString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	private void shutdown() {
 		try {
+			m_InputThread.interrupt();
+			m_OutputThread.interrupt();
+			
+			while(!m_OutputQueue.isEmpty()) {
+				try {
+					m_OutputStream.writeChars(m_OutputQueue.poll().toJSONString());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			
 			m_InputStream.close();
 			m_OutputStream.close();
 			m_Socket.close();
+			
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,13 +61,49 @@ public class Network {
 		
 	}
 	
-	private void Connect() {
+	public void connect() {
 		try {
 			m_Socket = new Socket(GameConstants.SERVER_IP, GameConstants.NETWORK_PORT);
 			m_InputStream = new DataInputStream(m_Socket.getInputStream());
 			m_OutputStream = new DataOutputStream(m_Socket.getOutputStream());
+			
+			m_InputThread = new Thread( () -> {
+				while(true) {
+					try {
+						m_InputQueue.offer(new Message(m_InputStream.readUTF()));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			
+			m_InputThread.start();
+			
+			m_OutputThread = new Thread( () -> {
+				while(true) {
+					if(!m_OutputQueue.isEmpty()) {
+						try {
+							m_OutputStream.writeChars(m_OutputQueue.poll().toJSONString());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+			
+			m_OutputThread.start();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Message pollMessage() {
+		return m_InputQueue.poll();
+	}
+	
+	public void pushMessage(Message msg) {
+		m_OutputQueue.add(msg);
 	}
 }

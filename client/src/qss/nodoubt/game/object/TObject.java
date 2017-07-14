@@ -3,7 +3,7 @@ package qss.nodoubt.game.object;
 public class TObject extends GameObject{
 
 	public TObject() {
-		super("a");
+		super("a", 0);
 		// TODO Auto-generated constructor stub
 	}
 
