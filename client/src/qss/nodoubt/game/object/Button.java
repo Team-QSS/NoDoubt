@@ -7,34 +7,21 @@ public class Button extends GameObject {
 	private String textureName = null;
 	private String activetextureName = null;
 	
-	public interface ClickListener {
-		void onClick();
-	}
-	
-	private ClickListener m_Listener = null;
-
-	public Button(String textureName, String activetextureName, float x, float y, KeyListener key, MouseListener mouse) {
+	public Button(String textureName, String activetextureName, float x, float y) {
 		super(textureName, 0);
 		setPosition(x, y);
-		setEventListener(key, mouse);
 		this.textureName = textureName;
 		this.activetextureName = activetextureName;
 	}
 	
-	public void setListner(ClickListener listener){
-		m_Listener = listener;
+	public void setListner(KeyListener key, MouseListener mouse){
+		setEventListener(key, mouse);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
 
-	}
-	
-	public void click() {
-		if(m_Listener != null){
-			m_Listener.onClick();
-		}
 	}
 	
 	/**

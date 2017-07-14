@@ -19,3 +19,4 @@ BackButton2:../res/image/Button/Lobby-Back2.png
 LobbyBackground:../res/image/Background/ND-Lobby-Background.png
 CreditBackground:../res/image/Background/ND-Credit-Background.png
 GeneralBackground:../res/image/Background/ND-Board-Background.png
+Blank:../res/image/Button/Blank.png
