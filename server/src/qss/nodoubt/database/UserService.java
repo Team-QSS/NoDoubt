@@ -1,11 +1,11 @@
-package qss.nodoubt.room;
+package qss.nodoubt.database;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.google.gson.Gson;
 
-import qss.nodoubt.database.Database;
+import qss.nodoubt.room.User;
 
 public class UserService {
     private static UserService instance;
