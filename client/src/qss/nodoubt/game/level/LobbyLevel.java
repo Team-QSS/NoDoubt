@@ -135,7 +135,7 @@ public class LobbyLevel extends GameLevel{
 		for(int i = 0; i < m_Buttons.length; i++){
 			addObject(m_Buttons[i]);
 		}
-		m_Buttons[3].toggle();
+		m_Buttons[0].toggle();
 	}
 
 	@Override

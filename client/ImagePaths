@@ -3,7 +3,6 @@
 // �뀓�뒪爾� �씠由�:寃쎈줈�씠由� �쑝濡� �쟻�쓬
 // 怨듬갚臾몄옄�룄 �룷�븿�븯�땲 �쓽�룄媛� �엳�뒗寃쎌슦媛� �븘�땲硫� �쓣�뼱�벐湲곕굹 �꺆�븯吏� 留먭쾬
 
-a:../res/image/Button/1.png
 GameJoinButton1:../res/image/Button/Lobby-Start1.png
 GameJoinButton2:../res/image/Button/Lobby-Start2.png
 SettingButton1:../res/image/Button/Lobby-Setting1.png
@@ -19,3 +18,7 @@ BackButton2:../res/image/Button/Lobby-Back2.png
 LobbyBackground:../res/image/Background/ND-Lobby-Background.png
 CreditBackground:../res/image/Background/ND-Credit-Background.png
 GeneralBackground:../res/image/Background/ND-Board-Background.png
+
+
+//Ingame
+InGameBackground:../res/image/Background/ND-Game-Background.png
