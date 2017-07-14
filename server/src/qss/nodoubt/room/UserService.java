@@ -34,14 +34,20 @@ public class UserService {
     
     public User login(String id, String password) {
     	// 사용자가 입력한 아이디, 패스워드를 이용한 로그인을 수행 (id: 사용자의 아이디, password: 사용자의 비밀번호)
+    	JSONArray users = read(id, password);                     // 아이디, 패스워드를 이용해 사용자 목록 조회
     	
     	if (users.size() == 1) {
+    	    JSONObject data = (JSONObject) users.get(0);     // JSON 배열의 길이가 1일 때, 사용자 인증이 성공함 
     	    
+    	    User user = gson.fromJson(data.toString(), User.class);    
+    	    return user;
     	} else {
+    		return null;
     	}
     }
     
     public User login(User user) {
     	// 아이디, 비밀번호가 담긴 User 객체를 이용해서 로그인 수행
+    	return login(user.getID(), user.getPassword());
     }
 }
