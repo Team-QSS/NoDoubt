@@ -16,14 +16,10 @@ public class CreditLevel extends GameLevel {
 		m_DummyButton.setListner(
 				(action, key) ->{
 					if(action == GLFW_PRESS){
-						if(key == GLFW_KEY_ENTER){
-							Game.getInstance().setNextLevel(new LobbyLevel());
-						}
+						Game.getInstance().setNextLevel(new LobbyLevel());
 					}
 				},
-				(action, button) ->{
-					
-				}
+				null
 		);
 		addObject(m_DummyButton);
 		m_CreditBG = new Background("CreditBackground");		//크레딧 배경화면
@@ -39,7 +35,7 @@ public class CreditLevel extends GameLevel {
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
-		drawObjects();		//배경 그리기
+		drawObjects();		//오브젝트들 그리기
 	}
 
 }

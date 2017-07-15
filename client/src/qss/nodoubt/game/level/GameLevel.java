@@ -51,7 +51,6 @@ public abstract class GameLevel {
 	 * @param obj 삭제할 오브젝트
 	 */
 	protected final void removeObject(GameObject obj) {
-		
 		obj.destroyObject();
 		m_ObjectList.remove(obj);
 	}
@@ -74,11 +73,11 @@ public abstract class GameLevel {
 //			i.remove();
 //		}
 		
-		for(GameObject obj : m_ObjectList) {
-			for(GameObject obj : tempList) {
-				removeObject(obj);
-			}
+		ArrayList<GameObject> tempList = new ArrayList<GameObject>(m_ObjectList);
+		for(GameObject obj : tempList) {
+			removeObject(obj);
 		}
+		
 	}
 	
 	/**
