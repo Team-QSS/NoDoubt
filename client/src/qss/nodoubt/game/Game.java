@@ -88,8 +88,8 @@ public class Game {
 			if(m_ShouldClose) {
 				running = false;
 			}
-			
 			if(m_NextLevel != null) {
+				m_CurLevel.destroyLevel();
 				m_CurLevel = m_NextLevel;
 				m_NextLevel = null;
 			}
