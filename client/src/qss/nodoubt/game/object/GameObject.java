@@ -20,9 +20,9 @@ public abstract class GameObject {
 	private MouseListener m_MouseListener = null;
 	
 	/**
-	 * 오브젝트 생성
-	 * @param textureName 초기 텍스쳐 이름
-	 * @param depth 깊이값 (변하지 않음)
+	 * �삤釉뚯젥�듃 �깮�꽦
+	 * @param textureName 珥덇린 �뀓�뒪爾� �씠由�
+	 * @param depth 源딆씠媛� (蹂��븯吏� �븡�쓬)
 	 */
 	public GameObject(String textureName, float depth) {
 		m_Texture = TextureManager.getInstance().getTexture(textureName);
@@ -80,8 +80,8 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * 오브젝트 삭제되기 직전에 호출되어야 할 함수
-	 * 엔진이 알아서 호출하니 호출하지 말것
+	 * �삤釉뚯젥�듃 �궘�젣�릺湲� 吏곸쟾�뿉 �샇異쒕릺�뼱�빞 �븷 �븿�닔
+	 * �뿏吏꾩씠 �븣�븘�꽌 �샇異쒗븯�땲 �샇異쒗븯吏� 留먭쾬
 	 */
 	public final void destroyObject() {
 		Input input = Input.getInstance();
@@ -94,10 +94,10 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * 이벤트 리스너 설정
-	 * 현재 두번호출하면 상태 이상하니 한번만 호출할것
-	 * @param key 키보드 리스너, 없으면 null넣으셈
-	 * @param mouse 마우스 버튼 리스터, 없으면 null넣으셈
+	 * �씠踰ㅽ듃 由ъ뒪�꼫 �꽕�젙
+	 * �쁽�옱 �몢踰덊샇異쒗븯硫� �긽�깭 �씠�긽�븯�땲 �븳踰덈쭔 �샇異쒗븷寃�
+	 * @param key �궎蹂대뱶 由ъ뒪�꼫, �뾾�쑝硫� null�꽔�쑝�뀍
+	 * @param mouse 留덉슦�뒪 踰꾪듉 由ъ뒪�꽣, �뾾�쑝硫� null�꽔�쑝�뀍
 	 */
 	protected final void setEventListener(KeyListener key, MouseListener mouse) {
 		Input input = Input.getInstance();
@@ -112,8 +112,8 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * 텍스쳐 설정
-	 * @param textureName 텍스쳐 이름
+	 * �뀓�뒪爾� �꽕�젙
+	 * @param textureName �뀓�뒪爾� �씠由�
 	 */
 	protected final void setTexture(String textureName) {
 		m_Texture = TextureManager.getInstance().getTexture(textureName);
