@@ -68,11 +68,6 @@ public abstract class GameLevel {
 			input.removeMouseListener(m_MouseListener);
 		}
 		
-//		Iterator<GameObject> i = m_ObjectList.iterator();
-//		while(i.hasNext()){
-//			i.remove();
-//		}
-		
 		ArrayList<GameObject> tempList = new ArrayList<GameObject>(m_ObjectList);
 		for(GameObject obj : tempList) {
 			removeObject(obj);

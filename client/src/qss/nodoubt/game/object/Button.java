@@ -14,7 +14,7 @@ public class Button extends GameObject {
 		this.activetextureName = activetextureName;
 	}
 	
-	public void setListner(KeyListener key, MouseListener mouse){
+	public void setListener(KeyListener key, MouseListener mouse){
 		setEventListener(key, mouse);
 	}
 

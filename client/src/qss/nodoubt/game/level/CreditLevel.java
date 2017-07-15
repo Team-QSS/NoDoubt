@@ -13,7 +13,7 @@ public class CreditLevel extends GameLevel {
 	//생성자
 	public CreditLevel(){
 		m_DummyButton = new Button("Blank", "Blank", 0, 0);
-		m_DummyButton.setListner(
+		m_DummyButton.setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS){
 						Game.getInstance().setNextLevel(new LobbyLevel());
