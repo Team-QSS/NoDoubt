@@ -43,7 +43,7 @@ public class Game {
 	}
 
 	/**
-	 * 寃뚯엫 醫낅즺
+	 * 게임 종료
 	 */
 	public void shutdown() {
 		m_Window.shutdown();
@@ -51,7 +51,7 @@ public class Game {
 	}
 	
 	/**
-	 * 寃뚯엫 吏꾪뻾
+	 * 게임 진행
 	 */
 	public void run() {
 		boolean running = true;
@@ -99,16 +99,16 @@ public class Game {
 	}
 	
 	/**
-	 * �떎�쓬 �젅踰� �꽕�젙
-	 * �쁽�옱 吏꾪뻾以묒씤 �봽�젅�엫�씠 �걹�굹怨� �젅踰⑥씠 諛붾��
-	 * @param level �떎�쓬 �젅踰�
-	 */
+	 * 다음 레벨 설정
+ -	 * 현재 진행중인 프레임이 끝나고 레벨이 바뀜
+ -	 * @param level 다음 레벨
+ 	 */
 	public void setNextLevel(GameLevel level) {
 		m_NextLevel = level;
 	}
 	
 	/**
-	 * 寃뚯엫 爰쇰쾭由�.
+	 * 게임 꺼버림.
 	 * good night
 	 */
 	public void goodBye() {
