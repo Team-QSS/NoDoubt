@@ -5,12 +5,12 @@ import qss.nodoubt.game.level.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class CreditLevel extends GameLevel {
-	//踰꾪듉
+	//버튼
 	private Button m_DummyButton = null;
-	//諛곌꼍
+	//배경
 	private Background m_CreditBG = null;
 	
-	//�깮�꽦�옄
+	//생성자
 	public CreditLevel(){
 		m_DummyButton = new Button("Blank", "Blank", 0, 0);
 		m_DummyButton.setListner(
@@ -21,23 +21,25 @@ public class CreditLevel extends GameLevel {
 						}
 					}
 				},
-				null
+				(action, button) ->{
+					
+				}
 		);
 		addObject(m_DummyButton);
-		m_CreditBG = new Background("CreditBackground");		//�겕�젅�뵩 諛곌꼍�솕硫�
+		m_CreditBG = new Background("CreditBackground");		//크레딧 배경화면
 		addObject(m_CreditBG);
 	}
 	
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
-		//�븘臾� �궎瑜� �늻瑜대㈃ Lobby �떒怨꾨줈 �룎�븘媛�	
+		//아무 키를 누르면 Lobby 단계로 돌아감	
 	}
 
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
-		drawObjects();		//諛곌꼍 洹몃━湲�
+		drawObjects();		//배경 그리기
 	}
 
 }
