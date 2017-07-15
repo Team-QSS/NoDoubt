@@ -24,7 +24,7 @@ public class Game {
 	public static Game getInstance() {
 		if(s_Instance == null) {
 			s_Instance = new Game();
-			s_Instance.m_CurLevel = new LobbyLevel();
+			s_Instance.m_CurLevel = new CreditLevel();
 		}
 		
 		return s_Instance;

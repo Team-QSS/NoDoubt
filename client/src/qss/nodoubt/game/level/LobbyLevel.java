@@ -131,6 +131,7 @@ public class LobbyLevel extends GameLevel{
 			addObject(m_Buttons[i]);
 		}
 	}	
+	
 
 	@Override
 	public void update(float deltaTime) {
