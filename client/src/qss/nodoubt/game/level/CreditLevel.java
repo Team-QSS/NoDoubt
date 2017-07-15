@@ -16,7 +16,9 @@ public class CreditLevel extends GameLevel {
 		m_DummyButton.setListner(
 				(action, key) ->{
 					if(action == GLFW_PRESS){
+						if(key == GLFW_KEY_ENTER){
 							Game.getInstance().setNextLevel(new LobbyLevel());
+						}
 					}
 				},
 				(action, button) ->{
