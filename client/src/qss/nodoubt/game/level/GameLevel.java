@@ -33,9 +33,9 @@ public abstract class GameLevel {
 	}
 	
 	/**
-	 * 오브젝트 등록
-	 * 여기에 등록해야 삭제될 때 오브젝트도 정상적으로 삭제됨. 아마도
-	 * @param obj 등록할 오브젝트
+	 * �삤釉뚯젥�듃 �벑濡�
+	 * �뿬湲곗뿉 �벑濡앺빐�빞 �궘�젣�맆 �븣 �삤釉뚯젥�듃�룄 �젙�긽�쟻�쑝濡� �궘�젣�맖. �븘留덈룄
+	 * @param obj �벑濡앺븷 �삤釉뚯젥�듃
 	 */
 	protected final void addObject(GameObject obj) {
 		m_ObjectList.add(obj);
@@ -47,16 +47,17 @@ public abstract class GameLevel {
 	}
 	
 	/**
-	 * 등록한 오브젝트 삭제
-	 * @param obj 삭제할 오브젝트
+	 * �벑濡앺븳 �삤釉뚯젥�듃 �궘�젣
+	 * @param obj �궘�젣�븷 �삤釉뚯젥�듃
 	 */
 	protected final void removeObject(GameObject obj) {
+		obj.destroyObject();
 		m_ObjectList.remove(obj);
 	}
 	
 	/**
-	 * 레벨 삭제될때 호출되는 함수
-	 * 엔진이 호출하니 사용하지 말 것
+	 * �젅踰� �궘�젣�맆�븣 �샇異쒕릺�뒗 �븿�닔
+	 * �뿏吏꾩씠 �샇異쒗븯�땲 �궗�슜�븯吏� 留� 寃�
 	 */
 	public final void destroyLevel() {
 		Input input = Input.getInstance();
@@ -72,16 +73,17 @@ public abstract class GameLevel {
 //			i.remove();
 //		}
 		
-		for(GameObject obj : m_ObjectList) {
+		ArrayList<GameObject> tempList = new ArrayList<GameObject>(m_ObjectList);
+		for(GameObject obj : tempList) {
 			removeObject(obj);
 		}
 	}
 	
 	/**
-	 * 이벤트 리스너 설정
-	 * 현재 두번호출하면 상태 이상하니 한번만 호출할것
-	 * @param key 키보드 리스너, 없으면 null넣으셈
-	 * @param mouse 마우스 버튼 리스터, 없으면 null넣으셈
+	 * �씠踰ㅽ듃 由ъ뒪�꼫 �꽕�젙
+	 * �쁽�옱 �몢踰덊샇異쒗븯硫� �긽�깭 �씠�긽�븯�땲 �븳踰덈쭔 �샇異쒗븷寃�
+	 * @param key �궎蹂대뱶 由ъ뒪�꼫, �뾾�쑝硫� null�꽔�쑝�뀍
+	 * @param mouse 留덉슦�뒪 踰꾪듉 由ъ뒪�꽣, �뾾�쑝硫� null�꽔�쑝�뀍
 	 */
 	protected final void setEventListener(KeyListener key, MouseListener mouse) {
 		Input input = Input.getInstance();
