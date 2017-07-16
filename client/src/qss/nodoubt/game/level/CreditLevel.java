@@ -11,7 +11,7 @@ public class CreditLevel extends GameLevel {
 	//생성자
 	public CreditLevel(){
 		setEventListener((action,  key) -> { if(action == GLFW_PRESS) Game.getInstance().setNextLevel(new LobbyLevel());}, null);
-		m_CreditBG = new Background("CreditBㅎ");		//크레딧 배경화면
+		m_CreditBG = new Background("CreditBG");		//크레딧 배경화면
 		addObject(m_CreditBG);
 	}
 	

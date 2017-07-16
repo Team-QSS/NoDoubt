@@ -11,7 +11,7 @@ import qss.nodoubt.input.Input;
 public class LobbyLevel extends GameLevel{
 	//버튼
 	private Button[] m_Buttons = new Button[5];
-	private int m_ActiveIndex = 0;
+	private static int m_ActiveIndex = 0;
 	//배경
 	private Background m_LobbyBG = null;
 	//버튼 텍스처 경로
