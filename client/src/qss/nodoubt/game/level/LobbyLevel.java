@@ -11,6 +11,7 @@ import qss.nodoubt.input.Input;
 public class LobbyLevel extends GameLevel{
 	//버튼
 	private Button[] m_Buttons = new Button[5];
+	private static int m_ActiveIndex = 0;
 	//배경
 	private Background m_LobbyBG = null;
 	//버튼 텍스처 경로
@@ -29,108 +30,106 @@ public class LobbyLevel extends GameLevel{
 	public LobbyLevel(){
 						
 		//배경 생성
-		m_LobbyBG = new Background("LobbyBackground");
+		m_LobbyBG = new Background("LobbyBG");
 		addObject(m_LobbyBG);
 		
 		//버튼 생성
 		
-		m_Buttons[0] = 
-			new Button(m_ButtonTexturePath[0], m_ButtonTexturePath[1], -760, -360, 
-			(action, key) -> {
-				if(key == GLFW_KEY_ENTER && action == GLFW_PRESS && m_Buttons[0].isActived()){
-					Game.getInstance().setNextLevel(new WaitingRoomLevel());
+		for(int i = 0; i < m_Buttons.length; i++){
+			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -760 + 380*i,-360);
+		}
+		m_Buttons[0].setListener(
+				(action, key) ->{
+					if(action == GLFW_PRESS && m_Buttons[0].isActived()){
+						if(key == GLFW_KEY_ENTER){
+							Game.getInstance().setNextLevel(new LoadingLevel());
+						}
+					}
+				},
+				(action, button) ->{
+					
 				}
-				else if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS && m_Buttons[0].isActived()){
-					m_Buttons[0].toggle();
-					m_Buttons[1].toggle();
-				}
-			},
-			(action, button) -> {
-				if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-					Game.getInstance().setNextLevel(new WaitingRoomLevel());
-				}
-			}
-			);
-		m_Buttons[1] = 
-			new Button(m_ButtonTexturePath[2], m_ButtonTexturePath[3], -380, -360,
-			(action, key) -> {
-				if(key == GLFW_KEY_ENTER && action == GLFW_PRESS && m_Buttons[1].isActived()){
-					Game.getInstance().setNextLevel(new SettingLevel());
-				}
-				else if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS && m_Buttons[1].isActived()){
-					m_Buttons[1].toggle();
-					m_Buttons[2].toggle();
-				}
-				else if(key == GLFW_KEY_LEFT && action == GLFW_PRESS && m_Buttons[1].isActived()){
-					m_Buttons[1].toggle();
-					m_Buttons[0].toggle();
-				}
-			},
-			(action, button) -> {
-				if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-					Game.getInstance().setNextLevel(new SettingLevel());
-				}
-			}
-			);
-		m_Buttons[2] = 
-			new Button(m_ButtonTexturePath[4], m_ButtonTexturePath[5], 0, -360,
-			(action, key) -> {
-				if(key == GLFW_KEY_ENTER && action == GLFW_PRESS && m_Buttons[2].isActived()){
-					Game.getInstance().setNextLevel(new StoreLevel());
-				}
-				else if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS && m_Buttons[2].isActived()){
-					m_Buttons[2].toggle();
-					m_Buttons[3].toggle();
-				}
-				else if(key == GLFW_KEY_LEFT && action == GLFW_PRESS && m_Buttons[2].isActived()){
-					m_Buttons[2].toggle();
-					m_Buttons[1].toggle();
-				}
-			},
-			(action, button) -> {
-				if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-					Game.getInstance().setNextLevel(new StoreLevel());
-				}
-			}
-			);
-		m_Buttons[3] = 
-			new Button(m_ButtonTexturePath[6], m_ButtonTexturePath[7], 380, -360,
-			(action, key) -> {
-				if(key == GLFW_KEY_ENTER && action == GLFW_PRESS && m_Buttons[3].isActived()){
-					Game.getInstance().setNextLevel(new CreditLevel());
-				}
-				else if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS && m_Buttons[3].isActived()){
-					m_Buttons[3].toggle();
-					m_Buttons[4].toggle();
-				}
-				else if(key == GLFW_KEY_LEFT && action == GLFW_PRESS && m_Buttons[3].isActived()){
-					m_Buttons[3].toggle();
-					m_Buttons[2].toggle();
-				}
-			},
-			(action, button) -> {
-				if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-				Game.getInstance().setNextLevel(new CreditLevel());
-				}
-			}
-			);
-		m_Buttons[4] =
-			new Button(m_ButtonTexturePath[8], m_ButtonTexturePath[9], 760, -360,
-			(action, key) -> {
-				if(key == GLFW_KEY_ENTER && action == GLFW_PRESS && m_Buttons[4].isActived()){
-					Game.getInstance().goodBye();
-				}
-				else if(key == GLFW_KEY_LEFT && action == GLFW_PRESS && m_Buttons[4].isActived()){
-					m_Buttons[4].toggle();
-					m_Buttons[3].toggle();
-				}
-			},
-			(action, button) -> {
-				if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-					Game.getInstance().goodBye();
-				}
-			}
 		);
+		m_Buttons[1].setListener(
+//				(action, key) ->{
+//					if(action == GLFW_PRESS && m_Buttons[1].isActived()){
+//						if(key == GLFW_KEY_ENTER){
+//						//	Game.getInstance().setNextLevel(new SettingLevel());
+//						}
+//					}
+//				}
+				null,
+//				(action, button) ->{
+//					
+//				}
+				null
+		);
+		
+		m_Buttons[2].setListener(
+//				(action, key) ->{
+//					if(action == GLFW_PRESS && m_Buttons[2].isActived()){
+//						if(key == GLFW_KEY_ENTER){
+//						//	Game.getInstance().setNextLevel(new StoreLevel());
+//						}
+//					}
+//				}
+				null,
+//				(action, button) ->{
+//					
+//				}
+				null
+		);
+		
+		m_Buttons[3].setListener(
+				(action, key) ->{
+					if(action == GLFW_PRESS && m_Buttons[3].isActived()){
+						if(key == GLFW_KEY_ENTER){
+							Game.getInstance().setNextLevel(new CreditLevel());
+						}
+					}
+				},
+				(action, button) ->{
+					
+				}
+		);
+		
+		m_Buttons[4].setListener(
+				(action, key) ->{
+					if(action == GLFW_PRESS && m_Buttons[4].isActived()){
+						if(key == GLFW_KEY_ENTER){
+							Game.getInstance().goodBye();
+						}
+					}
+				},
+				(action, button) ->{
+					
+				}
+		);
+		
+		
+		this.setEventListener(
+			(action, key) -> {
+				if(action == GLFW_PRESS && m_Buttons[m_ActiveIndex].isActived()){
+					if(key == GLFW_KEY_RIGHT){
+						if(m_ActiveIndex < 4){
+							m_Buttons[m_ActiveIndex].toggle();
+							m_Buttons[++m_ActiveIndex].toggle();
+							
+						}
+					}
+					if(key == GLFW_KEY_LEFT){
+						if(m_ActiveIndex > 0){
+							m_Buttons[m_ActiveIndex].toggle();
+							m_Buttons[--m_ActiveIndex].toggle();
+						}
+					}
+				}
+			},
+		(action, key) -> {
+			
+		});
+
+		m_Buttons[m_ActiveIndex].toggle();
 		
 		for(int i = 0; i < m_Buttons.length; i++){
 			addObject(m_Buttons[i]);
@@ -142,14 +141,7 @@ public class LobbyLevel extends GameLevel{
 
 	@Override
 	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		drawObjects();
+		updateObjects(deltaTime);
 	}
 	
 }

@@ -18,9 +18,4 @@ public class InGameLevel extends GameLevel{
 		
 	}
 
-	@Override
-	public void draw() {
-		drawObjects();
-	}
-
 }

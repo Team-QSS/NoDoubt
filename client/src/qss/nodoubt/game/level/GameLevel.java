@@ -11,6 +11,7 @@ public abstract class GameLevel {
 	private List<GameObject> m_ObjectList = null;
 	private KeyListener m_KeyListener = null;
 	private MouseListener m_MouseListener = null;
+	private boolean m_IsActive = false;
 	
 	public GameLevel() {
 		m_ObjectList = new ArrayList<GameObject>();
@@ -18,7 +19,9 @@ public abstract class GameLevel {
 	
 	public abstract void update(float deltaTime);
 	
-	public abstract void draw();
+	public void draw(){
+		drawObjects();
+	};
 	
 	protected final void updateObjects(float deltaTime) {
 		for(GameObject obj : m_ObjectList) {
@@ -51,6 +54,7 @@ public abstract class GameLevel {
 	 * @param obj 삭제할 오브젝트
 	 */
 	protected final void removeObject(GameObject obj) {
+		obj.destroyObject();
 		m_ObjectList.remove(obj);
 	}
 	
@@ -68,8 +72,9 @@ public abstract class GameLevel {
 		}
 		
 		for(GameObject obj : m_ObjectList) {
-			removeObject(obj);
+			obj.destroyObject();
 		}
+		
 	}
 	
 	/**
@@ -80,14 +85,29 @@ public abstract class GameLevel {
 	 */
 	protected final void setEventListener(KeyListener key, MouseListener mouse) {
 		Input input = Input.getInstance();
-		if(key != null) {
+		
+		m_KeyListener = key;
+		m_MouseListener = mouse;
+		
+		if(key != null && m_IsActive) {
 			input.addKeyListener(key);
-			m_KeyListener = key;
 		}
-		if(mouse != null) {
+		if(mouse != null && m_IsActive) {
 			input.addMouseListener(mouse);
-			m_MouseListener = mouse;
 		}
 	}
 	
+	/**
+	 * 레벨 초기화
+	 * 레벨이 처음 동작하기 전 프레임의 마지막에 호출
+	 * 엔진이 호출하니 쓰지 말 것
+	 */
+	public final void act() {
+		m_IsActive = true;
+		setEventListener(m_KeyListener, m_MouseListener);
+		
+		for(GameObject obj : m_ObjectList) {
+			obj.act();
+		}
+	}
 }

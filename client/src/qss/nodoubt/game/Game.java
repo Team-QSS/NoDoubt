@@ -24,7 +24,7 @@ public class Game {
 	public static Game getInstance() {
 		if(s_Instance == null) {
 			s_Instance = new Game();
-			s_Instance.m_CurLevel = new LobbyLevel();
+			s_Instance.m_CurLevel = new LoginLevel();
 		}
 		
 		return s_Instance;
@@ -58,6 +58,7 @@ public class Game {
 		
 		m_FrameTimer.reset();
 		m_FrameTimer.start();
+		m_CurLevel.act();
 		
 		while(running) {
 			m_FrameTimer.tick();
@@ -85,13 +86,16 @@ public class Game {
 				running = false;
 			}
 			
+			
 			if(m_ShouldClose) {
 				running = false;
 			}
 			
 			if(m_NextLevel != null) {
+				m_CurLevel.destroyLevel();
 				m_CurLevel = m_NextLevel;
 				m_NextLevel = null;
+				m_CurLevel.act();
 			}
 		}
 	}

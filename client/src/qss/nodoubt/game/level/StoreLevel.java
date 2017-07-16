@@ -1,15 +1,18 @@
 package qss.nodoubt.game.level;
 
+/*
+ * 상점 레벨입니다.
+ * 프로토타입에서는 미구현 예정입니다.
+ * */
+
 import qss.nodoubt.game.object.*;
 
 public class StoreLevel extends GameLevel{
 
 	//배경화면
-	private Background m_GeneralBG = null;		//평범한 배경화면
 	
 	public StoreLevel(){
-		m_GeneralBG = new Background("GeneralBackground");
-		addObject(m_GeneralBG);
+
 	}
 	
 	@Override
@@ -18,10 +21,4 @@ public class StoreLevel extends GameLevel{
 		
 	}
 
-	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		drawObjects();
-	}
-	
 }
