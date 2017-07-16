@@ -18,6 +18,7 @@ public abstract class GameObject {
 	private Texture m_Texture;
 	private KeyListener m_KeyListener = null;
 	private MouseListener m_MouseListener = null;
+	private boolean m_IsActive = false;
 	
 	/**
 	 * 오브젝트 생성
@@ -101,13 +102,15 @@ public abstract class GameObject {
 	 */
 	protected final void setEventListener(KeyListener key, MouseListener mouse) {
 		Input input = Input.getInstance();
-		if(key != null) {
+		
+		m_KeyListener = key;
+		m_MouseListener = mouse;
+		
+		if(key != null && m_IsActive) {
 			input.addKeyListener(key);
-			m_KeyListener = key;
 		}
-		if(mouse != null) {
+		if(mouse != null && m_IsActive) {
 			input.addMouseListener(mouse);
-			m_MouseListener = mouse;
 		}
 	}
 	
@@ -118,5 +121,15 @@ public abstract class GameObject {
 	protected final void setTexture(String textureName) {
 		m_Texture = TextureManager.getInstance().getTexture(textureName);
 		m_VertexArray.setSize(m_Texture.getWidth(), m_Texture.getHeight());
+	}
+	
+	/**
+	 * 오브젝트 초기화
+	 * 해당 오브젝트가 포함된 레벨이 처음 동작하기 전 프레임의 마지막에 호출
+	 * 엔진이 호출하니 쓰지 말 것
+	 */
+	public final void act() {
+		m_IsActive = true;
+		setEventListener(m_KeyListener, m_MouseListener);
 	}
 }
