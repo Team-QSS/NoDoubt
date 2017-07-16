@@ -12,16 +12,17 @@ public class CreditLevel extends GameLevel {
 	
 	//생성자
 	public CreditLevel(){
-		m_DummyButton = new Button("Blank", "Blank", 0, 0);
-		m_DummyButton.setListner(
-				(action, key) ->{
-					if(action == GLFW_PRESS){
-						Game.getInstance().setNextLevel(new LobbyLevel());
-					}
-				},
-				null
-		);
-		addObject(m_DummyButton);
+//		m_DummyButton = new Button("Blank", "Blank", 0, 0);
+//		m_DummyButton.setListner(
+//				(action, key) ->{
+//					if(action == GLFW_PRESS){
+//						Game.getInstance().setNextLevel(new LobbyLevel());
+//					}
+//				},
+//				null
+//		);
+//		addObject(m_DummyButton);
+		setEventListener((action,  key) -> { if(action == GLFW_PRESS) Game.getInstance().setNextLevel(new LobbyLevel());}, null);
 		m_CreditBG = new Background("CreditBackground");		//크레딧 배경화면
 		addObject(m_CreditBG);
 	}
