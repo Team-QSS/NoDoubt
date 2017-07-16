@@ -87,10 +87,10 @@ public abstract class GameLevel {
 		m_KeyListener = key;
 		m_MouseListener = mouse;
 		
-		if(key != null) {
+		if(key != null && m_IsActive) {
 			input.addKeyListener(key);
 		}
-		if(mouse != null) {
+		if(mouse != null && m_IsActive) {
 			input.addMouseListener(mouse);
 		}
 	}
