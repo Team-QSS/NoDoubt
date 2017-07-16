@@ -1,5 +1,8 @@
 package qss.nodoubt.game.level;
 
+import static org.lwjgl.glfw.GLFW.*;
+
+import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 
 /*
@@ -17,8 +20,15 @@ public class LoadingLevel extends GameLevel{
 	private float mouseY;
 	
 	public LoadingLevel(){
+		setEventListener((action,  key) -> { 
+			if(key == GLFW_KEY_BACKSPACE){ 
+				if(action == GLFW_PRESS) {
+					Game.getInstance().setNextLevel(new LobbyLevel());
+					}
+				}
+			}, 
+		null);	
 		m_LoadingBG = new Background("LoadBG");
-		
 		addObject(m_LoadingBG);
 	}
 
@@ -28,9 +38,4 @@ public class LoadingLevel extends GameLevel{
 		
 	}
 
-	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		drawObjects();
-	}
 }

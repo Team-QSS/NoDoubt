@@ -55,10 +55,4 @@ public class SettingLevel extends GameLevel{
 		
 	}
 
-	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		drawObjects();
-	}
-
 }

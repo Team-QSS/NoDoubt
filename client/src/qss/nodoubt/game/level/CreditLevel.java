@@ -21,10 +21,4 @@ public class CreditLevel extends GameLevel {
 		//아무 키를 누르면 Lobby 단계로 돌아감	
 	}
 
-	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		drawObjects();		//오브젝트들 그리기
-	}
-
 }

@@ -141,11 +141,5 @@ public class LobbyLevel extends GameLevel{
 	public void update(float deltaTime) {
 		updateObjects(deltaTime);
 	}
-
-	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		drawObjects();
-	}
 	
 }

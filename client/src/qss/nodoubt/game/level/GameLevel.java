@@ -19,7 +19,9 @@ public abstract class GameLevel {
 	
 	public abstract void update(float deltaTime);
 	
-	public abstract void draw();
+	public void draw(){
+		drawObjects();
+	};
 	
 	protected final void updateObjects(float deltaTime) {
 		for(GameObject obj : m_ObjectList) {
