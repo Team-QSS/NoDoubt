@@ -136,6 +136,8 @@ public class LobbyLevel extends GameLevel{
 			addObject(m_Buttons[i]);
 		}
 		m_Buttons[0].toggle();
+		
+		setEventListener((action, key) -> {if(key == GLFW_KEY_Q) Game.getInstance().setNextLevel(new InGameLevel());}, null);
 	}
 
 	@Override
