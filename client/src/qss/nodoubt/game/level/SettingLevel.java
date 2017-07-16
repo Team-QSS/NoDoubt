@@ -1,5 +1,10 @@
 package qss.nodoubt.game.level;
 
+/*
+ * 상점 레벨입니다.
+ * 프로토타입에서는 미구현 예정입니다.
+ * */
+
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 
@@ -14,7 +19,7 @@ public class SettingLevel extends GameLevel{
 	private Button m_FriendManageButton = null;			//친구 관리
 	private Button m_BackButton = null;					//뒤로가기
 	//배경
-	private Background m_GeneralBG = null;		//평범한 배경화면(초록색 풀 배경)
+	
 	//버튼 텍스처 경로
 	private String[] m_ButtonTexturePath = {
 		"NameChangeButton",
@@ -37,9 +42,6 @@ public class SettingLevel extends GameLevel{
 				m_FriendManageButton,
 				m_BackButton
 		};
-		
-		m_GeneralBG = new Background("GeneralBackground");
-		addObject(m_GeneralBG);
 		
 		for(int i = 0; i < buttons.length; i++){
 	//		buttons[i] = new Button(m_ButtonTexturePath[i], 0, 0);

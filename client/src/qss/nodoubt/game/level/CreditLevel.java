@@ -5,25 +5,13 @@ import qss.nodoubt.game.level.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class CreditLevel extends GameLevel {
-	//버튼
-	private Button m_DummyButton = null;
 	//배경
 	private Background m_CreditBG = null;
 	
 	//생성자
 	public CreditLevel(){
-//		m_DummyButton = new Button("Blank", "Blank", 0, 0);
-//		m_DummyButton.setListner(
-//				(action, key) ->{
-//					if(action == GLFW_PRESS){
-//						Game.getInstance().setNextLevel(new LobbyLevel());
-//					}
-//				},
-//				null
-//		);
-//		addObject(m_DummyButton);
 		setEventListener((action,  key) -> { if(action == GLFW_PRESS) Game.getInstance().setNextLevel(new LobbyLevel());}, null);
-		m_CreditBG = new Background("CreditBackground");		//크레딧 배경화면
+		m_CreditBG = new Background("CreditBㅎ");		//크레딧 배경화면
 		addObject(m_CreditBG);
 	}
 	

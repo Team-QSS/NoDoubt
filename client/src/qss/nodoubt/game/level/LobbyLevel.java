@@ -30,7 +30,7 @@ public class LobbyLevel extends GameLevel{
 	public LobbyLevel(){
 						
 		//배경 생성
-		m_LobbyBG = new Background("LobbyBackground");
+		m_LobbyBG = new Background("LobbyBG");
 		addObject(m_LobbyBG);
 		
 		//버튼 생성
@@ -42,7 +42,7 @@ public class LobbyLevel extends GameLevel{
 				(action, key) ->{
 					if(action == GLFW_PRESS && m_Buttons[0].isActived()){
 						if(key == GLFW_KEY_ENTER){
-							Game.getInstance().setNextLevel(new WaitingRoomLevel());
+							Game.getInstance().setNextLevel(new LoadingLevel());
 						}
 					}
 				},
