@@ -24,7 +24,7 @@ public class Game {
 	public static Game getInstance() {
 		if(s_Instance == null) {
 			s_Instance = new Game();
-			s_Instance.m_CurLevel = new CreditLevel();
+			s_Instance.m_CurLevel = new LobbyLevel();
 		}
 		
 		return s_Instance;
@@ -90,6 +90,7 @@ public class Game {
 			if(m_ShouldClose) {
 				running = false;
 			}
+			
 			if(m_NextLevel != null) {
 				m_CurLevel.destroyLevel();
 				m_CurLevel = m_NextLevel;

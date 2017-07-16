@@ -38,7 +38,7 @@ public class LobbyLevel extends GameLevel{
 		for(int i = 0; i < m_Buttons.length; i++){
 			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -760 + 380*i,-360);
 		}
-		m_Buttons[0].setListner(
+		m_Buttons[0].setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS && m_Buttons[0].isActived()){
 						if(key == GLFW_KEY_ENTER){
@@ -50,33 +50,37 @@ public class LobbyLevel extends GameLevel{
 					
 				}
 		);
-		m_Buttons[1].setListner(
-				(action, key) ->{
-					if(action == GLFW_PRESS && m_Buttons[1].isActived()){
-						if(key == GLFW_KEY_ENTER){
-						//	Game.getInstance().setNextLevel(new SettingLevel());
-						}
-					}
-				},
-				(action, button) ->{
-					
-				}
+		m_Buttons[1].setListener(
+//				(action, key) ->{
+//					if(action == GLFW_PRESS && m_Buttons[1].isActived()){
+//						if(key == GLFW_KEY_ENTER){
+//						//	Game.getInstance().setNextLevel(new SettingLevel());
+//						}
+//					}
+//				}
+				null,
+//				(action, button) ->{
+//					
+//				}
+				null
 		);
 		
-		m_Buttons[2].setListner(
-				(action, key) ->{
-					if(action == GLFW_PRESS && m_Buttons[2].isActived()){
-						if(key == GLFW_KEY_ENTER){
-						//	Game.getInstance().setNextLevel(new StoreLevel());
-						}
-					}
-				},
-				(action, button) ->{
-					
-				}
+		m_Buttons[2].setListener(
+//				(action, key) ->{
+//					if(action == GLFW_PRESS && m_Buttons[2].isActived()){
+//						if(key == GLFW_KEY_ENTER){
+//						//	Game.getInstance().setNextLevel(new StoreLevel());
+//						}
+//					}
+//				}
+				null,
+//				(action, button) ->{
+//					
+//				}
+				null
 		);
 		
-		m_Buttons[3].setListner(
+		m_Buttons[3].setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS && m_Buttons[3].isActived()){
 						if(key == GLFW_KEY_ENTER){
@@ -89,7 +93,7 @@ public class LobbyLevel extends GameLevel{
 				}
 		);
 		
-		m_Buttons[4].setListner(
+		m_Buttons[4].setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS && m_Buttons[4].isActived()){
 						if(key == GLFW_KEY_ENTER){
