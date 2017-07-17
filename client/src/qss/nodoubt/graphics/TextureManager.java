@@ -43,4 +43,13 @@ public class TextureManager {
 		return tex;
 	}
 	
+	/**
+	 * 텍스쳐 추가
+	 * @param name 텍스쳐 이름
+	 * @param tex 텍스쳐
+	 */
+	public void addTexture(String name, Texture tex) {
+		m_Textures.put(name, tex);
+	}
+	
 }
