@@ -2,6 +2,7 @@ package qss.nodoubt.utils;
 
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.stb.STBVorbis.*;
+import static org.lwjgl.stb.STBTruetype.*;
 
 import java.io.*;
 import java.nio.*;
@@ -54,5 +55,9 @@ public class FileUtils {
 		ShortBuffer soundBuffer = null;
 		soundBuffer = stb_vorbis_decode_filename(path, channels, sample_rate);
 		return soundBuffer;
+	}
+	
+	public static void loatFontFile(String path) {
+		
 	}
 }
