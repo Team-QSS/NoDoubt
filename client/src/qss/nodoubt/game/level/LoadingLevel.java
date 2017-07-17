@@ -2,6 +2,8 @@ package qss.nodoubt.game.level;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.util.*;
+
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 
@@ -18,6 +20,8 @@ public class LoadingLevel extends GameLevel{
 	//getCursor로 마우스의 좌표를 구함
 	private float mouseX;
 	private float mouseY;
+	//대기실 목록
+	private List<WaitingRoom> m_RoomList = new LinkedList<WaitingRoom>();
 	
 	public LoadingLevel(){
 		setEventListener((action,  key) -> { 
