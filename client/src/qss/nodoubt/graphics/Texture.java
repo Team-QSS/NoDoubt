@@ -8,11 +8,17 @@ import java.nio.*;
 
 public class Texture {
 	private int m_Width, m_Height;
-	private int texture;
+	private int m_Texture;
 	
 	
 	public Texture(String path) {
-		texture = load(path);
+		m_Texture = load(path);
+	}
+	
+	public Texture(int texture, int width, int height) {
+		m_Texture = texture;
+		m_Width = width;
+		m_Height = height;
 	}
 	
 	public int load(String path) {
@@ -34,7 +40,7 @@ public class Texture {
 	}
 	
 	public void bind() {
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glBindTexture(GL_TEXTURE_2D, m_Texture);
 	}
 	
 	public void unbind() {

@@ -8,7 +8,8 @@ public class Message {
 	JSONObject m_Json = null;
 	
 	public Message() {
-		
+		m_Json = new JSONObject();
+		m_Json.put("Protocol", "DefaultProtocol");
 	}
 	
 	public Message(String str) {
@@ -25,5 +26,15 @@ public class Message {
 		}else {
 			return null;
 		}
+	}
+	
+	public Message setProtocol(String protocol) {
+		m_Json.replace("Protocol", protocol);
+		return this;
+	}
+	
+	public Message addValue(String key, String value) {
+		m_Json.put(key, value);
+		return this;
 	}
 }

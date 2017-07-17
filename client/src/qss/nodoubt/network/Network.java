@@ -99,10 +99,18 @@ public class Network {
 		}
 	}
 	
+	/**
+	 * 메세지 받기
+	 * @return 받은 메세지 없으면 null리턴
+	 */
 	public Message pollMessage() {
 		return m_InputQueue.poll();
 	}
 	
+	/**
+	 * 메세지 보내기
+	 * @param msg 보낼 메세지
+	 */
 	public void pushMessage(Message msg) {
 		m_OutputQueue.add(msg);
 	}
