@@ -1,15 +1,17 @@
 package qss.nodoubt.game.level;
 
-import qss.nodoubt.game.object.Background;
+import qss.nodoubt.game.object.*;
 
 public class InGameLevel extends GameLevel{
-	private enum InGameState {
-		Idle, SetOrder, RollDice, CallDoubt, StepOther, ProcessItem, UI
-	}
-	private InGameState m_GameState;
 	
+	private Background m_GameField = null;	//게임이 진행될 보드를 의미한다.
+	
+	private enum InGameState {
+		IDLE, SETORDER, ROLLDICE, CALLDOUBT, STEPOTHER, PROCESSITEM, 
+	}
 	public InGameLevel() {
-		addObject(new Background("InGameBackground"));
+		m_GameField = new Background("InGameBackground");
+		addObject(m_GameField);
 	}
 
 	@Override
