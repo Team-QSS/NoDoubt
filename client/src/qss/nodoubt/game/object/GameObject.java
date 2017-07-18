@@ -34,14 +34,19 @@ public abstract class GameObject {
 	public abstract void update(float deltaTime);
 	
 	public final void draw() {
+		
+		m_Texture.bind();
+		
+		m_VertexArray.draw(getWorldMatrix());
+	}
+	
+	private Matrix4f getWorldMatrix() {
 		Matrix4f translate = new Matrix4f().translate(m_Position.x, m_Position.y, 0.0f);
 		Matrix4f rotate = new Matrix4f().rotate(m_Angle, new Vector3f(0.0f, 0.0f, 1.0f));
 		Matrix4f scale = new Matrix4f().scale(m_Size.x, m_Size.y, 0.0f);
 		
 		Matrix4f world = scale.mul(rotate).mul(translate);
-		m_Texture.bind();
-		
-		m_VertexArray.draw(world);
+		return world;
 	}
 
 	protected final void setPosition(float x, float y) {
