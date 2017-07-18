@@ -84,8 +84,8 @@ public class Input {
 		x = x * 2 - 1;
 		y = y * -2 + 1;
 		
-		x *= 1920;
-		y *= 1080;
+		x *= 1920 / 2;
+		y *= 1080 / 2;
 		
 		
 		return new Vector2f((float) x, (float) y);
