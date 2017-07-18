@@ -10,7 +10,7 @@ public class InGameLevel extends GameLevel{
 		IDLE, SETORDER, ROLLDICE, CALLDOUBT, STEPOTHER, PROCESSITEM, 
 	}
 	public InGameLevel() {
-		m_GameField = new Background("InGameBackground");
+		m_GameField = new Background("Test");
 		addObject(m_GameField);
 	}
 

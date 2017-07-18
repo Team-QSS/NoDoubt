@@ -6,6 +6,7 @@ import java.util.Set;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
+import static qss.nodoubt.utils.OnButton.*;
 
 
 public class LobbyLevel extends GameLevel{
@@ -32,6 +33,7 @@ public class LobbyLevel extends GameLevel{
 		//배경 생성
 		m_LobbyBG = new Background("LobbyBG");
 		addObject(m_LobbyBG);
+		
 		
 		//버튼 생성
 		
@@ -141,6 +143,10 @@ public class LobbyLevel extends GameLevel{
 	@Override
 	public void update(float deltaTime) {
 		updateObjects(deltaTime);
+		mouseX = Input.getInstance().getCursorPosition().x;
+		mouseY = Input.getInstance().getCursorPosition().y;
+		
+		System.out.println(mouseX +" " + mouseY);
 	}
 	
 }
