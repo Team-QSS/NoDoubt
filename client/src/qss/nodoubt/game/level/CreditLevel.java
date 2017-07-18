@@ -1,7 +1,6 @@
 package qss.nodoubt.game.level;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
-import qss.nodoubt.game.level.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class CreditLevel extends GameLevel {
