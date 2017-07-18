@@ -3,6 +3,7 @@ package qss.nodoubt.input;
 import java.util.*;
 
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.lwjgl.glfw.*;
 
 import qss.nodoubt.game.GameWindow;
@@ -70,10 +71,23 @@ public class Input {
 	}
 	
 	public Vector2f getCursorPosition() {
+		GameWindow window = GameWindow.getInstance();
 		double xpos[] = new double[1];
 		double ypos[] = new double[1];
-		glfwGetCursorPos(GameWindow.getInstance().getWindow(), xpos, ypos);
+		glfwGetCursorPos(window.getWindow(), xpos, ypos);
 		
-		return new Vector2f((float) xpos[0], (float) ypos[0]);
+		Vector2i size = window.getSize();
+		
+		double x = xpos[0] / size.x;
+		double y = ypos[0] / size.y;
+		
+		x = x * 2 - 1;
+		y = y * -2 + 1;
+		
+		x *= 1920;
+		y *= 1080;
+		
+		
+		return new Vector2f((float) x, (float) y);
 	}
 }

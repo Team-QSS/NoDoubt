@@ -76,9 +76,12 @@ public class FileUtils {
 			while ((len = fis.read(buffer)) > 0) {
 				fontBuffer.put(buffer, 0, len);
 			}
+			fis.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		fontBuffer.flip();
 		
 		ByteBuffer bitmap = BufferUtils.createByteBuffer(1024 * 1024);
 		STBTTBakedChar.Buffer cdata = STBTTBakedChar.malloc(96);

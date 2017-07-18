@@ -5,10 +5,14 @@ import org.lwjgl.glfw.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import org.joml.Vector2i;
+
 public class GameWindow {
 	private static GameWindow s_Instance  = null;
 	private long m_Window;
 	private GLFWErrorCallback m_ErrorCallback = null;
+	private int m_Width;
+	private int m_Height;
 	
 	/**
 	 * @exception IllegalStateException glfw초기화에 실패했을 때 호출
@@ -42,10 +46,10 @@ public class GameWindow {
 		
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode vidMode = glfwGetVideoMode(monitor);
-		int monitorWidth = vidMode.width();
-		int monitorHeight = vidMode.height();
+		m_Width = vidMode.width();
+		m_Height = vidMode.height();
 		
-		m_Window = glfwCreateWindow(monitorWidth, monitorHeight, "No Doubt", monitor, NULL);
+		m_Window = glfwCreateWindow(m_Width, m_Height, "No Doubt", monitor, NULL);
 		if(m_Window == NULL) {
 			glfwTerminate();
 			throw new RuntimeException("Fail to create GLFW window");
@@ -92,5 +96,9 @@ public class GameWindow {
 	
 	public long getWindow() {
 		return m_Window;
+	}
+	
+	public Vector2i getSize() {
+		return new Vector2i(m_Width, m_Height);
 	}
 }

@@ -41,7 +41,6 @@ public class Graphic {
 		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//glUniformMatrix4fv(4, false, MatrixUtils.toFloatBuffer(m_OrthoMatrix));
 		glUniformMatrix4fv(4, false, m_OrthoMatrix.get(m_OrthoMatrixBuffer));
 	}
 	

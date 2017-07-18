@@ -14,6 +14,7 @@ public class VertexArray {
 	private float [] m_UVs;
 	private IntBuffer m_IndexBuffer;
 	private float [] m_WorldMatrixBuffer = new float[16];
+	private static float[] s_Color = new float[]{0.0f, 0.0f, 0.0f, 0.0f};
 	
 	/**
 	 * 사각형 생성
@@ -95,6 +96,8 @@ public class VertexArray {
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, m_UVs);
 		//glUniformMatrix4fv(3, false, world.get(m_WorldMatrix));
 		glUniformMatrix4fv(3, false, world.get(m_WorldMatrixBuffer));
+		//glUniform4fv(5, s_Color);
+		glUniform4f(5, 0.0f, 0.0f, 0.0f, 0.0f);
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

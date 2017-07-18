@@ -26,14 +26,17 @@ public abstract class GameObject {
 	 * @param depth 깊이값 (변하지 않음)
 	 */
 	public GameObject(String textureName, float depth) {
-		m_Texture = TextureManager.getInstance().getTexture(textureName);
-		m_VertexArray = new VertexArray(m_Texture.getWidth(), m_Texture.getHeight(), 0.0f, 1.0f, 0.0f, 1.0f);
+		if(textureName != null) {
+			m_Texture = TextureManager.getInstance().getTexture(textureName);
+			m_VertexArray = new VertexArray(m_Texture.getWidth(), m_Texture.getHeight(), 0.0f, 1.0f, 0.0f, 1.0f);
+			
+		}
 		m_Depth = depth;
 	}
 	
 	public abstract void update(float deltaTime);
 	
-	public final void draw() {
+	public void draw() {
 		
 		m_Texture.bind();
 		
