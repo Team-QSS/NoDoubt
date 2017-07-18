@@ -30,3 +30,5 @@ LoadingBG:../res/image/Background/ND-Loading-Background.png
 
 //Ingame
 InGameBackground:../res/image/Background/ND-Game-Background.png
+
+Test:../res/image/Main/ND-Game.png
