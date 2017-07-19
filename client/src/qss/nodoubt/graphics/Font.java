@@ -27,7 +27,7 @@ public class Font {
 	private float[] m_WorldMatrixBuffer = new float[16];
 	
 	Font(int size) {
-		m_Buffer = FileUtils.loatFontFile("../res/font/font.ttf", size);
+		m_Buffer = FileUtils.loatFontFile("../res/font/font.TTF", size);
 		m_Texture = TextureManager.getInstance().getTexture("Font" + size);
 		m_Size = size;
 				
@@ -66,6 +66,9 @@ public class Font {
 	                		q.s1(), q.t1(),
 	                		q.s0(), q.t1()
 	                };
+	                
+	                System.out.println(q.x0() + ", " + q.x1() + ", " + q.y0() + ", " + q.y1());
+	                System.out.println(q.s0() + ", " + q.s1() + ", " + q.t0() + ", " + q.t1());
 	                
 	                m_Texture.bind();
 	                

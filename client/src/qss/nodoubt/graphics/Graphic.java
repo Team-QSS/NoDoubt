@@ -38,7 +38,7 @@ public class Graphic {
 	public void beginDraw() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(m_Program);
-		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+		glEnable(GL_ALPHA);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(4, false, m_OrthoMatrix.get(m_OrthoMatrixBuffer));
