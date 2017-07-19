@@ -15,8 +15,10 @@ void main(void)
 	color = texture(tex, fs_in.tc);
 	
 	if(fc.w > 0.5f) {
-		color.xyz = fc.xyz;
-		color.xyz = color.xyz * fc.x;
+		//color.a = color.r;
+		color.rgb = fc.rgb;
+		color.r = color.a;
+		color.a = 1.0f;
 	}
 	
 	if(color.a < 0.05f) {

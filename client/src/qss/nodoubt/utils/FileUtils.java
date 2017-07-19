@@ -3,6 +3,7 @@ package qss.nodoubt.utils;
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.stb.STBTruetype.*;
+import static org.lwjgl.stb.STBEasyFont.*;
 
 import java.io.*;
 import java.nio.*;
@@ -86,6 +87,11 @@ public class FileUtils {
 		ByteBuffer bitmap = BufferUtils.createByteBuffer(1024 * 1024);
 		STBTTBakedChar.Buffer cdata = STBTTBakedChar.malloc(96);
 		stbtt_BakeFontBitmap(fontBuffer, height, bitmap, 1024, 1024, 32, cdata);
+		
+//		for(int i = 0; i < 1024*1024; i++) {
+//			System.out.printf("%x", bitmap.get(i));
+//			if(i%1024 == 0) System.out.println("");
+//		}
 		
 		Texture tex = new Texture(bitmap, 1024, 1024);
 		TextureManager.getInstance().addTexture("Font" + height, tex);

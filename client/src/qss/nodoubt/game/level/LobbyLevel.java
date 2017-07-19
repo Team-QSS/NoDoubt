@@ -145,8 +145,6 @@ public class LobbyLevel extends GameLevel{
 		updateObjects(deltaTime);
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
-		
-		System.out.println(mouseX +" " + mouseY);
 	}
 	
 }
