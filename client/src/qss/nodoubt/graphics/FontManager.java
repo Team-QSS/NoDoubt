@@ -8,7 +8,7 @@ import org.joml.Vector2f;
 public class FontManager {
 	private static FontManager s_Instance = null;
 	
-	private Map<Integer, Font> m_Fonts = new HashMap<Integer, Font>();
+	private Map<String, Font> m_Fonts = new HashMap<String, Font>();
 
 	
 	public static FontManager getInstance() {
@@ -22,11 +22,11 @@ public class FontManager {
 		
 	}
 	
-	public void drawString(int size, Vector2f pos, String str) {
-		if(!m_Fonts.containsKey(size)) {
-			m_Fonts.put(size, new Font(size));
-		}
+	public void initFont(String path, String name) {
 		
-		m_Fonts.get(size).draw(pos, str);
+	}
+	
+	public Font getFont(String name) {
+		return null;
 	}
 }
