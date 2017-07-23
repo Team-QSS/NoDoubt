@@ -10,10 +10,16 @@ package qss.nodoubt.game.level;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import qss.nodoubt.game.Game;
+import qss.nodoubt.game.*;
 import qss.nodoubt.game.object.*;
+import qss.nodoubt.network.Message;
+import qss.nodoubt.network.Network;
 
 public class LoginLevel extends GameLevel{
+	private String m_ID;
+	private String m_PW;
+	private Message m_Message = null;
+	private Network m_Network = null;
 	//버튼
 	private Button m_Signin = null;		//로그인
 	private Button m_Signup = null;		//회원가입
@@ -30,6 +36,10 @@ public class LoginLevel extends GameLevel{
 		},
 		null);
 		
+		m_Network = Network.getInstance();
+		m_Message = new Message();
+		m_Message = m_Message.setProtocol("LoginRequest");
+
 		m_LoginBG = new Background("LoginBG");
 		addObject(m_LoginBG);
 	}
@@ -37,7 +47,9 @@ public class LoginLevel extends GameLevel{
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
-		
+		m_Message = m_Message.addValue("ID", m_ID);
+		m_Message = m_Message.addValue("Password", m_PW);
+		m_Network.pushMessage(m_Message);
 	}
 
 }

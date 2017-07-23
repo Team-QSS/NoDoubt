@@ -2,6 +2,8 @@ package qss.nodoubt.game.level;
 
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
+import qss.nodoubt.network.*;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 /*
@@ -12,17 +14,27 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 
 public class SignUpLevel extends GameLevel{
-
+	private String m_ID = "Test1";
+	private String m_PW = "Test1";
+	
+	private Message m_Message = null;
+	private Network m_Network = null;
+	
 	private Background m_SignUpBG = null;
 	
 	public SignUpLevel() {
+		m_Network = Network.getInstance();
+		m_Message = new Message();
 		
+		m_Message = m_Message.setProtocol("RegisterRequest");
 	}
 	
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
-		
+		m_Message = m_Message.addValue("ID", m_ID);
+		m_Message = m_Message.addValue("Password", m_PW);
+		m_Network.pushMessage(m_Message);
 	}
 
 }
