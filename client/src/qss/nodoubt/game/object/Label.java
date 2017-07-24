@@ -17,6 +17,6 @@ public class Label extends GameObject{
 	
 	@Override
 	public void draw() {
-		FontManager.getInstance().drawString(50, new Vector2f(0, 0), "Hello world!");
+		
 	}
 }
