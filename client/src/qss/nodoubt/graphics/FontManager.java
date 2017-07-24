@@ -3,8 +3,6 @@ package qss.nodoubt.graphics;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.joml.Vector2f;
-
 public class FontManager {
 	private static FontManager s_Instance = null;
 	
@@ -19,14 +17,17 @@ public class FontManager {
 	}
 	
 	private FontManager() {
-		
+		addFont("../res/font/NanumR", "fontR");
+		addFont("../res/font/NanumB", "fontB");
 	}
 	
-	public void initFont(String path, String name) {
-		
+	public void addFont(String path, String name) {
+		TextureManager.getInstance().addTexture(name, path + ".png");
+		Font font = new Font(path + ".fnt", name);
+		m_Fonts.put(name, font);
 	}
 	
 	public Font getFont(String name) {
-		return null;
+		return m_Fonts.get(name);
 	}
 }

@@ -1,26 +1,48 @@
 package qss.nodoubt.game.level;
 
 import qss.nodoubt.game.object.*;
+import qss.nodoubt.graphics.FontManager;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.input.KeyListener;
 import qss.nodoubt.input.MouseListener;
 
 import java.util.*;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 public abstract class GameLevel {
-	private List<GameObject> m_ObjectList = null;
+	private List<GameObject> m_ObjectList = new ArrayList<GameObject>();
 	private KeyListener m_KeyListener = null;
 	private MouseListener m_MouseListener = null;
 	private boolean m_IsActive = false;
 	
+	private Queue<Text> m_TextDrawingQueue = new LinkedList<Text>();
+	
+	
+	private class Text
+	{
+		String str;
+		String font;
+		Vector2f pos;
+		Vector3f color;
+		Text(String s, String f, Vector2f p, Vector3f c) {str = s; font = f; pos = p; color = c;}
+	}
+	
 	public GameLevel() {
-		m_ObjectList = new ArrayList<GameObject>();
+		
 	}
 	
 	public abstract void update(float deltaTime);
 	
-	public void draw(){
+	public final void draw(){
 		drawObjects();
+		
+		while(!m_TextDrawingQueue.isEmpty()) {
+			Text t = m_TextDrawingQueue.poll();
+			FontManager.getInstance().getFont(t.font).draw(t.pos, t.str, t.color);
+		}
 	};
 	
 	protected final void updateObjects(float deltaTime) {
@@ -109,5 +131,16 @@ public abstract class GameLevel {
 		for(GameObject obj : m_ObjectList) {
 			obj.act();
 		}
+	}
+	
+	/**
+	 * 텍스트 그리기 요청, 미리 받아두었다가 draw()함수에서 호출함
+	 * @param fontName 폰트 이름 일반폰트는 "fontR" 볼드체 폰트는 "fontB"로 넣으면 됨
+	 * @param str 출력할 텍스트
+	 * @param position 위치
+	 * @param color 색상
+	 */
+	protected final void drawTextCall(String fontName, String str, Vector2f position, Vector3f color) {
+		m_TextDrawingQueue.offer(new Text(str, fontName, position, color));
 	}
 }

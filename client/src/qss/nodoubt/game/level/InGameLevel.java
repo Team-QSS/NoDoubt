@@ -1,5 +1,7 @@
 package qss.nodoubt.game.level;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import qss.nodoubt.game.object.*;
 
 public class InGameLevel extends GameLevel{
@@ -9,13 +11,12 @@ public class InGameLevel extends GameLevel{
 	}
 	public InGameLevel() {
 		addObject(new Background("InGameBackground"));
-		addObject(new Label());
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		updateObjects(deltaTime);
-		
+		drawTextCall("fontB", "Hello world!", new Vector2f(0.0f, 0.0f), new Vector3f(0.0f, 1.0f, 1.0f));
 	}
 
 }
