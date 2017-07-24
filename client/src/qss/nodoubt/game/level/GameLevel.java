@@ -19,7 +19,7 @@ public abstract class GameLevel {
 	
 	public abstract void update(float deltaTime);
 	
-	public void draw(){
+	public final void draw(){
 		drawObjects();
 	};
 	

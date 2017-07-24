@@ -14,9 +14,4 @@ public class Label extends GameObject{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public void draw() {
-		
-	}
 }

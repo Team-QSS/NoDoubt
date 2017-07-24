@@ -36,7 +36,7 @@ public abstract class GameObject {
 	
 	public abstract void update(float deltaTime);
 	
-	public void draw() {
+	public final void draw() {
 		
 		m_Texture.bind();
 		
