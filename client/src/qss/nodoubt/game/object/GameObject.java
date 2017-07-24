@@ -7,6 +7,8 @@ import qss.nodoubt.input.Input;
 import qss.nodoubt.input.KeyListener;
 import qss.nodoubt.input.MouseListener;
 
+import static org.lwjgl.opengl.GL20.glUniform4f;
+
 import org.joml.*;
 
 public abstract class GameObject {
@@ -37,8 +39,9 @@ public abstract class GameObject {
 	public abstract void update(float deltaTime);
 	
 	public final void draw() {
-		
 		m_Texture.bind();
+		
+		glUniform4f(5, 0.0f, 0.0f, 0.0f, 0.0f);
 		
 		m_VertexArray.draw(getWorldMatrix());
 	}

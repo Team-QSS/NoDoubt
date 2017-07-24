@@ -2,18 +2,8 @@ package qss.nodoubt.utils;
 
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.stb.STBVorbis.*;
-import static org.lwjgl.stb.STBTruetype.*;
-import static org.lwjgl.stb.STBEasyFont.*;
-
 import java.io.*;
 import java.nio.*;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GLXARBGetProcAddress;
-import org.lwjgl.stb.STBTTBakedChar;
-
-import qss.nodoubt.graphics.Texture;
-import qss.nodoubt.graphics.TextureManager;
 
 public class FileUtils {
 
@@ -63,39 +53,5 @@ public class FileUtils {
 		ShortBuffer soundBuffer = null;
 		soundBuffer = stb_vorbis_decode_filename(path, channels, sample_rate);
 		return soundBuffer;
-	}
-	
-	public static STBTTBakedChar.Buffer loatFontFile(String path, int height) {
-		File fontFile = new File(path);
-		long size = fontFile.length();
-		ByteBuffer fontBuffer = BufferUtils.createByteBuffer((int) size);
-		
-		try {
-			int len;
-			FileInputStream fis = new FileInputStream(fontFile);
-			byte buffer[] = new byte[1024];
-			while ((len = fis.read(buffer)) > 0) {
-				fontBuffer.put(buffer, 0, len);
-			}
-			fis.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		fontBuffer.flip();
-		
-		ByteBuffer bitmap = BufferUtils.createByteBuffer(1024 * 1024);
-		STBTTBakedChar.Buffer cdata = STBTTBakedChar.malloc(96);
-		stbtt_BakeFontBitmap(fontBuffer, height, bitmap, 1024, 1024, 32, cdata);
-		
-//		for(int i = 0; i < 1024*1024; i++) {
-//			System.out.printf("%x", bitmap.get(i));
-//			if(i%1024 == 0) System.out.println("");
-//		}
-		
-		Texture tex = new Texture(bitmap, 1024, 1024);
-		TextureManager.getInstance().addTexture("Font" + height, tex);
-		
-		return cdata;
 	}
 }

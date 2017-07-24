@@ -14,11 +14,8 @@ void main(void)
 	vec4 fc = fs_in.c;
 	color = texture(tex, fs_in.tc);
 	
-	if(fc.w > 0.5f) {
-		//color.a = color.r;
+	if(fc.a > 0.5f) {
 		color.rgb = fc.rgb;
-		color.r = color.a;
-		color.a = 1.0f;
 	}
 	
 	if(color.a < 0.05f) {

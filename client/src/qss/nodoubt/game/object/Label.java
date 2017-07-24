@@ -1,9 +1,5 @@
 package qss.nodoubt.game.object;
 
-import org.joml.Vector2f;
-
-import qss.nodoubt.graphics.FontManager;
-
 public class Label extends GameObject{
 	public Label() {
 		super(null, 0);
