@@ -7,6 +7,7 @@ public class Button extends GameObject {
 	private final static int HALFHEIGHT = 72;
 	
 	private boolean m_Actived = false;
+	public boolean m_Pressedin = false;
 	private String textureName = null;
 	private String activetextureName = null;
 	
