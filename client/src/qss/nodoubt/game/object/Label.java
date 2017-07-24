@@ -1,8 +1,13 @@
 package qss.nodoubt.game.object;
 
 public class Label extends GameObject{
-	public Label() {
-		super(null, 0);
+	
+	private String textureName = null;
+	
+	public Label(String textureName, float x, float y) {
+		super(textureName, 0);
+		setPosition(x, y);
+		this.textureName = textureName;
 	}
 
 	@Override
