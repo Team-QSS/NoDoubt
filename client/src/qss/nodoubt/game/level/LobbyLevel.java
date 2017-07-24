@@ -23,8 +23,8 @@ public class LobbyLevel extends GameLevel{
 		"QuitButton1", "QuitButton2"
 	};
 	
-	private float mouseX;
-	private float mouseY;	
+//	private float mouseX;
+//	private float mouseY;	
 	
 	//생성자
 	public LobbyLevel(){
@@ -47,9 +47,7 @@ public class LobbyLevel extends GameLevel{
 						}
 					}
 				},
-				(action, button) ->{
-					mouseOnButton(button, action, 0);
-				}
+				null
 		);
 		m_Buttons[1].setListener(
 //				(action, key) ->{
@@ -60,9 +58,7 @@ public class LobbyLevel extends GameLevel{
 //					}
 //				}
 				null,
-				(action, button) ->{
-					mouseOnButton(button, action, 1);
-				}
+				null
 		);
 		
 		m_Buttons[2].setListener(
@@ -74,9 +70,7 @@ public class LobbyLevel extends GameLevel{
 //					}
 //				}
 				null,
-				(action, button) ->{
-					mouseOnButton(button, action, 2);
-				}
+				null
 		);
 		
 		m_Buttons[3].setListener(
@@ -87,9 +81,8 @@ public class LobbyLevel extends GameLevel{
 						}
 					}
 				},
-				(action, button) ->{
-					mouseOnButton(button, action, 3);
-				});
+				null
+		);
 		
 		m_Buttons[4].setListener(
 				(action, key) ->{
@@ -99,9 +92,7 @@ public class LobbyLevel extends GameLevel{
 						}
 					}
 				},
-				(action, button) ->{
-					mouseOnButton(button, action, 4);
-				}
+				null
 		);
 		
 		
@@ -135,40 +126,12 @@ public class LobbyLevel extends GameLevel{
 		}
 
 	}
-
-	private void mouseOnButton(int button, int action, int index){
-		if(m_Buttons[index].onButton(mouseX, mouseY)){
-			if(button == GLFW_MOUSE_BUTTON_LEFT){
-				if(action == GLFW_PRESS){
-					if(m_ActiveIndex == 0)	m_Buttons[index].toggle();
-					else {m_Buttons[index].toggle(); m_Buttons[m_ActiveIndex].toggle();}
-				}
-				if(action == GLFW_RELEASE){
-					switch(index){
-					case 0:
-						Game.getInstance().setNextLevel(new LoadingLevel());
-						break;
-					case 1:
-						break;
-					case 2:
-						break;
-					case 3:
-						Game.getInstance().setNextLevel(new CreditLevel());
-					case 4:
-						Game.getInstance().goodBye();
-					}
-				}
-			}
-		}else{
-			m_Buttons[index].toggle();
-			m_Buttons[m_ActiveIndex].toggle();
-		}
-	}
+	
 	@Override
 	public void update(float deltaTime) {
 		updateObjects(deltaTime);
-		mouseX = Input.getInstance().getCursorPosition().x;
-		mouseY = Input.getInstance().getCursorPosition().y;
+//		mouseX = Input.getInstance().getCursorPosition().x;
+//		mouseY = Input.getInstance().getCursorPosition().y;
 	}
 	
 }

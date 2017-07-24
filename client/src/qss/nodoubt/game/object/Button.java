@@ -47,7 +47,6 @@ public class Button extends GameObject {
 	public boolean isActived(){
 		return m_Actived;				//활성화된 버튼
 	}
-	
 	/**
 	 * 버튼 활성화 상태 반전
 	 */
