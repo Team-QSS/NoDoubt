@@ -48,26 +48,6 @@ public class LobbyLevel extends GameLevel{
 					}
 				},
 				null
-//				(action, button)->{
-//					if(m_Buttons[0].onButton(mouseX, mouseY) || m_ActiveIndex == 0)
-//						buttonFunc(action, button, 0);
-//					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT){
-//						if(m_Buttons[0].onButton(mouseX, mouseY)){
-//							m_Buttons[0].toggle();
-//							m_Buttons[m_ActiveIndex].toggle();
-//						}
-//					}
-//					else if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
-//						if(m_Buttons[0].onButton(mouseX, mouseY)){
-//							m_ActiveIndex = 0;
-//							Game.getInstance().setNextLevel(new LoadingLevel());
-//						}
-//						else{
-//							m_Buttons[0].toggle();
-//							m_Buttons[m_ActiveIndex].toggle();
-//						}
-//					}
-//				}
 		);
 		m_Buttons[1].setListener(
 //				(action, key) ->{
@@ -79,10 +59,6 @@ public class LobbyLevel extends GameLevel{
 //				}
 				null,
 				null
-//				(action, button) -> {
-//					if(m_Buttons[1].onButton(mouseX, mouseY) || m_ActiveIndex == 1)
-//						buttonFunc(action, button, 1);
-//				}
 		);
 		
 		m_Buttons[2].setListener(
@@ -95,10 +71,6 @@ public class LobbyLevel extends GameLevel{
 //				}
 				null,
 				null
-//				(action, button) -> {
-//					if(m_Buttons[2].onButton(mouseX, mouseY) || m_ActiveIndex == 2)
-//						buttonFunc(action, button, 2);
-//				}
 		);
 		
 		m_Buttons[3].setListener(
@@ -110,10 +82,6 @@ public class LobbyLevel extends GameLevel{
 					}
 				},
 				null
-//				(action, button) -> {
-//					if(m_Buttons[3].onButton(mouseX, mouseY) || m_ActiveIndex == 3)
-//						buttonFunc(action, button, 3);
-//				}
 		);
 		
 		m_Buttons[4].setListener(
@@ -125,10 +93,6 @@ public class LobbyLevel extends GameLevel{
 					}
 				},
 				null
-//				(action, button) -> {
-//					if(m_Buttons[4].onButton(mouseX, mouseY) || m_ActiveIndex == 4)
-//						buttonFunc(action, button, 4);
-//				}
 		);
 		
 		
@@ -154,16 +118,14 @@ public class LobbyLevel extends GameLevel{
 				}
 			},
 			(action, button) ->{
-				
-				
 				if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT){
 					for(int index = 0; index < m_Buttons.length; index++){
 						if(m_Buttons[index].onButton(mouseX, mouseY)){
 							m_Buttons[index].toggle();
 							m_Buttons[m_ActiveIndex].toggle();
-							m_Buttons[index].m_Pressedin = true;
+							m_Buttons[index].setPressedin(true);
 						}else{
-							m_Buttons[index].m_Pressedin = false;
+							m_Buttons[index].setPressedin(false);
 						}
 					}
 				}
@@ -179,7 +141,7 @@ public class LobbyLevel extends GameLevel{
 							case 4: Game.getInstance().goodBye();
 							}
 						}
-						else if(m_Buttons[index].m_Pressedin){
+						else if(m_Buttons[index].getPressedin()){
 							m_Buttons[index].toggle();
 							m_Buttons[m_ActiveIndex].toggle();
 						}
@@ -196,24 +158,6 @@ public class LobbyLevel extends GameLevel{
 
 	}
 	
-//	private void buttonFunc(int action, int button, int index){
-//		if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT){
-//			if(m_Buttons[index].onButton(mouseX, mouseY)){
-//				m_Buttons[index].toggle();
-//				m_Buttons[m_ActiveIndex].toggle();
-//			}
-//		}
-//		else if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
-//			if(m_Buttons[index].onButton(mouseX, mouseY)){
-////				m_ActiveIndex = index;
-////				Game.getInstance().setNextLevel(new LoadingLevel());
-//			}
-//			else{
-//				m_Buttons[index].toggle();
-//				m_Buttons[m_ActiveIndex].toggle();
-//			}
-//		}
-//	}
 	
 	@Override
 	public void update(float deltaTime) {

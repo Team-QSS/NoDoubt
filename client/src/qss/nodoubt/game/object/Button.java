@@ -7,7 +7,7 @@ public class Button extends GameObject {
 	private final static int HALFHEIGHT = 72;
 	
 	private boolean m_Actived = false;
-	public boolean m_Pressedin = false;
+	private boolean m_Pressedin = false;
 	private String textureName = null;
 	private String activetextureName = null;
 	
@@ -22,6 +22,23 @@ public class Button extends GameObject {
 		setEventListener(key, mouse);
 	}
 
+	/**
+	 * m_Pressedin 변수를 설정하는 메서드이다.
+	 * @param b 마우스 클릭이 버튼 속에서 이루어졌다면 true, 아니면 false
+	 */
+	public void setPressedin(boolean b){
+		m_Pressedin = b;
+	}
+	/**
+	 * @return m_Pressedin의 결과를 리턴한다. 
+	 */
+	public boolean getPressedin(){
+		return m_Pressedin;
+	}
+	
+	/**
+	 * 마우스가 버튼 위에 있는지 아닌지를 리턴하는 메서드이다.
+	 */
 	public boolean onButton(float mouseX, float mouseY){
 		if((mouseX >= getPosition().x-HALFWIDTH)&&(mouseX <= getPosition().x+HALFWIDTH)){
 			if((mouseY >= getPosition().y-HALFHEIGHT)&&(mouseY <= getPosition().y+HALFHEIGHT)){
