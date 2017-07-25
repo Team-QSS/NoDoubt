@@ -40,6 +40,8 @@ WaitingBG:../res/image/Background/ND-Waiting-Background
 CreditBG:../res/image/Background/ND-Credit-Background.png
 LoadingBG:../res/image/Background/ND-Loading-Background.png
 
+
+
 //Ingame
 InGameBackground:../res/image/Background/ND-Game-Background.png
 IButton1:../res/image/Button&Obj/Game-Button11.png
@@ -65,3 +67,11 @@ Result4:../res/image/Button&Obj/Game-4.png
 Result5:../res/image/Button&Obj/Game-5.png
 Result6:../res/image/Button&Obj/Game-6.png
 Stump:../res/image/Button&Obj/Game-Stump.png
+
+//인게임오토바이
+IBikeR:../res/image/Button&Obj/Game-MC1.png
+IBikeB:../res/image/Button&Obj/Game-MC2.png
+IBikeG:../res/image/Button&Obj/Game-MC3.png
+IBikeY:../res/image/Button&Obj/Game-MC4.png
+IBikeW:../res/image/Button&Obj/Game-MC5.png
+IBikeP:../res/image/Button&Obj/Game-MC6.png
