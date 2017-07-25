@@ -22,6 +22,7 @@ import qss.nodoubt.network.Network;
 public class LoginLevel extends GameLevel{
 	private StringBuffer m_IDBuffer = null;
 	private StringBuffer m_PWBuffer = null;
+	private StringBuffer m_Star = null;
 	private int m_ActiveBuffer = 0;
 	private boolean m_isShiftPressed = false;
 	
@@ -31,9 +32,6 @@ public class LoginLevel extends GameLevel{
 	private Button m_Signin = null;		//로그인
 	private Button m_Signup = null;		//회원가입
 	
-	private Label m_IDLabel = null;
-	private Label m_PWLabel = null;
-	
 	private float mouseX;
 	private float mouseY;
 	//배경
@@ -41,12 +39,11 @@ public class LoginLevel extends GameLevel{
 	
 	public LoginLevel() {
 		
-		m_Signin = new Button ("SigninButton", null, 0, -329);
-		m_Signup = new Button ("SignupButton", null, 0, -455);
-		m_IDLabel = new Label ("IDLabel", -370, -20);
-		m_PWLabel = new Label ("PWLabel", -380, -170);
+		m_Signin = new Button ("SigninButton", null, 0, -329, 680, 101);
+		m_Signup = new Button ("RegisterButton", null, 0, -455, 117, 32);
 		m_IDBuffer = new StringBuffer();
-		m_PWBuffer = new StringBuffer();		
+		m_PWBuffer = new StringBuffer();
+		m_Star = new StringBuffer();
 		
 		m_Signin.setListener(
 				(action, key) -> {
@@ -68,7 +65,7 @@ public class LoginLevel extends GameLevel{
 				(action, button) ->{
 						if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 							if(m_Signup.onButton(mouseX, mouseY)){
-						//	Game.getInstance().setNextLevel(new SignUpLevel());
+							Game.getInstance().setNextLevel(new SignUpLevel());
 						}
 					}
 				});
@@ -195,6 +192,8 @@ public class LoginLevel extends GameLevel{
 								m_isShiftPressed = false;
 						}
 					}
+					
+					
 					else if(m_ActiveBuffer == 1){
 						if(action == GLFW_PRESS){
 							if(key == GLFW_KEY_LEFT_SHIFT){
@@ -290,9 +289,9 @@ public class LoginLevel extends GameLevel{
 							}
 						}
 						else if(action == GLFW_REPEAT){
-							if(m_IDBuffer.length() > 0){
+							if(m_PWBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
-									m_IDBuffer.deleteCharAt(m_IDBuffer.length()-1);
+									m_PWBuffer.deleteCharAt(m_PWBuffer.length()-1);
 								}
 							}
 						}
@@ -317,8 +316,6 @@ public class LoginLevel extends GameLevel{
 				});
 		
 		m_LoginBG = new Background("LoginBG");
-		addObject(m_IDLabel);
-		addObject(m_PWLabel);
 		addObject(m_Signin);
 		addObject(m_Signup);
 		addObject(m_LoginBG);
@@ -331,9 +328,25 @@ public class LoginLevel extends GameLevel{
 		mouseY = Input.getInstance().getCursorPosition().y;
 		m_Message = m_Message.addValue("ID", m_IDBuffer.toString());
 		m_Message = m_Message.addValue("Password", m_PWBuffer.toString());
-				
-		drawTextCall("fontB21", m_IDBuffer.toString(), new Vector2f(-325,25), new Vector3f(0,0,0));
-		drawTextCall("fontB21", m_PWBuffer.toString(), new Vector2f(-325,-125), new Vector3f(0,0,0));
+		if(m_Star.length() > m_PWBuffer.length()){
+			for(int i = 0; i < m_Star.length() - m_PWBuffer.length(); i++){
+				m_Star.deleteCharAt(m_Star.length()-1);
+			}
+		}else if(m_Star.length() < m_PWBuffer.length()){
+			for(int i = 0; i < m_PWBuffer.length() - m_Star.length(); i++){
+				m_Star.append("*");
+			}
+		}
+		
+		if(m_IDBuffer.length()==0){
+			drawTextCall("fontR11", "ID", new Vector2f(-313, 3), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+		}
+		if(m_PWBuffer.length()==0){
+			drawTextCall("fontR11", "PW", new Vector2f(-313, -148), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+		}
+		
+		drawTextCall("fontR11", m_IDBuffer.toString(), new Vector2f(-313,3), new Vector3f(0,0,0));
+		drawTextCall("fontR11", m_Star.toString(), new Vector2f(-313,-148), new Vector3f(0,0,0));
 	}
 }
 

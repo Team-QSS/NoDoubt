@@ -8,7 +8,12 @@
 IDLabel:../res/image/Button&Obj/Login-ID.png
 PWLabel:../res/image/Button&Obj/Login-PW.png
 SigninButton:../res/image/Button&Obj/Login-Signin.png
-SignupButton:../res/image/Button&Obj/Login-Signup.png
+RegisterButton:../res/image/Button&Obj/Login-Signup.png
+
+//회원가입 화면
+SignupButton:../res/image/Button&Obj/SignUp-Signup.png
+IDLabel:../res/image/Button&Obj/Login-ID.png
+PWLabel:../res/image/Button&Obj/Login-PW.png
 //로비화면버튼
 GameJoinButton1:../res/image/Button&Obj/Lobby-Start1.png
 GameJoinButton2:../res/image/Button&Obj/Lobby-Start2.png
@@ -28,6 +33,7 @@ Blank:../res/image/Button&Obj/Blank.png
 
 //배경
 LoginBG:../res/image/Background/ND-Login-Background.png
+SignupBG:../res/image/Background/ND-SignUp-Waiting.png
 LobbyBG:../res/image/Background/ND-Lobby-Background.png
 LoadBG:../res/image/Background/ND-Loading-Background.png
 WaitingBG:../res/image/Background/ND-Waiting-Background
