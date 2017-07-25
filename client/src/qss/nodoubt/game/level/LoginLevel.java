@@ -332,8 +332,8 @@ public class LoginLevel extends GameLevel{
 		m_Message = m_Message.addValue("ID", m_IDBuffer.toString());
 		m_Message = m_Message.addValue("Password", m_PWBuffer.toString());
 				
-		drawTextCall("fontB", m_IDBuffer.toString(), new Vector2f(-325,25), new Vector3f(0,0,0));
-		drawTextCall("fontB", m_PWBuffer.toString(), new Vector2f(-325,-125), new Vector3f(0,0,0));
+		drawTextCall("fontB21", m_IDBuffer.toString(), new Vector2f(-325,25), new Vector3f(0,0,0));
+		drawTextCall("fontB21", m_PWBuffer.toString(), new Vector2f(-325,-125), new Vector3f(0,0,0));
 	}
 }
 
