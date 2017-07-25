@@ -49,7 +49,12 @@ public class LoginLevel extends GameLevel{
 		m_PWBuffer = new StringBuffer();		
 		
 		m_Signin.setListener(
-				null,
+				(action, key) -> {
+					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
+						m_Network.pushMessage(m_Message);
+						Game.getInstance().setNextLevel(new LobbyLevel());
+					}
+				},
 				(action, button) ->{
 						if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 							if(m_Signin.onButton(mouseX, mouseY)){
@@ -87,6 +92,9 @@ public class LoginLevel extends GameLevel{
 						if(action == GLFW_PRESS){
 							if(key == GLFW_KEY_LEFT_SHIFT){
 								m_isShiftPressed = true;
+							}
+							if(key == GLFW_KEY_TAB){
+								m_ActiveBuffer = 1;
 							}
 							if(m_IDBuffer.length() < 16){
 								if(m_isShiftPressed){
@@ -170,6 +178,13 @@ public class LoginLevel extends GameLevel{
 								}
 								}
 							}
+							if(m_IDBuffer.length() > 0){
+								if(key == GLFW_KEY_BACKSPACE){
+									m_IDBuffer.deleteCharAt(m_IDBuffer.length()-1);
+								}
+							}
+						}
+						else if(action == GLFW_REPEAT){
 							if(m_IDBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
 									m_IDBuffer.deleteCharAt(m_IDBuffer.length()-1);
@@ -271,6 +286,13 @@ public class LoginLevel extends GameLevel{
 							if(m_PWBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
 									m_PWBuffer.deleteCharAt(m_PWBuffer.length()-1);
+								}
+							}
+						}
+						else if(action == GLFW_REPEAT){
+							if(m_IDBuffer.length() > 0){
+								if(key == GLFW_KEY_BACKSPACE){
+									m_IDBuffer.deleteCharAt(m_IDBuffer.length()-1);
 								}
 							}
 						}
