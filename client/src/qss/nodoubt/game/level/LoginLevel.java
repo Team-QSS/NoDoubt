@@ -328,6 +328,7 @@ public class LoginLevel extends GameLevel{
 		mouseY = Input.getInstance().getCursorPosition().y;
 		m_Message = m_Message.addValue("ID", m_IDBuffer.toString());
 		m_Message = m_Message.addValue("Password", m_PWBuffer.toString());
+		
 		if(m_Star.length() > m_PWBuffer.length()){
 			for(int i = 0; i < m_Star.length() - m_PWBuffer.length(); i++){
 				m_Star.deleteCharAt(m_Star.length()-1);
