@@ -3,8 +3,8 @@ package qss.nodoubt.game.object;
 import qss.nodoubt.input.*;
 
 public class Button extends GameObject {
-	private final static int HALFWIDTH = 150;
-	private final static int HALFHEIGHT = 72;
+	private int m_HalfWidth = 150;
+	private int m_HalfHeight = 72;
 	
 	private boolean m_Actived = false;
 	private boolean m_Pressedin = false;
@@ -16,6 +16,15 @@ public class Button extends GameObject {
 		setPosition(x, y);
 		this.textureName = textureName;
 		this.activetextureName = activetextureName;
+	}
+
+	public Button(String textureName, String activetextureName, float x, float y, int width, int height) {
+		super(textureName, 0);
+		setPosition(x, y);
+		this.textureName = textureName;
+		this.activetextureName = activetextureName;
+		m_HalfWidth = width/2;
+		m_HalfHeight = height/2;
 	}
 	
 	public void setListener(KeyListener key, MouseListener mouse){
@@ -40,8 +49,8 @@ public class Button extends GameObject {
 	 * 마우스가 버튼 위에 있는지 아닌지를 리턴하는 메서드이다.
 	 */
 	public boolean onButton(float mouseX, float mouseY){
-		if((mouseX >= getPosition().x-HALFWIDTH)&&(mouseX <= getPosition().x+HALFWIDTH)){
-			if((mouseY >= getPosition().y-HALFHEIGHT)&&(mouseY <= getPosition().y+HALFHEIGHT)){
+		if((mouseX >= getPosition().x-m_HalfWidth)&&(mouseX <= getPosition().x+m_HalfWidth)){
+			if((mouseY >= getPosition().y-m_HalfHeight)&&(mouseY <= getPosition().y+m_HalfHeight)){
 				return true;
 			}
 			else{

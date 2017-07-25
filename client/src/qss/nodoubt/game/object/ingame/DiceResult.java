@@ -14,5 +14,9 @@ public class DiceResult extends GameObject{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void setResult(int n) {
+		setTexture("Result" + n);
+	}
 
 }
