@@ -11,9 +11,12 @@ import qss.nodoubt.game.object.*;
  * 이 클래스는 대기실을 들어가기 전,
  * 들어갈 수 있는 다른 대기실을 골라 들어가거나
  * 대기실을 생성할 수 있는 레벨로 갈 수 있는 역할을 하는
- * 레벨이다.*/
+ * 레벨이다.
+ * */
 
 public class LoadingLevel extends GameLevel{
+	
+	
 	//배경
 	private Background m_LoadingBG = null;
 	
