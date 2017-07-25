@@ -69,20 +69,11 @@ public class LoginLevel extends GameLevel{
 						}
 					}
 				});
-		setEventListener((action,  key) -> { 
-			if(key == GLFW_KEY_ENTER){
-				if(action == GLFW_PRESS){
-					Game.getInstance().setNextLevel(new LobbyLevel());
-				}
-			}
-		},
-		null);
 		
 		m_Network = Network.getInstance();
 		m_Message = new Message();
 		m_Message = m_Message.setProtocol("LoginRequest");
 
-		
 		setEventListener(
 				(action, key) ->{
 					if(m_ActiveBuffer == 0){

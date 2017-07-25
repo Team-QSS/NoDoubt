@@ -49,6 +49,36 @@ public class SignUpLevel extends GameLevel{
 		m_SignUpBG = new Background("SignupBG");
 		m_Signup = new Button("SignupButton", null, 0, -395);
 		
+		m_Signup.setListener(
+				(action, key) ->{
+					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
+						if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
+							m_Network.pushMessage(m_Message);
+							Game.getInstance().setNextLevel(new LoginLevel());
+						}else{
+							m_IDBuffer.delete(0, m_IDBuffer.length());
+							m_PWBuffer.delete(0, m_PWBuffer.length());
+							m_PWRepeat.delete(0, m_PWRepeat.length());
+							m_ActiveBuffer = 0;
+						}
+					}
+				},
+				(action, button) ->{
+					if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
+						if(m_Signup.onButton(mouseX, mouseY)){
+							if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
+								m_Network.pushMessage(m_Message);
+								Game.getInstance().setNextLevel(new LoginLevel());
+							}else{
+								m_IDBuffer.delete(0, m_IDBuffer.length());
+								m_PWBuffer.delete(0, m_PWBuffer.length());
+								m_PWRepeat.delete(0, m_PWRepeat.length());
+								m_ActiveBuffer = 0;
+							}
+						}
+					}
+				});
+		
 		
 		setEventListener(
 				(action, key) ->{
@@ -383,11 +413,14 @@ public class SignUpLevel extends GameLevel{
 				(action, button)->{
 					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT){
 						if(mouseX>-340 && mouseX<340){
-							if(mouseY<22 && mouseY>-65){
+							if(mouseY<40 && mouseY>-46){
 								m_ActiveBuffer = 0;
 							}
-							else if(mouseY<-129 && mouseY>-216){
+							else if(mouseY<-88 && mouseY>-176){
 								m_ActiveBuffer = 1;
+							}
+							else if(mouseY<-216 && mouseY>-304){
+								m_ActiveBuffer = 2;
 							}
 						}
 					}
