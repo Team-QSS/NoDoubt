@@ -14,6 +14,7 @@ public class FileUtils {
 	 */
 	public static String loadTextFile(String path) {
 		StringBuilder result = new StringBuilder();
+
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(path));
 			String buffer;

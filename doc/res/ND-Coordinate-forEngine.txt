@@ -13,7 +13,7 @@ Game-ButtonD(-777, -405)//의심 버튼
 Game-Stump(718, 44)//주사위 굴리는곳
 Game-ButtonR(714, -204)//주사위 던지기 버튼
 Game-1~Game-6(714, -431)//우측 하단 결과표시 숫자
-Time(578, 520)//우측 상단 시간, 21pt, #9a6f52, Bold
+*Time(578, 520)//우측 상단 시간, 21pt, #9a6f52, Bold
 *TurnOf(465, 401)//우측 상단 턴 안내, 11pt, 위와 같음
 *Nickname(465, 347)//우측 상단 턴 안내, 위와 같음, Red #ff3939, Blue #2375eb, Green #368c49, Yellow #fff41f, White #ffffff, Purple #a924ff
 *ResultIs(465, -302)//우측 하단 결과표시 안내, TurnOf와 같음

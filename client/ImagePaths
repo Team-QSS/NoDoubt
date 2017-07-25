@@ -2,7 +2,7 @@
 //빈줄도 주석처리되어 무시됨
 //텍스쳐 이름:텍스쳐 경로 로 작성할것
 //공백도 포함하니 공백문자는 의도한게 아니면 넣지 말것
-//Font로 시작하는 이름은 글자 출력을 위해 사용하는 텍스쳐이니 사용하지 말것
+//font로 시작하는 이름은 글자 출력을 위해 사용하는 텍스쳐이니 사용하지 말것
 
 //로비화면버튼
 GameJoinButton1:../res/image/Button&Obj/Lobby-Start1.png
@@ -31,5 +31,18 @@ LoadingBG:../res/image/Background/ND-Loading-Background.png
 
 //Ingame
 InGameBackground:../res/image/Background/ND-Game-Background.png
-
-Test:../res/image/Main/ND-Game.png
+IButton1:../res/image/Button&Obj/Game-Button1.png
+IButton2:../res/image/Button&Obj/Game-Button2.png
+IButton3:../res/image/Button&Obj/Game-Button3.png
+IButton4:../res/image/Button&Obj/Game-Button4.png
+IButton5:../res/image/Button&Obj/Game-Button5.png
+IButton6:../res/image/Button&Obj/Game-Button6.png
+IButtonDoubt:../res/image/Button&Obj/Game-ButtonD.png
+IButtonRoll:../res/image/Button&Obj/Game-ButtonR.png
+Result1:../res/image/Button&Obj/Game-1.png
+Result2:../res/image/Button&Obj/Game-2.png
+Result3:../res/image/Button&Obj/Game-3.png
+Result4:../res/image/Button&Obj/Game-4.png
+Result5:../res/image/Button&Obj/Game-5.png
+Result6:../res/image/Button&Obj/Game-6.png
+Stump:../res/image/Button&Obj/Game-Stump.png

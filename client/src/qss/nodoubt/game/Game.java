@@ -43,6 +43,9 @@ public class Game {
 		
 		String str = FileUtils.loadTextFile("ImagePaths");
 		ResourceUtils.loadImages(str);
+		
+		str = FileUtils.loadTextFile("FontPaths");
+		ResourceUtils.loadFonts(str);
 	}
 
 	/**

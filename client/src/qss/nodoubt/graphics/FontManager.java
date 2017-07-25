@@ -17,11 +17,10 @@ public class FontManager {
 	}
 	
 	private FontManager() {
-		addFont("../res/font/NanumR", "fontR");
-		addFont("../res/font/NanumB", "fontB");
+		
 	}
 	
-	public void addFont(String path, String name) {
+	public void addFont(String name, String path) {
 		TextureManager.getInstance().addTexture(name, path + ".png");
 		Font font = new Font(path + ".fnt", name);
 		m_Fonts.put(name, font);
