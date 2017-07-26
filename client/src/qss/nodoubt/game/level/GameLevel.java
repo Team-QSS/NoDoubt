@@ -5,6 +5,7 @@ import qss.nodoubt.graphics.FontManager;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.input.KeyListener;
 import qss.nodoubt.input.MouseListener;
+import qss.nodoubt.input.ScrollListener;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ public abstract class GameLevel {
 	private List<GameObject> m_ObjectList = new ArrayList<GameObject>();
 	private KeyListener m_KeyListener = null;
 	private MouseListener m_MouseListener = null;
+	private ScrollListener m_ScrollListener = null;
 	private boolean m_IsActive = false;
 	
 	private Queue<Text> m_TextDrawingQueue = new LinkedList<Text>();
@@ -119,6 +121,16 @@ public abstract class GameLevel {
 		}
 	}
 	
+	protected final void setScrollListener(ScrollListener scroll) {
+		Input input = Input.getInstance();
+		
+		m_ScrollListener = scroll;
+		
+		if(m_ScrollListener != null && m_IsActive) {
+			input.addScrollListener(m_ScrollListener);
+		}
+	}
+	
 	/**
 	 * 레벨 초기화
 	 * 레벨이 처음 동작하기 전 프레임의 마지막에 호출
@@ -127,6 +139,7 @@ public abstract class GameLevel {
 	public final void act() {
 		m_IsActive = true;
 		setEventListener(m_KeyListener, m_MouseListener);
+		setScrollListener(m_ScrollListener);
 		
 		for(GameObject obj : m_ObjectList) {
 			obj.act();

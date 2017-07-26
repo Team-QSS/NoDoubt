@@ -65,5 +65,4 @@ public class InGameLevel extends GameLevel{
 		drawTextCall("fontB11", "Result is", new Vector2f(465, -302), UI_COLOR);
 		m_Board.update(deltaTime);
 	}
-
 }

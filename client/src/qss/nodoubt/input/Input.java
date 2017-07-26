@@ -15,6 +15,7 @@ public class Input {
 	
 	private Set<KeyListener> m_KeyListenerSet = new HashSet<KeyListener>();
 	private Set<MouseListener> m_MouseListenerSet = new HashSet<MouseListener>();
+	private Set<ScrollListener> m_ScrollListenerSet = new HashSet<ScrollListener>();
 	
 	public static Input getInstance() {
 		if(s_Instance == null) {
@@ -43,6 +44,14 @@ public class Input {
 				}
 			}
 			
+		}, new GLFWScrollCallback() {
+			
+			@Override
+			public void invoke(long window, double xoffset, double yoffset) {
+				for(ScrollListener listener : m_ScrollListenerSet) {
+					listener.invoke(yoffset);
+				}
+			}
 		});
 	}
 	
@@ -67,6 +76,18 @@ public class Input {
 	public void removeMouseListener(MouseListener listener) {
 		if(m_MouseListenerSet.contains(listener)) {
 			m_MouseListenerSet.remove(listener);
+		}
+	}
+	
+	public void addScrollListener(ScrollListener listener) {
+		if(!m_ScrollListenerSet.contains(listener)) {
+			m_ScrollListenerSet.add(listener);
+		}
+	}
+	
+	public void removeScrollListener(ScrollListener listener) {
+		if(m_ScrollListenerSet.contains(listener)) {
+			m_ScrollListenerSet.remove(listener);
 		}
 	}
 	

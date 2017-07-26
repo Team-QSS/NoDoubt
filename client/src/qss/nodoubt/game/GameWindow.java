@@ -89,9 +89,10 @@ public class GameWindow {
 	 * @param keyCallback 키보드 콜백 메소드
 	 * @param mouseCallback 마우스버튼 콜백 메소드
 	 */
-	public void setCallback(GLFWKeyCallback keyCallback, GLFWMouseButtonCallback mouseCallback) {
+	public void setCallback(GLFWKeyCallback keyCallback, GLFWMouseButtonCallback mouseCallback, GLFWScrollCallback scrollCallback) {
 		glfwSetKeyCallback(m_Window, keyCallback);
 		glfwSetMouseButtonCallback(m_Window, mouseCallback);
+		glfwSetScrollCallback(m_Window, scrollCallback);
 	}
 	
 	public long getWindow() {
