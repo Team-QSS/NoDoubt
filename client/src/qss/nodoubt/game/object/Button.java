@@ -87,4 +87,13 @@ public class Button extends GameObject {
 			m_Actived = true;
 		}
 	}
+	
+	public void focus(){
+		setTexture(activetextureName);
+		m_Actived = true;
+	}
+	public void unfocus(){
+		setTexture(textureName);
+		m_Actived = false;
+	}
 }

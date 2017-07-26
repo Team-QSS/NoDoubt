@@ -6,6 +6,7 @@ import java.util.*;
 
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
+import qss.nodoubt.input.Input;
 
 /*
  * 이 클래스는 대기실을 들어가기 전,
@@ -20,13 +21,17 @@ public class LoadingLevel extends GameLevel{
 	//배경
 	private Background m_LoadingBG = null;
 	
+	private Button m_Create = null;
+	private Button m_Back = null;
+	
 	//getCursor로 마우스의 좌표를 구함
 	private float mouseX;
 	private float mouseY;
-	//대기실 목록
-	private List<WaitingRoom> m_RoomList = new LinkedList<WaitingRoom>();
 	
 	public LoadingLevel(){
+		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
+		m_Back = new Button("BackButton1", "BackButton2", 677, 414);
+		
 		setEventListener((action,  key) -> { 
 			if(key == GLFW_KEY_BACKSPACE){ 
 				if(action == GLFW_PRESS) {
@@ -34,14 +39,56 @@ public class LoadingLevel extends GameLevel{
 					}
 				}
 			}, 
-		null);	
+		null);
+		
+		m_Create.setListener(null,
+				(action, button) -> {
+					if(button == GLFW_MOUSE_BUTTON_LEFT){
+						if(m_Create.onButton(mouseX, mouseY)){
+							if(action == GLFW_PRESS){
+								m_Create.focus();
+							}
+							if(action == GLFW_RELEASE){
+								Game.getInstance().setNextLevel(new CreateRoomLevel());
+							}
+						}
+						else{
+							if(action == GLFW_RELEASE){
+								m_Create.unfocus();
+							}
+						}
+						
+					}
+				});
+		m_Back.setListener(null,
+				(action, button) -> {
+					if(button == GLFW_MOUSE_BUTTON_LEFT){
+						if(m_Back.onButton(mouseX, mouseY)){
+							if(action == GLFW_PRESS){
+								m_Back.focus();
+							}
+							if(action == GLFW_RELEASE){
+								Game.getInstance().setNextLevel(new LobbyLevel());
+							}
+						}
+						else{
+							if(action == GLFW_RELEASE){
+								m_Back.unfocus();
+							}
+						}
+					}
+				});
 		m_LoadingBG = new Background("LoadBG");
+		addObject(m_Create);
+		addObject(m_Back);
 		addObject(m_LoadingBG);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
+		mouseX = Input.getInstance().getCursorPosition().x;
+		mouseY = Input.getInstance().getCursorPosition().y;
 		
 	}
 
