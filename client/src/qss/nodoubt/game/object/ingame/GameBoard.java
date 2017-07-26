@@ -19,6 +19,10 @@ public class GameBoard {
 		new Vector2i(2, 3), new Vector2i(2, 2), new Vector2i(3, 2)
 	};
 	
+	private enum State {
+		Idle, Animate
+	}
+	
 	private class Cell {
 		int bikeCount = 0;
 		Bike bikes[];
@@ -26,13 +30,27 @@ public class GameBoard {
 		int currentPos;
 	}
 	
+	private class AnimatingBike {
+		Bike bike;
+	}
+	
 	private int m_BikePoses[];
 	
 	private Cell m_Cells[][];
 	
+	private State m_State;
+	
+	private Bike m_Bikes[];
+	
+	private int movingBike = 0;
+	
+	private boolean m_IsIdle = true;
+	
 	public GameBoard(int playerNum, Bike bikes[]) {
+		m_State = State.Idle;
 		m_BikePoses = new int[playerNum];
 		m_Cells = new Cell[6][];
+		m_Bikes = bikes;
 		for(int i = 0; i < 6; i++) {
 			m_Cells[i] = new Cell[6];
 			for(int j = 0; j < 6; j++) {
@@ -50,11 +68,12 @@ public class GameBoard {
 		}
 		
 		for(int i = 0; i < playerNum; i++) {
-			setBike(bikes[i], i, 0);
+			setBike(i, 0);
 		}
 	}
 	
-	private void setBike(Bike bike, int n, int pos) {
+	private void setBike(int n, int pos) {
+		Bike bike = m_Bikes[n];
 		Cell c = m_Cells[s_RoadPos[pos].x][s_RoadPos[pos].y];
 		if(c.bikes[n] == null) {
 			c.bikeCount += 1;
@@ -95,13 +114,29 @@ public class GameBoard {
 		Bike b = c.bikes[n];
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
-		setBike(b, n, curPos + movingDistance);
+		b.go(s_RoadPos[curPos + movingDistance]);
+		movingBike = n;
+		m_BikePoses[n] = curPos + movingDistance;
+		
 		
 		for(int i = 0; i < 6; i++) {
 			if(c.bikes[i] != null) {
-				setBike(c.bikes[i], i, curPos);
+				setBike(i, curPos);
 				break;
 			}
+		}
+		
+		m_IsIdle = false;
+	}
+	
+	private void moveEnd() {
+		setBike(movingBike, m_BikePoses[movingBike]);
+	}
+	
+	public void update(float deltaTime) {
+		if(m_IsIdle == false && m_Bikes[movingBike].isIdle()) {
+			m_IsIdle = true;
+			moveEnd();
 		}
 	}
 }

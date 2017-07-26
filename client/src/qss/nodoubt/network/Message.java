@@ -37,4 +37,8 @@ public class Message {
 		m_Json.put(key, value);
 		return this;
 	}
+	
+	public String getValue(String key) {
+		return (String) m_Json.get(key);
+	}
 }
