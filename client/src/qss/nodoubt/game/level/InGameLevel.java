@@ -53,6 +53,8 @@ public class InGameLevel extends GameLevel{
 				m_Board.moveBike(4, 4);
 			} else if(action == GLFW_PRESS && key == GLFW_KEY_P) {
 				m_Board.moveBike(5, 4);
+			} else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
+				m_Board.push(0);
 			}
 		}, null);
 	}

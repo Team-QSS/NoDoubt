@@ -30,10 +30,6 @@ public class GameBoard {
 		int currentPos;
 	}
 	
-	private class AnimatingBike {
-		Bike bike;
-	}
-	
 	private int m_BikePoses[];
 	
 	private Cell m_Cells[][];
@@ -42,7 +38,9 @@ public class GameBoard {
 	
 	private Bike m_Bikes[];
 	
-	private int movingBike = 0;
+	private int m_MovingBikeIndex = 0;
+	private int m_MovingGoal = 0;
+	private int m_MovingDirection = 0;
 	
 	private boolean m_IsIdle = true;
 	
@@ -90,8 +88,8 @@ public class GameBoard {
 		case 2:
 			a1 = 0; break;
 		case 3:
-		case 4:
 			a1 = 15; break;
+		case 4:
 		case 5:
 			a1 = 30; break;
 		case 6:
@@ -114,9 +112,11 @@ public class GameBoard {
 		Bike b = c.bikes[n];
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
-		b.go(s_RoadPos[curPos + movingDistance]);
-		movingBike = n;
-		m_BikePoses[n] = curPos + movingDistance;
+		m_MovingGoal = curPos + movingDistance;
+		m_MovingDirection = movingDistance / movingDistance;
+		b.go(s_RoadPos[curPos + movingDistance / movingDistance]);
+		m_MovingBikeIndex = n;
+		m_BikePoses[n] = curPos + m_MovingDirection;
 		
 		
 		for(int i = 0; i < 6; i++) {
@@ -130,13 +130,33 @@ public class GameBoard {
 	}
 	
 	private void moveEnd() {
-		setBike(movingBike, m_BikePoses[movingBike]);
+		setBike(m_MovingBikeIndex, m_BikePoses[m_MovingBikeIndex]);
+	}
+	
+	public void push(int n) {
+		int curPos = m_BikePoses[n];
+		Cell c = m_Cells[s_RoadPos[curPos].x][s_RoadPos[curPos].y];
+		Bike b = c.bikes[n];
+		c.bikes[n] = null;
+		c.bikeCount -= 1;
+		setBike(n, c.recentCheckPoint);
+		for(int i = 0; i < 6; i++) {
+			if(c.bikes[i] != null) {
+				setBike(i, curPos);
+				break;
+			}
+		}
 	}
 	
 	public void update(float deltaTime) {
-		if(m_IsIdle == false && m_Bikes[movingBike].isIdle()) {
-			m_IsIdle = true;
-			moveEnd();
+		if(m_IsIdle == false && m_Bikes[m_MovingBikeIndex].isIdle()) {
+			if(m_MovingGoal == m_BikePoses[m_MovingBikeIndex]) {
+				m_IsIdle = true;
+				moveEnd();
+			} else {
+				m_Bikes[m_MovingBikeIndex].go(s_RoadPos[m_BikePoses[m_MovingBikeIndex] + m_MovingDirection]);
+				m_BikePoses[m_MovingBikeIndex] += m_MovingDirection;
+			}
 		}
 	}
 }
