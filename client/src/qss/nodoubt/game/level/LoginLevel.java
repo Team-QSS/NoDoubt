@@ -69,20 +69,11 @@ public class LoginLevel extends GameLevel{
 						}
 					}
 				});
-		setEventListener((action,  key) -> { 
-			if(key == GLFW_KEY_ENTER){
-				if(action == GLFW_PRESS){
-					Game.getInstance().setNextLevel(new LobbyLevel());
-				}
-			}
-		},
-		null);
 		
 		m_Network = Network.getInstance();
 		m_Message = new Message();
 		m_Message = m_Message.setProtocol("LoginRequest");
 
-		
 		setEventListener(
 				(action, key) ->{
 					if(m_ActiveBuffer == 0){
@@ -328,6 +319,7 @@ public class LoginLevel extends GameLevel{
 		mouseY = Input.getInstance().getCursorPosition().y;
 		m_Message = m_Message.addValue("ID", m_IDBuffer.toString());
 		m_Message = m_Message.addValue("Password", m_PWBuffer.toString());
+		
 		if(m_Star.length() > m_PWBuffer.length()){
 			for(int i = 0; i < m_Star.length() - m_PWBuffer.length(); i++){
 				m_Star.deleteCharAt(m_Star.length()-1);
