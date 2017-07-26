@@ -15,6 +15,8 @@ public class IButton extends GameObject{
 	private ClickListener m_Listener;
 	
 	private String m_TextureName;
+	
+	private boolean m_IsFocused = false;
 
 	public IButton(int n, ClickListener listener) {
 		super("IButton" + n, 1);
@@ -26,7 +28,7 @@ public class IButton extends GameObject{
 			if(isMouseOnButton()) {
 				if(action == GLFW_PRESS) {
 					focus();
-				}else if(action == GLFW_RELEASE) {
+				}else if(action == GLFW_RELEASE && m_IsFocused) {
 					click();
 				}
 			}
@@ -52,7 +54,7 @@ public class IButton extends GameObject{
 			if(isMouseOnButton()) {
 				if(action == GLFW_PRESS) {
 					focus();
-				}else if(action == GLFW_RELEASE) {
+				}else if(action == GLFW_RELEASE && m_IsFocused) {
 					click();
 				}
 			}
@@ -82,10 +84,12 @@ public class IButton extends GameObject{
 	
 	private void focus() {
 		setTexture(m_TextureName + "F");
+		m_IsFocused = true;
 	}
 	
 	private void unfocus() {
 		setTexture(m_TextureName);
+		m_IsFocused = false;
 	}
 	
 	private void click() {
