@@ -1,10 +1,13 @@
 package qss.nodoubt.game.level;
 
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.game.object.ingame.*;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class InGameLevel extends GameLevel{
 	private static final Vector3f UI_COLOR = new Vector3f(0x9a / 255f, 0x6f / 255f, 0x52 / 255f);
@@ -15,25 +18,26 @@ public class InGameLevel extends GameLevel{
 	private static final Vector3f WHITE = new Vector3f(0xff / 255f, 0xff / 255f, 0xff / 255f);
 	private static final Vector3f PURPLE = new Vector3f(0xa9 / 255f, 0x24 / 255f, 0xff / 255f);
 	
-	private class Board {
-		Vector2f pos;
-		int bikeNum = 0;
-		Bike[] bikes;
-	}
-	
-	private Board[][] m_Board;
+	private GameBoard m_Board;
 	private DiceResult m_DiceResult;
+	private Bike[] m_Bikes = new Bike[6];
+	
+	private static final Vector2i[] s_RoadPos = new Vector2i[]{
+		new Vector2i(5, 5), new Vector2i(4, 5), new Vector2i(3, 5),
+		new Vector2i(2, 5), new Vector2i(1, 5), new Vector2i(0, 5),
+		new Vector2i(0, 4), new Vector2i(0, 3), new Vector2i(0, 2),
+		new Vector2i(0, 1), new Vector2i(0, 0), new Vector2i(1, 0),
+		new Vector2i(2, 0), new Vector2i(3, 0), new Vector2i(4, 0),
+		new Vector2i(5, 0), new Vector2i(5, 1), new Vector2i(5, 2),
+		new Vector2i(5, 3), new Vector2i(5, 4), new Vector2i(4, 4),
+		new Vector2i(3, 4), new Vector2i(2, 4), new Vector2i(1, 4),
+		new Vector2i(1, 3), new Vector2i(1, 2), new Vector2i(1, 1),
+		new Vector2i(2, 1), new Vector2i(3, 1), new Vector2i(4, 1),
+		new Vector2i(4, 2), new Vector2i(4, 3), new Vector2i(3, 3),
+		new Vector2i(2, 3), new Vector2i(2, 2), new Vector2i(3, 2)
+	};
 	
 	public InGameLevel() {
-		m_Board = new Board[6][];
-		for(int i = 0; i < 6; i++) {
-			m_Board[i] = new Board[6];
-			for(int j = 0; j < 6; j++) {
-				m_Board[i][j] = new Board();
-				m_Board[i][j].pos = new Vector2f(-480 + 160 * i, 399 - 160 * j);
-			}
-		}
-
 		addObject(new Background("InGameBackground"));
 		for(int i = 1; i <= 6; i++) {
 			addObject(new IButton(i, null));
@@ -42,13 +46,30 @@ public class InGameLevel extends GameLevel{
 		addObject(new IButton("Roll", null));
 		addObject(m_DiceResult = new DiceResult());
 		addObject(new Stump());
-		addObject(new Bike('R', m_Board[5][5].pos));
-		addObject(new Bike('B', m_Board[5][5].pos.add(0, 15)));
-		addObject(new Bike('G', m_Board[5][5].pos.add(0, 15)));
-		addObject(new Bike('Y', m_Board[5][5].pos.add(0, 15)));
-		addObject(new Bike('W', m_Board[5][5].pos.add(0, 15)));
-		addObject(new Bike('P', m_Board[5][5].pos.add(0, 15)));
-		m_Board[5][5].pos.add(0, -75);
+		addObject(m_Bikes[0] = new Bike('R'));
+		addObject(m_Bikes[1] = new Bike('B'));
+		addObject(m_Bikes[2] = new Bike('G'));
+		addObject(m_Bikes[3] = new Bike('Y'));
+		addObject(m_Bikes[4] = new Bike('W'));
+		addObject(m_Bikes[5] = new Bike('P'));
+		
+		m_Board = new GameBoard(6, m_Bikes);
+		
+		setEventListener((action, key) -> {
+			if(action == GLFW_PRESS && key == GLFW_KEY_R) {
+				m_Board.moveBike(0, 4);
+			} else if(action == GLFW_PRESS && key == GLFW_KEY_B) {
+				m_Board.moveBike(1, 4);
+			} else if(action == GLFW_PRESS && key == GLFW_KEY_G) {
+				m_Board.moveBike(2, 4);
+			} else if(action == GLFW_PRESS && key == GLFW_KEY_Y) {
+				m_Board.moveBike(3, 4);
+			} else if(action == GLFW_PRESS && key == GLFW_KEY_W) {
+				m_Board.moveBike(4, 4);
+			} else if(action == GLFW_PRESS && key == GLFW_KEY_P) {
+				m_Board.moveBike(5, 4);
+			}
+		}, null);
 	}
 
 	@Override
