@@ -425,8 +425,6 @@ public class SignUpLevel extends GameLevel{
 						}
 					}
 				});
-		
-		
 		addObject(m_SignUpBG);
 		addObject(m_Signup);
 	}
