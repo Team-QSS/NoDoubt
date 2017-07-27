@@ -19,10 +19,6 @@ public class GameBoard {
 		new Vector2i(2, 3), new Vector2i(2, 2), new Vector2i(3, 2)
 	};
 	
-	private enum State {
-		Idle, Animate
-	}
-	
 	private class Cell {
 		int bikeCount = 0;
 		Bike bikes[];
@@ -30,11 +26,16 @@ public class GameBoard {
 		int currentPos;
 	}
 	
+	public class State {
+		public boolean isConflict = false;
+		public int conflictPos = 0;
+		public int conflictBike = 0;
+		public State setConflict(int pos, int bike) {isConflict = true; conflictPos = pos; conflictBike = bike; return this;}
+	}
+	
 	private int m_BikePoses[];
 	
 	private Cell m_Cells[][];
-	
-	private State m_State;
 	
 	private Bike m_Bikes[];
 	
@@ -44,8 +45,10 @@ public class GameBoard {
 	
 	private boolean m_IsIdle = true;
 	
+	private State m_State;
+	
 	public GameBoard(int playerNum, Bike bikes[]) {
-		m_State = State.Idle;
+		m_State = new State();
 		m_BikePoses = new int[playerNum];
 		m_Cells = new Cell[6][];
 		m_Bikes = bikes;
@@ -76,6 +79,12 @@ public class GameBoard {
 		if(c.bikes[n] == null) {
 			c.bikeCount += 1;
 			c.bikes[n] = bike;
+			
+			if(c.bikeCount > 1) {
+				m_State.setConflict(pos, n);
+			}else {
+				m_State.isConflict = false;
+			}
 		}
 		
 		m_BikePoses[n] = pos;
@@ -118,7 +127,6 @@ public class GameBoard {
 		m_MovingBikeIndex = n;
 		m_BikePoses[n] = curPos + m_MovingDirection;
 		
-		
 		for(int i = 0; i < 6; i++) {
 			if(c.bikes[i] != null) {
 				setBike(i, curPos);
@@ -158,5 +166,13 @@ public class GameBoard {
 				m_BikePoses[m_MovingBikeIndex] += m_MovingDirection;
 			}
 		}
+	}
+	
+	public State getState() {
+		if(m_State.isConflict) {
+			m_State.isConflict = false;
+			return new State().setConflict(m_State.conflictPos, m_State.conflictBike);
+		}
+		return m_State;
 	}
 }

@@ -1,5 +1,6 @@
 package qss.nodoubt.network;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -40,5 +41,9 @@ public class Message {
 	
 	public String getValue(String key) {
 		return (String) m_Json.get(key);
+	}
+	
+	public JSONArray getList(String key) {
+		return (JSONArray) m_Json.get(key);
 	}
 }

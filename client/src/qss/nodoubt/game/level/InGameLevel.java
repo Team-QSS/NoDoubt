@@ -57,6 +57,8 @@ public class InGameLevel extends GameLevel{
 				m_Board.push(0);
 			}
 		}, null);
+		
+		m_DiceResult.setResult(5);
 	}
 
 	@Override
@@ -66,5 +68,10 @@ public class InGameLevel extends GameLevel{
 		drawTextCall("fontB11", "Turn of", new Vector2f(465, 401), UI_COLOR);
 		drawTextCall("fontB11", "Result is", new Vector2f(465, -302), UI_COLOR);
 		m_Board.update(deltaTime);
+		
+		if(m_Board.getState().isConflict) {
+			System.out.println("Conflict pos : " + m_Board.getState().conflictPos);
+			System.out.println("Conflict bike : " + m_Board.getState().conflictBike);
+		}
 	}
 }
