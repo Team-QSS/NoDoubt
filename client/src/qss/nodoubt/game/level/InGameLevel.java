@@ -22,6 +22,9 @@ public class InGameLevel extends GameLevel{
 	private DiceResult m_DiceResult;
 	private Bike[] m_Bikes = new Bike[6];
 	
+	private float m_AcSeconds = 0.0f;
+	private int m_AcMinites = 0;
+	
 	public InGameLevel() {
 		addObject(new Background("InGameBackground"));
 		for(int i = 1; i <= 6; i++) {
@@ -60,11 +63,27 @@ public class InGameLevel extends GameLevel{
 		
 		m_DiceResult.setResult(5);
 	}
+	
+	private void updateTime(float deltaTime) {
+		m_AcSeconds += deltaTime;
+		while(m_AcSeconds > 60) {
+			m_AcMinites += 1;
+			m_AcSeconds -= 60;
+			m_AcMinites = m_AcMinites % 60;
+			
+		}
+		if(m_AcSeconds >= 10) {
+			drawTextCall("fontB21", m_AcMinites + " : " + ((int)m_AcSeconds) , new Vector2f(578, 520), UI_COLOR);
+		}else {
+			drawTextCall("fontB21", m_AcMinites + " : 0" + ((int)m_AcSeconds) , new Vector2f(578, 520), UI_COLOR);
+		}
+		
+	}
 
 	@Override
 	public void update(float deltaTime) {
 		updateObjects(deltaTime);
-		drawTextCall("fontB21", "59 : 59", new Vector2f(578, 520), UI_COLOR);
+		updateTime(deltaTime);
 		drawTextCall("fontB11", "Turn of", new Vector2f(465, 401), UI_COLOR);
 		drawTextCall("fontB11", "Result is", new Vector2f(465, -302), UI_COLOR);
 		m_Board.update(deltaTime);
@@ -73,5 +92,6 @@ public class InGameLevel extends GameLevel{
 			System.out.println("Conflict pos : " + m_Board.getState().conflictPos);
 			System.out.println("Conflict bike : " + m_Board.getState().conflictBike);
 		}
+		
 	}
 }
