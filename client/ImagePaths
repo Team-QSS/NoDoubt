@@ -26,8 +26,8 @@ CreditButton2:../res/image/Button&Obj/Lobby-Credit2.png
 QuitButton1:../res/image/Button&Obj/Lobby-Quit1.png
 QuitButton2:../res/image/Button&Obj/Lobby-Quit2.png
 //대기실목록버튼
-CreateButton1:../res/image/Button&Obj/Lobby-Credit1.png
-CreateButton2:../res/image/Button&Obj/Lobby-Credit2.png
+CreateButton1:../res/image/Button&Obj/Lobby-Create1.png
+CreateButton2:../res/image/Button&Obj/Lobby-Create2.png
 //범용버튼
 BackButton1:../res/image/Button&Obj/Lobby-Back1.png
 BackButton2:../res/image/Button&Obj/Lobby-Back2.png

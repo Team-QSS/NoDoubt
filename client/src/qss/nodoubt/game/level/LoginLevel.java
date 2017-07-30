@@ -86,84 +86,19 @@ public class LoginLevel extends GameLevel{
 							}
 							if(m_IDBuffer.length() < 16){
 								if(m_isShiftPressed){
-									switch (key){
-									case GLFW_KEY_A : m_IDBuffer.append("A"); break;
-									case GLFW_KEY_B : m_IDBuffer.append("B"); break;
-									case GLFW_KEY_C : m_IDBuffer.append("C"); break;
-									case GLFW_KEY_D : m_IDBuffer.append("D"); break;
-									case GLFW_KEY_E : m_IDBuffer.append("E"); break;
-									case GLFW_KEY_F : m_IDBuffer.append("F"); break;
-									case GLFW_KEY_G : m_IDBuffer.append("G"); break;
-									case GLFW_KEY_H : m_IDBuffer.append("H"); break;
-									case GLFW_KEY_I : m_IDBuffer.append("I"); break;
-									case GLFW_KEY_J : m_IDBuffer.append("J"); break;
-									case GLFW_KEY_K : m_IDBuffer.append("K"); break;
-									case GLFW_KEY_L : m_IDBuffer.append("L"); break;
-									case GLFW_KEY_M : m_IDBuffer.append("M"); break;
-									case GLFW_KEY_N : m_IDBuffer.append("N"); break;
-									case GLFW_KEY_O : m_IDBuffer.append("O"); break;
-									case GLFW_KEY_P : m_IDBuffer.append("P"); break;
-									case GLFW_KEY_Q : m_IDBuffer.append("Q"); break;
-									case GLFW_KEY_R : m_IDBuffer.append("R"); break;
-									case GLFW_KEY_S : m_IDBuffer.append("S"); break;
-									case GLFW_KEY_T : m_IDBuffer.append("T"); break;
-									case GLFW_KEY_U : m_IDBuffer.append("U"); break;
-									case GLFW_KEY_V : m_IDBuffer.append("V"); break;
-									case GLFW_KEY_W : m_IDBuffer.append("W"); break;
-									case GLFW_KEY_X : m_IDBuffer.append("X"); break;
-									case GLFW_KEY_Y : m_IDBuffer.append("Y"); break;
-									case GLFW_KEY_Z : m_IDBuffer.append("Z"); break;
-									case GLFW_KEY_1 : m_IDBuffer.append("1"); break;
-									case GLFW_KEY_2 : m_IDBuffer.append("2"); break;
-									case GLFW_KEY_3 : m_IDBuffer.append("3"); break;
-									case GLFW_KEY_4 : m_IDBuffer.append("4"); break;
-									case GLFW_KEY_5 : m_IDBuffer.append("5"); break;
-									case GLFW_KEY_6 : m_IDBuffer.append("6"); break;
-									case GLFW_KEY_7 : m_IDBuffer.append("7"); break;
-									case GLFW_KEY_8 : m_IDBuffer.append("8"); break;
-									case GLFW_KEY_9 : m_IDBuffer.append("9"); break;
-									case GLFW_KEY_0 : m_IDBuffer.append("0"); break;
+									if(key>=65 && key<=90){
+										m_IDBuffer.append((char)key);
 									}
 								}
 								else if (!m_isShiftPressed){
-									switch (key){
-									case GLFW_KEY_A : m_IDBuffer.append("a"); break;
-									case GLFW_KEY_B : m_IDBuffer.append("b"); break;
-									case GLFW_KEY_C : m_IDBuffer.append("c"); break;
-									case GLFW_KEY_D : m_IDBuffer.append("d"); break;
-									case GLFW_KEY_E : m_IDBuffer.append("e"); break;
-									case GLFW_KEY_F : m_IDBuffer.append("f"); break;
-									case GLFW_KEY_G : m_IDBuffer.append("g"); break;
-									case GLFW_KEY_H : m_IDBuffer.append("h"); break;
-									case GLFW_KEY_I : m_IDBuffer.append("i"); break;
-									case GLFW_KEY_J : m_IDBuffer.append("j"); break;
-									case GLFW_KEY_K : m_IDBuffer.append("k"); break;
-									case GLFW_KEY_L : m_IDBuffer.append("l"); break;
-									case GLFW_KEY_M : m_IDBuffer.append("m"); break;
-									case GLFW_KEY_N : m_IDBuffer.append("n"); break;
-									case GLFW_KEY_O : m_IDBuffer.append("o"); break;
-									case GLFW_KEY_P : m_IDBuffer.append("p"); break;
-									case GLFW_KEY_Q : m_IDBuffer.append("q"); break;
-									case GLFW_KEY_R : m_IDBuffer.append("r"); break;
-									case GLFW_KEY_S : m_IDBuffer.append("s"); break;
-									case GLFW_KEY_T : m_IDBuffer.append("t"); break;
-									case GLFW_KEY_U : m_IDBuffer.append("u"); break;
-									case GLFW_KEY_V : m_IDBuffer.append("v"); break;
-									case GLFW_KEY_W : m_IDBuffer.append("w"); break;
-									case GLFW_KEY_X : m_IDBuffer.append("x"); break;
-									case GLFW_KEY_Y : m_IDBuffer.append("y"); break;
-									case GLFW_KEY_Z : m_IDBuffer.append("z"); break;
-									case GLFW_KEY_1 : m_IDBuffer.append("1"); break;
-									case GLFW_KEY_2 : m_IDBuffer.append("2"); break;
-									case GLFW_KEY_3 : m_IDBuffer.append("3"); break;
-									case GLFW_KEY_4 : m_IDBuffer.append("4"); break;
-									case GLFW_KEY_5 : m_IDBuffer.append("5"); break;
-									case GLFW_KEY_6 : m_IDBuffer.append("6"); break;
-									case GLFW_KEY_7 : m_IDBuffer.append("7"); break;
-									case GLFW_KEY_8 : m_IDBuffer.append("8"); break;
-									case GLFW_KEY_9 : m_IDBuffer.append("9"); break;
-									case GLFW_KEY_0 : m_IDBuffer.append("0"); break;
+									if(key>=65 && key <= 90){
+										m_IDBuffer.append((char)(key+32));
+									}
 								}
+								else{
+									if(key>=48 && key<= 57){
+										m_IDBuffer.append((char)key);
+									}
 								}
 							}
 							if(m_IDBuffer.length() > 0){
@@ -173,6 +108,23 @@ public class LoginLevel extends GameLevel{
 							}
 						}
 						else if(action == GLFW_REPEAT){
+							if(m_IDBuffer.length() < 16){
+								if(m_isShiftPressed){
+									if(key>=65 && key<=90){
+										m_IDBuffer.append((char)key);
+									}
+								}
+								else if (!m_isShiftPressed){
+									if(key>=65 && key <= 90){
+										m_IDBuffer.append((char)(key+32));
+									}
+								}
+								else{
+									if(key>=48 && key<= 57){
+										m_IDBuffer.append((char)key);
+									}
+								}
+							}
 							if(m_IDBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
 									m_IDBuffer.deleteCharAt(m_IDBuffer.length()-1);
@@ -183,8 +135,6 @@ public class LoginLevel extends GameLevel{
 								m_isShiftPressed = false;
 						}
 					}
-					
-					
 					else if(m_ActiveBuffer == 1){
 						if(action == GLFW_PRESS){
 							if(key == GLFW_KEY_LEFT_SHIFT){
@@ -193,86 +143,22 @@ public class LoginLevel extends GameLevel{
 							
 							if(m_PWBuffer.length() < 16){
 								if(m_isShiftPressed){
-									switch (key){
-										case GLFW_KEY_A : m_PWBuffer.append("A"); break;
-										case GLFW_KEY_B : m_PWBuffer.append("B"); break;
-										case GLFW_KEY_C : m_PWBuffer.append("C"); break;
-										case GLFW_KEY_D : m_PWBuffer.append("D"); break;
-										case GLFW_KEY_E : m_PWBuffer.append("E"); break;
-										case GLFW_KEY_F : m_PWBuffer.append("F"); break;
-										case GLFW_KEY_G : m_PWBuffer.append("G"); break;
-										case GLFW_KEY_H : m_PWBuffer.append("H"); break;
-										case GLFW_KEY_I : m_PWBuffer.append("I"); break;
-										case GLFW_KEY_J : m_PWBuffer.append("J"); break;
-										case GLFW_KEY_K : m_PWBuffer.append("K"); break;
-										case GLFW_KEY_L : m_PWBuffer.append("L"); break;
-										case GLFW_KEY_M : m_PWBuffer.append("M"); break;
-										case GLFW_KEY_N : m_PWBuffer.append("N"); break;
-										case GLFW_KEY_O : m_PWBuffer.append("O"); break;
-										case GLFW_KEY_P : m_PWBuffer.append("P"); break;
-										case GLFW_KEY_Q : m_PWBuffer.append("Q"); break;
-										case GLFW_KEY_R : m_PWBuffer.append("R"); break;
-										case GLFW_KEY_S : m_PWBuffer.append("S"); break;
-										case GLFW_KEY_T : m_PWBuffer.append("T"); break;
-										case GLFW_KEY_U : m_PWBuffer.append("U"); break;
-										case GLFW_KEY_V : m_PWBuffer.append("V"); break;
-										case GLFW_KEY_W : m_PWBuffer.append("W"); break;
-										case GLFW_KEY_X : m_PWBuffer.append("X"); break;
-										case GLFW_KEY_Y : m_PWBuffer.append("Y"); break;
-										case GLFW_KEY_Z : m_PWBuffer.append("Z"); break;
-										case GLFW_KEY_1 : m_PWBuffer.append("1"); break;
-										case GLFW_KEY_2 : m_PWBuffer.append("2"); break;
-										case GLFW_KEY_3 : m_PWBuffer.append("3"); break;
-										case GLFW_KEY_4 : m_PWBuffer.append("4"); break;
-										case GLFW_KEY_5 : m_PWBuffer.append("5"); break;
-										case GLFW_KEY_6 : m_PWBuffer.append("6"); break;
-										case GLFW_KEY_7 : m_PWBuffer.append("7"); break;
-										case GLFW_KEY_8 : m_PWBuffer.append("8"); break;
-										case GLFW_KEY_9 : m_PWBuffer.append("9"); break;
-										case GLFW_KEY_0 : m_PWBuffer.append("0"); break;
+									if(key>=65 && key<=90){
+										m_PWBuffer.append((char)key);
+									}
+								}
+								else if (!m_isShiftPressed){
+									if(key>=65 && key <= 90){
+										m_PWBuffer.append((char)(key+32));
 									}
 								}
 								else{
-									switch (key){
-										case GLFW_KEY_A : m_PWBuffer.append("a"); break;
-										case GLFW_KEY_B : m_PWBuffer.append("b"); break;
-										case GLFW_KEY_C : m_PWBuffer.append("c"); break;
-										case GLFW_KEY_D : m_PWBuffer.append("d"); break;
-										case GLFW_KEY_E : m_PWBuffer.append("e"); break;
-										case GLFW_KEY_F : m_PWBuffer.append("f"); break;
-										case GLFW_KEY_G : m_PWBuffer.append("g"); break;
-										case GLFW_KEY_H : m_PWBuffer.append("h"); break;
-										case GLFW_KEY_I : m_PWBuffer.append("i"); break;
-										case GLFW_KEY_J : m_PWBuffer.append("j"); break;
-										case GLFW_KEY_K : m_PWBuffer.append("k"); break;
-										case GLFW_KEY_L : m_PWBuffer.append("l"); break;
-										case GLFW_KEY_M : m_PWBuffer.append("m"); break;
-										case GLFW_KEY_N : m_PWBuffer.append("n"); break;
-										case GLFW_KEY_O : m_PWBuffer.append("o"); break;
-										case GLFW_KEY_P : m_PWBuffer.append("p"); break;
-										case GLFW_KEY_Q : m_PWBuffer.append("q"); break;
-										case GLFW_KEY_R : m_PWBuffer.append("r"); break;
-										case GLFW_KEY_S : m_PWBuffer.append("s"); break;
-										case GLFW_KEY_T : m_PWBuffer.append("t"); break;
-										case GLFW_KEY_U : m_PWBuffer.append("u"); break;
-										case GLFW_KEY_V : m_PWBuffer.append("v"); break;
-										case GLFW_KEY_W : m_PWBuffer.append("w"); break;
-										case GLFW_KEY_X : m_PWBuffer.append("x"); break;
-										case GLFW_KEY_Y : m_PWBuffer.append("y"); break;
-										case GLFW_KEY_Z : m_PWBuffer.append("z"); break;
-										case GLFW_KEY_1 : m_PWBuffer.append("1"); break;
-										case GLFW_KEY_2 : m_PWBuffer.append("2"); break;
-										case GLFW_KEY_3 : m_PWBuffer.append("3"); break;
-										case GLFW_KEY_4 : m_PWBuffer.append("4"); break;
-										case GLFW_KEY_5 : m_PWBuffer.append("5"); break;
-										case GLFW_KEY_6 : m_PWBuffer.append("6"); break;
-										case GLFW_KEY_7 : m_PWBuffer.append("7"); break;
-										case GLFW_KEY_8 : m_PWBuffer.append("8"); break;
-										case GLFW_KEY_9 : m_PWBuffer.append("9"); break;
-										case GLFW_KEY_0 : m_PWBuffer.append("0"); break;
+									if(key>=48 && key<= 57){
+										m_PWBuffer.append((char)key);
 									}
 								}
 							}
+							
 							if(m_PWBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
 									m_PWBuffer.deleteCharAt(m_PWBuffer.length()-1);
@@ -280,12 +166,30 @@ public class LoginLevel extends GameLevel{
 							}
 						}
 						else if(action == GLFW_REPEAT){
+							if(m_PWBuffer.length() < 16){
+								if(m_isShiftPressed){
+									if(key>=65 && key<=90){
+										m_PWBuffer.append((char)key);
+									}
+								}
+								else if (!m_isShiftPressed){
+									if(key>=65 && key <= 90){
+										m_PWBuffer.append((char)(key+32));
+									}
+								}
+								else{
+									if(key>=48 && key<= 57){
+										m_PWBuffer.append((char)key);
+									}
+								}
+							}
 							if(m_PWBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
 									m_PWBuffer.deleteCharAt(m_PWBuffer.length()-1);
 								}
 							}
 						}
+						
 						else if(action == GLFW_RELEASE){
 							if(key == GLFW_KEY_LEFT_SHIFT){
 								m_isShiftPressed = false;
