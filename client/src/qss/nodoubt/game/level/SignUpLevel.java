@@ -1,6 +1,7 @@
 package qss.nodoubt.game.level;
 
 import qss.nodoubt.game.Game;
+import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.*;
@@ -54,7 +55,6 @@ public class SignUpLevel extends GameLevel{
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
 						if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
 							m_Network.pushMessage(m_Message);
-							Game.getInstance().setNextLevel(new LoginLevel());
 						}else{
 							m_IDBuffer.delete(0, m_IDBuffer.length());
 							m_PWBuffer.delete(0, m_PWBuffer.length());
@@ -68,7 +68,6 @@ public class SignUpLevel extends GameLevel{
 						if(m_Signup.onButton(mouseX, mouseY)){
 							if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
 								m_Network.pushMessage(m_Message);
-								Game.getInstance().setNextLevel(new LoginLevel());
 							}else{
 								m_IDBuffer.delete(0, m_IDBuffer.length());
 								m_PWBuffer.delete(0, m_PWBuffer.length());
@@ -292,18 +291,24 @@ public class SignUpLevel extends GameLevel{
 		// TODO Auto-generated method stub
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
+		
+		Message temp;
+		temp = m_Network.pollMessage();
+		
+		if(temp != null){
+			if(temp.getBoolValue("Value")){
+				Game.getInstance().setNextLevel(new LoginLevel());
+			}
+			else{
+				m_IDBuffer.delete(0, m_IDBuffer.length());
+				m_PWBuffer.delete(0, m_PWBuffer.length());
+				m_PWRepeat.delete(0, m_PWRepeat.length());
+				m_ActiveBuffer = 0;
+			}
+		}
+				
 		m_Message = m_Message.addStringValue("ID", m_IDBuffer.toString());
 		m_Message = m_Message.addStringValue("Password", m_PWBuffer.toString());
-		
-		if(m_IDBuffer.length()==0){
-			drawTextCall("fontR11", "ID", new Vector2f(-313, 22), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
-		}
-		if(m_PWBuffer.length()==0){
-			drawTextCall("fontR11", "PW", new Vector2f(-313, -109), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
-		}
-		if(m_PWRepeat.length()==0){
-			drawTextCall("fontR11", "RetypePW", new Vector2f(-313, -233), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
-		}
 		
 		if(m_Star1.length() > m_PWBuffer.length()){
 			for(int i = 0; i < m_Star1.length() - m_PWBuffer.length(); i++){
@@ -325,10 +330,18 @@ public class SignUpLevel extends GameLevel{
 			}
 		}
 		
+		if(m_IDBuffer.length()==0){
+			drawTextCall("fontR11", "ID", new Vector2f(-313, 22), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+		}
+		if(m_PWBuffer.length()==0){
+			drawTextCall("fontR11", "PW", new Vector2f(-313, -109), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+		}
+		if(m_PWRepeat.length()==0){
+			drawTextCall("fontR11", "RetypePW", new Vector2f(-313, -233), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+		}
+		
 		drawTextCall("fontR11", m_IDBuffer.toString(), new Vector2f(-313,15), new Vector3f(0,0,0));
 		drawTextCall("fontR11", m_Star1.toString(), new Vector2f(-313,-116), new Vector3f(0,0,0));
 		drawTextCall("fontR11", m_Star2.toString(), new Vector2f(-313,-240), new Vector3f(0,0,0));
-		m_Network.pushMessage(m_Message);
 	}
-
 }
