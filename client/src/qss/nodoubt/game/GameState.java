@@ -2,6 +2,7 @@ package qss.nodoubt.game;
 
 public class GameState {
 	private static GameState s_Instance = null;
+	public String m_myID = null;
 	
 	public static GameState getInstance() {
 		if(s_Instance == null) {
