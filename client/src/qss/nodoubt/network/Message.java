@@ -34,13 +34,31 @@ public class Message {
 		return this;
 	}
 	
-	public Message addValue(String key, String value) {
+	public Message addStringValue(String key, String value) {
+		m_Json.put(key, value);
+		return this;
+	}
+
+	public Message addIntValue(String key, int value) {
 		m_Json.put(key, value);
 		return this;
 	}
 	
-	public String getValue(String key) {
+	public Message addBoolValue(String key, boolean value) {
+		m_Json.put(key, value);
+		return this;
+	}
+	
+	public String getStringValue(String key) {
 		return (String) m_Json.get(key);
+	}
+	
+	public boolean getBoolValue(String key) {
+		return (boolean) m_Json.get(key);
+	}
+	
+	public int getIntValue(String key) {
+		return (int) m_Json.get(key);
 	}
 	
 	public JSONArray getList(String key) {
