@@ -49,14 +49,12 @@ public class LoginLevel extends GameLevel{
 				(action, key) -> {
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
 						m_Network.pushMessage(m_Message);
-						Game.getInstance().setNextLevel(new LobbyLevel());
 					}
 				},
 				(action, button) ->{
 						if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 							if(m_Signin.onButton(mouseX, mouseY)){
 							m_Network.pushMessage(m_Message);
-							Game.getInstance().setNextLevel(new LobbyLevel());
 						}
 					}
 				});
@@ -221,6 +219,20 @@ public class LoginLevel extends GameLevel{
 		// TODO Auto-generated method stub
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
+		Message temp;
+		temp = m_Network.pollMessage();
+		
+		if(temp != null){
+			if("true".equalsIgnoreCase(temp.getValue("Value"))){
+				Game.getInstance().setNextLevel(new LobbyLevel());
+			}
+			if("false".equalsIgnoreCase(temp.getValue("Value"))){
+				m_IDBuffer.delete(0, m_IDBuffer.length());
+				m_PWBuffer.delete(0, m_PWBuffer.length());
+				m_ActiveBuffer = 0;
+			}
+		}
+		
 		m_Message = m_Message.addValue("ID", m_IDBuffer.toString());
 		m_Message = m_Message.addValue("Password", m_PWBuffer.toString());
 		

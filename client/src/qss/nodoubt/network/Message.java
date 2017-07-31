@@ -11,7 +11,7 @@ public class Message {
 	public Message() {
 		m_Json = new JSONObject();
 		m_Json.put("Protocol", "DefaultProtocol");
-	}
+	} 
 	
 	public Message(String str) {
 		try {
