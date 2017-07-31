@@ -49,6 +49,8 @@ public class LoginLevel extends GameLevel{
 				(action, key) -> {
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
 						m_Network.pushMessage(m_Message);
+					}else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
+						Game.getInstance().setNextLevel(new LobbyLevel());
 					}
 				},
 				(action, button) ->{
