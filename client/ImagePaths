@@ -38,9 +38,8 @@ LoginBG:../res/image/Background/ND-Login-Background.png
 SignupBG:../res/image/Background/ND-SignUp-Waiting.png
 LobbyBG:../res/image/Background/ND-Lobby-Background.png
 LoadBG:../res/image/Background/ND-Loading-Background.png
-WaitingBG:../res/image/Background/ND-Waiting-Background
+WaitingBG:../res/image/Background/ND-Waiting-Background.png
 CreditBG:../res/image/Background/ND-Credit-Background.png
-LoadingBG:../res/image/Background/ND-Loading-Background.png
 
 
 

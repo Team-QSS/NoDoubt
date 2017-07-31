@@ -33,12 +33,17 @@ public class LoadingLevel extends GameLevel{
 		m_Back = new Button("BackButton1", "BackButton2", 677, 414);
 		
 		setEventListener((action,  key) -> { 
-			if(key == GLFW_KEY_BACKSPACE){ 
-				if(action == GLFW_PRESS) {
+			if(action == GLFW_PRESS){ 
+				if(key == GLFW_KEY_BACKSPACE) {
 					Game.getInstance().setNextLevel(new LobbyLevel());
-					}
 				}
-			}, 
+				if(key == GLFW_KEY_ENTER){
+					Game.getInstance().setNextLevel(new WaitingRoomLevel());
+					
+					
+				}
+			}
+		}, 
 		null);
 		
 		m_Create.setListener(null,
