@@ -86,7 +86,6 @@ public class Network {
 						try {
 							m_OutputStream.writeChars(m_OutputQueue.poll().toJSONString());
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
