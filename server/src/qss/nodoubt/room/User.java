@@ -16,8 +16,8 @@ public class User {
 	transient private Room currentRoom=null;
 	transient private Client currentClient=null;
 	
-	public User(String ID,String password){
-		this.ID=ID;
+	public User(String id,String password){
+		this.ID=id;
 		this.password=password;
 	}
 	
@@ -46,8 +46,8 @@ public class User {
 		return ID;
 	}
 
-	public void setID(String iD) {
-		ID = iD;
+	public void setID(String id) {
+		ID = id;
 	}
 
 	public String getPassword() {
