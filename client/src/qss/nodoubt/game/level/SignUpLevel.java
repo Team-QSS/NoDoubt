@@ -292,8 +292,8 @@ public class SignUpLevel extends GameLevel{
 		// TODO Auto-generated method stub
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
-		m_Message = m_Message.addValue("ID", m_IDBuffer.toString());
-		m_Message = m_Message.addValue("Password", m_PWBuffer.toString());
+		m_Message = m_Message.addStringValue("ID", m_IDBuffer.toString());
+		m_Message = m_Message.addStringValue("Password", m_PWBuffer.toString());
 		
 		if(m_IDBuffer.length()==0){
 			drawTextCall("fontR11", "ID", new Vector2f(-313, 22), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));

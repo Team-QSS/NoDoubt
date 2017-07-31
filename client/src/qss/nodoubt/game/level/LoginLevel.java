@@ -223,18 +223,19 @@ public class LoginLevel extends GameLevel{
 		temp = m_Network.pollMessage();
 		
 		if(temp != null){
-			if("true".equalsIgnoreCase(temp.getValue("Value"))){
+			if(temp.getBoolValue("Value")){
+				GameState.getInstance().m_myID = m_IDBuffer.toString();
 				Game.getInstance().setNextLevel(new LobbyLevel());
 			}
-			if("false".equalsIgnoreCase(temp.getValue("Value"))){
+			else{
 				m_IDBuffer.delete(0, m_IDBuffer.length());
 				m_PWBuffer.delete(0, m_PWBuffer.length());
 				m_ActiveBuffer = 0;
 			}
 		}
 		
-		m_Message = m_Message.addValue("ID", m_IDBuffer.toString());
-		m_Message = m_Message.addValue("Password", m_PWBuffer.toString());
+		m_Message = m_Message.addStringValue("ID", m_IDBuffer.toString());
+		m_Message = m_Message.addStringValue("Password", m_PWBuffer.toString());
 		
 		if(m_Star.length() > m_PWBuffer.length()){
 			for(int i = 0; i < m_Star.length() - m_PWBuffer.length(); i++){
