@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.game.object.ingame.*;
+import qss.nodoubt.network.Message;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -21,6 +22,7 @@ public class InGameLevel extends GameLevel{
 	private GameBoard m_Board;
 	private DiceResult m_DiceResult;
 	private Bike[] m_Bikes = new Bike[6];
+	private TurnLabel m_TurnLabel;
 	
 	private float m_AcSeconds = 0.0f;
 	private int m_AcMinites = 0;
@@ -58,10 +60,18 @@ public class InGameLevel extends GameLevel{
 				m_Board.moveBike(5, 4);
 			} else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
 				m_Board.push(0);
+			} else if(action == GLFW_PRESS && key == GLFW_KEY_Z) {
+				m_TurnLabel.nextTurn();
 			}
 		}, null);
 		
 		m_DiceResult.setResult(5);
+		
+		m_TurnLabel = new TurnLabel(new String[] {
+				"Test1", "Test2", "Test3", "Test4", "Test5", "Test6"
+		}, new Vector3f[]{
+				RED, BLUE, GREEN, YELLOW, WHITE, PURPLE
+		}, 6);
 	}
 	
 	private void updateTime(float deltaTime) {
@@ -92,6 +102,8 @@ public class InGameLevel extends GameLevel{
 			System.out.println("Conflict pos : " + m_Board.getState().conflictPos);
 			System.out.println("Conflict bike : " + m_Board.getState().conflictBike);
 		}
+		
+		drawTextCall("fontB11", m_TurnLabel.getID(), new Vector2f(465, 347), m_TurnLabel.getColor());
 		
 	}
 }
