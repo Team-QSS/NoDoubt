@@ -26,7 +26,7 @@ public class Database {
     		// 객체 생성 시 서버의 데이터베이스와 연결 
     		Class.forName("com.mysql.jdbc.Driver");
     		    // Driver 클래스를 동적 로딩 및 생성
-    		connection = DriverManager.getConnection("", "", "");
+    		connection = DriverManager.getConnection();
                 // 서버 내의 데이터베이스와의 커넥션 생성
     	} catch (ClassNotFoundException | SQLException e) {
     		e.printStackTrace();
