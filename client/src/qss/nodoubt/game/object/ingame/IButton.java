@@ -8,7 +8,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import org.joml.Vector2f;
 
 public class IButton extends GameObject{
-	private interface ClickListener {
+	public interface ClickListener {
 		void onClick();
 	}
 	

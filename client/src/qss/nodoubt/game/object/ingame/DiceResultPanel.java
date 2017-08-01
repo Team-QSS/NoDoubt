@@ -2,9 +2,9 @@ package qss.nodoubt.game.object.ingame;
 
 import qss.nodoubt.game.object.GameObject;
 
-public class DiceResult extends GameObject{
+public class DiceResultPanel extends GameObject{
 
-	public DiceResult() {
+	public DiceResultPanel() {
 		super("Result1", 1);
 		setPosition(714, -431);
 	}

@@ -105,7 +105,7 @@ public class GameBoard {
 			a1 = 45; break;
 		}
 		
-		for(int i = 0; i < 6; i++)
+		for(int i = 0; i < c.bikes.length; i++)
 		{
 			if(c.bikes[i] != null) {
 				c.bikes[i].setPosition(s_RoadPos[pos]);
@@ -127,7 +127,7 @@ public class GameBoard {
 		m_MovingBikeIndex = n;
 		m_BikePoses[n] = curPos + m_MovingDirection;
 		
-		for(int i = 0; i < 6; i++) {
+		for(int i = 0; i < c.bikes.length; i++) {
 			if(c.bikes[i] != null) {
 				setBike(i, curPos);
 				break;
@@ -139,6 +139,7 @@ public class GameBoard {
 	
 	private void moveEnd() {
 		setBike(m_MovingBikeIndex, m_BikePoses[m_MovingBikeIndex]);
+		m_IsIdle = true;
 	}
 	
 	public void push(int n) {
@@ -148,7 +149,7 @@ public class GameBoard {
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
 		setBike(n, c.recentCheckPoint);
-		for(int i = 0; i < 6; i++) {
+		for(int i = 0; i < c.bikes.length; i++) {
 			if(c.bikes[i] != null) {
 				setBike(i, curPos);
 				break;
@@ -159,7 +160,6 @@ public class GameBoard {
 	public void update(float deltaTime) {
 		if(m_IsIdle == false && m_Bikes[m_MovingBikeIndex].isIdle()) {
 			if(m_MovingGoal == m_BikePoses[m_MovingBikeIndex]) {
-				m_IsIdle = true;
 				moveEnd();
 			} else {
 				m_Bikes[m_MovingBikeIndex].go(s_RoadPos[m_BikePoses[m_MovingBikeIndex] + m_MovingDirection]);
@@ -174,5 +174,9 @@ public class GameBoard {
 			return new State().setConflict(m_State.conflictPos, m_State.conflictBike);
 		}
 		return m_State;
+	}
+	
+	public boolean isIdle() {
+		return m_IsIdle;
 	}
 }
