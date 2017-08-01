@@ -23,6 +23,10 @@ public class UserService {
     	return database.executeAndUpdate(sql, id, password, name);
     }
     
+    public int create(User user) {
+    	return create(user.getID(), user.getPassword(), user.getName());
+    }
+    
     public JSONArray read(String id) {
     	// 중복 사용자 확인을 위해 id만을 이용해서 사용자 조회 
     	String sql = "SELECT id as ID, password, name FROM users WHERE id=?";
