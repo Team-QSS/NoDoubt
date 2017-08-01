@@ -19,8 +19,16 @@ public class UserService {
     }
     
     public int create(String id, String password, String name) {
-    	String sql = "INSERT users (id, password, name) VALUES (?, ?, ?)";
-    	return database.executeAndUpdate(sql, id, password, name);
+    	// 회원가입을 처리하는 메서드
+    	// 오류 발생시 -1, 중복 사용자 발생시 0, 성공시 1 반환
+    	
+    	JSONArray users = read(id);
+    	if (users.size() == 0) {
+    		String sql = "INSERT users (id, password, name) VALUES (?, ?, ?)";
+        	return database.executeAndUpdate(sql, id, password, name);    // 예외 발생시 1 반환
+    	} else {
+    		return 0;    // 중복 사용자 확인 및  1 반환
+    	}
     }
     
     public int create(User user) {
@@ -45,7 +53,6 @@ public class UserService {
     	
     	if (users.size() == 1) {
     	    JSONObject data = (JSONObject) users.get(0);     // JSON 배열의 길이가 1일 때, 사용자 인증이 성공함 
-    	    
     	    User user = gson.fromJson(data.toString(), User.class);    
     	    return user;
     	} else {
