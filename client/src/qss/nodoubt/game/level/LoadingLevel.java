@@ -9,7 +9,6 @@ import org.json.simple.*;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
-import qss.nodoubt.network.Message;
 import qss.nodoubt.network.Network;
 /*
  * 이 클래스는 대기실을 들어가기 전,
@@ -28,9 +27,9 @@ public class LoadingLevel extends GameLevel{
 	private Button m_Back = null;
 	
 	private Network m_Network = null;
-	private Message m_Message = null;
 	
 	//getCursor로 마우스의 좌표를 구함
+	
 	private float mouseX;
 	private float mouseY;
 	private float time;
@@ -40,8 +39,6 @@ public class LoadingLevel extends GameLevel{
 		m_Back = new Button("BackButton1", "BackButton2", 677, 414);
 		
 		m_Network = Network.getInstance();
-		m_Message = new Message();
-		m_Message.setProtocol("RoomListRequest");
 		
 		setEventListener((action,  key) -> { 
 			if(action == GLFW_PRESS){ 
@@ -107,14 +104,7 @@ public class LoadingLevel extends GameLevel{
 		
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
-		Message temp;
 		
-		if(time >= 5.0f){
-			time = 0;
-			m_Network.pushMessage(m_Message);
-			temp = m_Network.pollMessage();
-			
-		}
 	}
 
 }
