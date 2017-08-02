@@ -38,7 +38,9 @@ public class LoginLevel extends GameLevel{
 	private Background m_LoginBG = null;
 	
 	public LoginLevel() {
-		
+		m_Network = Network.getInstance();
+		m_Message = new Message();
+		m_Message = m_Message.setProtocol("LoginRequest");
 		m_Signin = new Button ("SigninButton", null, 0, -329, 680, 101);
 		m_Signup = new Button ("RegisterButton", null, 0, -455, 117, 32);
 		m_IDBuffer = new StringBuffer();
@@ -69,11 +71,6 @@ public class LoginLevel extends GameLevel{
 						}
 					}
 				});
-		
-		m_Network = Network.getInstance();
-		m_Message = new Message();
-		m_Message = m_Message.setProtocol("LoginRequest");
-
 		setEventListener(
 				(action, key) ->{
 					if(m_ActiveBuffer == 0){
