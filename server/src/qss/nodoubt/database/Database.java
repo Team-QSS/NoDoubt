@@ -24,10 +24,8 @@ public class Database {
     	// Driver 객체 동적 로딩 및 connection 인스턴스 초기화
     	try {
     		// 객체 생성 시 서버의 데이터베이스와 연결 
-    		Class.forName("com.mysql.jdbc.Driver");
-    		    // Driver 클래스를 동적 로딩 및 생성
-    		connection = DriverManager.getConnection();
-                // 서버 내의 데이터베이스와의 커넥션 생성
+    		Class.forName("com.mysql.jdbc.Driver");    // Driver 클래스를 동적 로딩 및 생성
+    		connection = DriverManager.getConnection("jdbc:mysql://35.160.125.239/no_doubt?useSSL=true", "dongly", "ehdrmfdl");    // 서버 내의 데이터베이스와의 커넥션 생성
     	} catch (ClassNotFoundException | SQLException e) {
     		e.printStackTrace();
     	} 
@@ -79,7 +77,7 @@ public class Database {
     private static JSONArray filterData(ResultSet resultSet) throws SQLException{
     	// 튜플들의 데이터가 담긴 ResultSet 객체를 ArrayList 형태로 가공 및 반환
     	JSONArray results = new JSONArray();
- 
+
     	while (resultSet.next()) {
     		// 튜플들의 목록을 조회한다
     		JSONObject result = new JSONObject();
@@ -93,7 +91,7 @@ public class Database {
 			results.add(result);    // results JSONArray에 튜플의 데이터를 추가한다 
 		}
     	
-    	return (results.size() > 0) ? results : null;    // JSONArray 형태로 가공한 결과값을 반환한다
+    	return results;    // 비정상적인 종료인지, 결과 값이 없는 것인지 확인하기 위해 그대로 results 반환
     }
 }
 
