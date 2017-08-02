@@ -24,7 +24,6 @@ public class SignUpLevel extends GameLevel{
 	private StringBuffer m_Star1 = null;
 	private StringBuffer m_Star2 = null;
 	
-	private Message m_Message = null;
 	private Network m_Network = null;
 	
 	private Background m_SignUpBG = null;
@@ -44,8 +43,6 @@ public class SignUpLevel extends GameLevel{
 		m_Star2 = new StringBuffer();
 		
 		m_Network = Network.getInstance();
-		m_Message = new Message();
-		m_Message = m_Message.setProtocol("RegisterRequest");
 		
 		m_SignUpBG = new Background("SignupBG");
 		m_Signup = new Button("SignupButton", null, 0, -395);
@@ -54,7 +51,7 @@ public class SignUpLevel extends GameLevel{
 				(action, key) ->{
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
 						if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
-							m_Network.pushMessage(m_Message);
+							//메시지 전송
 						}else{
 							m_IDBuffer.delete(0, m_IDBuffer.length());
 							m_PWBuffer.delete(0, m_PWBuffer.length());
@@ -67,7 +64,7 @@ public class SignUpLevel extends GameLevel{
 					if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 						if(m_Signup.onButton(mouseX, mouseY)){
 							if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
-								m_Network.pushMessage(m_Message);
+								//메시지 전송
 							}else{
 								m_IDBuffer.delete(0, m_IDBuffer.length());
 								m_PWBuffer.delete(0, m_PWBuffer.length());
@@ -292,23 +289,17 @@ public class SignUpLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
-		Message temp;
-		temp = m_Network.pollMessage();
-		
-		if(temp != null){
-			if(temp.getBoolValue("Value")){
-				Game.getInstance().setNextLevel(new LoginLevel());
-			}
-			else{
-				m_IDBuffer.delete(0, m_IDBuffer.length());
-				m_PWBuffer.delete(0, m_PWBuffer.length());
-				m_PWRepeat.delete(0, m_PWRepeat.length());
-				m_ActiveBuffer = 0;
-			}
-		}
-				
-		m_Message = m_Message.addStringValue("ID", m_IDBuffer.toString());
-		m_Message = m_Message.addStringValue("Password", m_PWBuffer.toString());
+//		if(temp != null){
+//			if(temp.getBoolValue("Value")){
+//				Game.getInstance().setNextLevel(new LoginLevel());
+//			}
+//			else{
+//				m_IDBuffer.delete(0, m_IDBuffer.length());
+//				m_PWBuffer.delete(0, m_PWBuffer.length());
+//				m_PWRepeat.delete(0, m_PWRepeat.length());
+//				m_ActiveBuffer = 0;
+//			}
+//		}
 		
 		if(m_Star1.length() > m_PWBuffer.length()){
 			for(int i = 0; i < m_Star1.length() - m_PWBuffer.length(); i++){

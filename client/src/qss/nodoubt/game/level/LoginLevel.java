@@ -16,7 +16,6 @@ import org.joml.Vector3f;
 import qss.nodoubt.game.*;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
-import qss.nodoubt.network.Message;
 import qss.nodoubt.network.Network;
 
 public class LoginLevel extends GameLevel{
@@ -26,7 +25,6 @@ public class LoginLevel extends GameLevel{
 	private int m_ActiveBuffer = 0;
 	private boolean m_isShiftPressed = false;
 	
-	private Message m_Message = null;
 	private Network m_Network = null;
 	//버튼
 	private Button m_Signin = null;		//로그인
@@ -39,8 +37,6 @@ public class LoginLevel extends GameLevel{
 	
 	public LoginLevel() {
 		m_Network = Network.getInstance();
-		m_Message = new Message();
-		m_Message = m_Message.setProtocol("LoginRequest");
 		m_Signin = new Button ("SigninButton", null, 0, -329, 680, 101);
 		m_Signup = new Button ("RegisterButton", null, 0, -455, 117, 32);
 		m_IDBuffer = new StringBuffer();
@@ -50,7 +46,7 @@ public class LoginLevel extends GameLevel{
 		m_Signin.setListener(
 				(action, key) -> {
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
-						m_Network.pushMessage(m_Message);
+						//메시지 전송
 					}else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
 						Game.getInstance().setNextLevel(new LobbyLevel());
 					}
@@ -58,7 +54,7 @@ public class LoginLevel extends GameLevel{
 				(action, button) ->{
 						if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 							if(m_Signin.onButton(mouseX, mouseY)){
-							m_Network.pushMessage(m_Message);
+							//메시지 전송
 						}
 					}
 				});
@@ -218,23 +214,19 @@ public class LoginLevel extends GameLevel{
 		// TODO Auto-generated method stub
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
-		Message temp;
-		temp = m_Network.pollMessage();
 		
-		if(temp != null){
-			if(temp.getBoolValue("Value")){
-				GameState.getInstance().m_myID = m_IDBuffer.toString();
-				Game.getInstance().setNextLevel(new LobbyLevel());
-			}
-			else{
-				m_IDBuffer.delete(0, m_IDBuffer.length());
-				m_PWBuffer.delete(0, m_PWBuffer.length());
-				m_ActiveBuffer = 0;
-			}
-		}
 		
-		m_Message = m_Message.addStringValue("ID", m_IDBuffer.toString());
-		m_Message = m_Message.addStringValue("Password", m_PWBuffer.toString());
+//		if(temp != null){
+//			if(temp.getBoolValue("Value")){
+//				GameState.getInstance().m_myID = m_IDBuffer.toString();
+//				Game.getInstance().setNextLevel(new LobbyLevel());
+//			}
+//			else{
+//				m_IDBuffer.delete(0, m_IDBuffer.length());
+//				m_PWBuffer.delete(0, m_PWBuffer.length());
+//				m_ActiveBuffer = 0;
+//			}
+//		}
 		
 		if(m_Star.length() > m_PWBuffer.length()){
 			for(int i = 0; i < m_Star.length() - m_PWBuffer.length(); i++){

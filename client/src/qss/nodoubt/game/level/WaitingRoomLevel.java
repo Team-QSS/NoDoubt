@@ -1,8 +1,6 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,7 +8,6 @@ import java.util.LinkedList;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
-import qss.nodoubt.network.Message;
 import qss.nodoubt.network.Network;
 
 public class WaitingRoomLevel extends GameLevel{
@@ -31,7 +28,6 @@ public class WaitingRoomLevel extends GameLevel{
 	private Background m_WaitingRoomBG;
 	
 	private Network m_Network;
-	private Message m_Message;
 	
 	public WaitingRoomLevel(){
 		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
