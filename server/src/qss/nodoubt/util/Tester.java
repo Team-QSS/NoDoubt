@@ -157,7 +157,7 @@ public class Tester extends JFrame{
 			}break;
 		
 			case Protocol.REGISTER_RESULT:{
-				if(!(boolean)data.get("Value")){
+				if((boolean)data.get("Value")){
 					Util.printLog(mainTextArea, "회원가입완료");
 				}else{
 					Util.printLog(mainTextArea, "회원가입실패");

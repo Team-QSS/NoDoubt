@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>NoDoubtClient</name>
+	<name>NoDoubtProtocol</name>
 	<comment></comment>
 	<projects>
-		<project>NoDoubtProtocol</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

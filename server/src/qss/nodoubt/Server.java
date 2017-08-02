@@ -22,6 +22,7 @@ import org.json.simple.parser.JSONParser;
 
 import com.google.gson.Gson;
 
+import qss.nodoubt.database.UserService;
 import qss.nodoubt.room.Room;
 import qss.nodoubt.room.RoomManager;
 import qss.nodoubt.room.User;
@@ -180,39 +181,44 @@ public class Server extends JFrame{
 			switch((String)data.get("Protocol")){
 			
 				case Protocol.REGISTER_REQUEST:{
-					User user=new User((String) data.get("ID"),(String) data.get("Password"));
+					User user=new User((String) data.get("ID"),(String) data.get("Password"), (String) data.get("Name"));
+					
+					int result = UserService.getInstance().create(user);
 					sendData.put("Protocol", Protocol.REGISTER_RESULT);
-					sendData.put("Value", false);
-					for(String key:users.keySet()){
-						User u=users.get(key);
-						if(u.getID().equals(user.getID())){
-							sendData.put("Value", true);
-							break;
-						}
-					}
-					//만약 이전에 같은 유저가 존재하지않을시
-					if(!(boolean)sendData.get("Value")){
+					
+					if (result == 1) {
+						sendData.put("Value", true);
 						users.put(user.getID(), user);
+					} else {
+						sendData.put("Value", false);
 					}
+					
 					client.send(sendData);
 				}break;
 				
 				case Protocol.LOGIN_REQUEST:{
 					User user=new User((String) data.get("ID"),(String) data.get("Password"));
-					sendData.put("Protocol", Protocol.LOGIN_RESULT);
-					sendData.put("Value", false);
-					for(String key:users.keySet()){
-						User u=users.get(key);
-						if(!u.isOnline()&&u.equals(user)){
-							u.setOnline(true);
-							client.setCurrentUser(u);
-							roomManager.getRoom(RoomManager.LOBBY).enterUser(user);
-							sendData.put("Value", true);
-							sendData.put("User", gson.toJson(u));
-							break;
+					user = UserService.getInstance().login(user);
+					
+					if (user != null) {
+						sendData.put("Protocol", Protocol.LOGIN_RESULT);
+						sendData.put("Value", true);
+						for(String key:users.keySet()){
+							User u=users.get(key);
+							if(!u.isOnline()&&u.equals(user)){
+								u.setOnline(true);
+								client.setCurrentUser(u);
+								roomManager.getRoom(RoomManager.LOBBY).enterUser(user);
+								sendData.put("Value", true);
+								sendData.put("User", gson.toJson(u));
+								break;
+							}
 						}
+						sendData.put("RoomManager", gson.toJson(roomManager));
+					} else {
+						sendData.put("Protocol", Protocol.LOGIN_RESULT);
+						sendData.put("Value", false);
 					}
-					sendData.put("RoomManager", gson.toJson(roomManager));
 					
 					client.send(sendData);
 				}break;
