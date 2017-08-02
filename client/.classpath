@@ -45,5 +45,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="json/json-simple-1.1.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/NoDoubtProtocol"/>
+	<classpathentry kind="lib" path="json/gson-2.8.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
