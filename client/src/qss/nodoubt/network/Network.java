@@ -5,6 +5,10 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import qss.nodoubt.game.GameConstants;
 
 public class Network {
@@ -15,8 +19,8 @@ public class Network {
 	private DataOutputStream m_OutputStream = null;
 	private Thread m_InputThread = null;
 	private Thread m_OutputThread = null;
-	private Queue<Message> m_InputQueue = new ConcurrentLinkedQueue<Message>();
-	private Queue<Message> m_OutputQueue = new ConcurrentLinkedQueue<Message>();
+	private Queue<JSONObject> m_InputQueue = new ConcurrentLinkedQueue<JSONObject>();
+	private Queue<JSONObject> m_OutputQueue = new ConcurrentLinkedQueue<JSONObject>();
 	
 	public static Network getInstance() {
 		if(s_Instance == null) {
@@ -70,8 +74,11 @@ public class Network {
 			m_InputThread = new Thread( () -> {
 				while(true) {
 					try {
-						m_InputQueue.offer(new Message(m_InputStream.readUTF()));
+						m_InputQueue.offer((JSONObject) new JSONParser().parse(m_InputStream.readUTF()));
 					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -102,7 +109,7 @@ public class Network {
 	 * 메세지 받기
 	 * @return 받은 메세지 없으면 null리턴
 	 */
-	public Message pollMessage() {
+	public JSONObject pollMessage() {
 		return m_InputQueue.poll();
 	}
 	
@@ -110,7 +117,7 @@ public class Network {
 	 * 메세지 보내기
 	 * @param msg 보낼 메세지
 	 */
-	public void pushMessage(Message msg) {
+	public void pushMessage(JSONObject msg) {
 		m_OutputQueue.add(msg);
 	}
 }
