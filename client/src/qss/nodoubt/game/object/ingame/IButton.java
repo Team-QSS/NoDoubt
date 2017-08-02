@@ -36,8 +36,6 @@ public class IButton extends GameObject{
 				unfocus();
 			}
 		});
-		
-		
 	}
 	
 	public IButton(String type, ClickListener listener) {

@@ -3,6 +3,7 @@
 	<name>NoDoubtClient</name>
 	<comment></comment>
 	<projects>
+		<project>NoDoubtProtocol</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
