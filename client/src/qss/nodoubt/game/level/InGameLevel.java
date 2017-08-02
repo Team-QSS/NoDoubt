@@ -1,12 +1,12 @@
 package qss.nodoubt.game.level;
 
 import org.joml.Vector2f;
-import org.joml.Vector2i;
 import org.joml.Vector3f;
+import org.json.simple.JSONObject;
 
+import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.game.object.ingame.*;
-import qss.nodoubt.network.Message;
 import qss.nodoubt.network.Network;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -34,14 +34,18 @@ public class InGameLevel extends GameLevel{
 	
 	private int m_DiceResult = 0;
 	
-	public InGameLevel() {
+	/**
+	 * 
+	 * @param IDs 닉네임들 (자기 자신은 GameState를 통해서 얻을테니 닉네임만 적으면 됨)
+	 * @param playerCount 플레이어 총 수
+	 * @param colors (각 닉네임들의 색상, IDs[i]의 색상이 colors[i]의 색상이 됨, color는 0부터 차례대로 RBGYWP순)
+	 */
+	public InGameLevel(String IDs[], int playerCount, int colors[]) {
 		addObject(new Background("InGameBackground"));
-		addObject(new IButton(1, () -> declare(1)));
-		addObject(new IButton(2, () -> declare(2)));
-		addObject(new IButton(3, () -> declare(3)));
-		addObject(new IButton(4, () -> declare(4)));
-		addObject(new IButton(5, () -> declare(5)));
-		addObject(new IButton(6, () -> declare(6)));
+		for(int i = 1; i <= 6; i++) {
+			final int t = i;
+			addObject(new IButton(i, () -> declare(t)));
+		}
 		addObject(new IButton("Doubt", () -> {}));
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DiceResultPanel = new DiceResultPanel());
@@ -136,12 +140,15 @@ public class InGameLevel extends GameLevel{
 	
 	private void declare(int n) {
 		if(m_State.equals(State.DECLARE)) {
-			Message msg = new Message();
-			msg.setProtocol("DeclareRequest");
-			msg.addIntValue("Value", n);
-			msg.addStringValue("ID", "tempID");
+			JSONObject msg = new JSONObject();
 			
-			Network.getInstance().pushMessage(msg);
+			msg.put("Protocol", "DeclareRequest");
+			msg.put("Value", n);
+			msg.put("ID", GameState.getInstance().m_myID);
+			
+			System.out.println(msg.toJSONString());
+			
+			//Network.getInstance().pushMessage(msg);
 		}
 	}
 }
