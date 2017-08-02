@@ -64,4 +64,8 @@ public class Message {
 	public JSONArray getList(String key) {
 		return (JSONArray) m_Json.get(key);
 	}
+	
+	public String getProtocol() {
+		return (String) m_Json.get("Protocol");
+	}
 }
