@@ -181,20 +181,18 @@ public class Server extends JFrame{
 			switch((String)data.get("Protocol")){
 			
 				case Protocol.REGISTER_REQUEST:{
-					User user=new User((String) data.get("ID"),(String) data.get("Password"));
+					User user=new User((String) data.get("ID"),(String) data.get("Password"), (String) data.get("Name"));
+					
+					int result = UserService.getInstance().create(user);
 					sendData.put("Protocol", Protocol.REGISTER_RESULT);
-					sendData.put("Value", false);
-					for(String key:users.keySet()){
-						User u=users.get(key);
-						if(u.getID().equals(user.getID())){
-							sendData.put("Value", true);
-							break;
-						}
-					}
-					//만약 이전에 같은 유저가 존재하지않을시
-					if(!(boolean)sendData.get("Value")){
+					
+					if (result == 1) {
+						sendData.put("Value", true);
 						users.put(user.getID(), user);
+					} else {
+						sendData.put("Value", false);
 					}
+					
 					client.send(sendData);
 				}break;
 				
