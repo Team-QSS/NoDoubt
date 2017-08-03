@@ -75,5 +75,4 @@ public class Room {
 		this.password = password;
 	}
 
-
 }
