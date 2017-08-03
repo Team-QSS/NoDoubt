@@ -18,32 +18,32 @@ public class UserService {
     	return instance;
     }
     
-    public int create(String id, String password, String name) {
+    public int create(String id, String password) {
     	// 회원가입을 처리하는 메서드
     	// 오류 발생시 -1, 중복 사용자 발생시 0, 성공시 1 반환
     	
     	JSONArray users = read(id);
     	if (users.size() == 0) {
-    		String sql = "INSERT users (id, password, name) VALUES (?, ?, ?)";
-        	return database.executeAndUpdate(sql, id, password, name);    // 예외 발생시 1 반환
+    		String sql = "INSERT users (id, password) VALUES (?, ?, ?)";
+        	return database.executeAndUpdate(sql, id, password);    // 예외 발생시 1 반환
     	} else {
     		return 0;    // 중복 사용자 확인 및  1 반환
     	}
     }
     
     public int create(User user) {
-    	return create(user.getID(), user.getPassword(), user.getName());
+    	return create(user.getID(), user.getPassword());
     }
     
     public JSONArray read(String id) {
     	// 중복 사용자 확인을 위해 id만을 이용해서 사용자 조회 
-    	String sql = "SELECT id as ID, password, name FROM users WHERE id=?";
+    	String sql = "SELECT id as ID, password FROM users WHERE id=?";
     	return database.executeAndGet(sql, id);
     }
     
     public JSONArray read(String id, String password) {
     	// 로그인을 위해 id, password를 이용해서 사용자 조회
-    	String sql = "SELECT id as ID, password, name FROM users WHERE id=? && password=?";
+    	String sql = "SELECT id as ID, password FROM users WHERE id=? && password=?";
     	return database.executeAndGet(sql, id, password);
     }
     

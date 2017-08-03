@@ -10,8 +10,7 @@ public class User {
 	
 	private String ID;
 	private String password;
-    private String name;
-    
+	
 	private double currentRoomId;
 	
 	transient private Room currentRoom=null;
@@ -21,12 +20,7 @@ public class User {
 		this.ID=id;
 		this.password=password;
 	}
-	
-	public User(String id,String password, String name){
-		this(id, password);
-		this.name = name;
-	}
-	
+
 	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof User){
@@ -62,14 +56,6 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public double getCurrentRoomId() {

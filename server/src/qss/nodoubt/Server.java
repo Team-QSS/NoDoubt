@@ -181,7 +181,7 @@ public class Server extends JFrame{
 			switch((String)data.get("Protocol")){
 			
 				case Protocol.REGISTER_REQUEST:{
-					User user=new User((String) data.get("ID"),(String) data.get("Password"), (String) data.get("Name"));
+					User user=new User((String) data.get("ID"),(String) data.get("Password"));
 					
 					int result = UserService.getInstance().create(user);
 					sendData.put("Protocol", Protocol.REGISTER_RESULT);
