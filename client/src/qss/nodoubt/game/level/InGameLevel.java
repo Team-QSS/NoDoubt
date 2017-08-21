@@ -1,18 +1,27 @@
 package qss.nodoubt.game.level;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_B;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Y;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+
+import java.util.Random;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
 import qss.nodoubt.game.GameState;
-import qss.nodoubt.game.object.*;
+import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.ingame.*;
 import qss.nodoubt.network.Network;
+
 import room.Room;
-
-import static org.lwjgl.glfw.GLFW.*;
-
-import java.util.Random;
 
 public class InGameLevel extends GameLevel{
 	private static final Vector3f UI_COLOR = new Vector3f(0x9a / 255f, 0x6f / 255f, 0x52 / 255f);

@@ -1,14 +1,26 @@
 package qss.nodoubt.game.level;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_TAB;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
+
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.json.simple.JSONObject;
+
+import protocol.Protocol;
 import qss.nodoubt.game.Game;
-import qss.nodoubt.game.GameState;
-import qss.nodoubt.game.object.*;
+import qss.nodoubt.game.object.Background;
+import qss.nodoubt.game.object.Button;
 import qss.nodoubt.input.Input;
-import qss.nodoubt.network.*;
-
-import static org.lwjgl.glfw.GLFW.*;
-
-import org.joml.*;
+import qss.nodoubt.network.Network;
+import util.KeyValue;
+import util.Util;
 
 /*
  * 회원가입을 하게 되는 단계이며
@@ -52,6 +64,12 @@ public class SignUpLevel extends GameLevel{
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
 						if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
 							//메시지 전송
+							JSONObject signUpData=
+									Util.packetGenerator(Protocol.REGISTER_REQUEST,
+									new KeyValue("ID", m_IDBuffer.toString()),
+									new KeyValue("Password", m_PWBuffer.toString())
+									);
+							Network.getInstance().pushMessage(signUpData);
 						}else{
 							m_IDBuffer.delete(0, m_IDBuffer.length());
 							m_PWBuffer.delete(0, m_PWBuffer.length());
@@ -65,6 +83,12 @@ public class SignUpLevel extends GameLevel{
 						if(m_Signup.onButton(mouseX, mouseY)){
 							if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
 								//메시지 전송
+								JSONObject signUpData=
+										Util.packetGenerator(Protocol.REGISTER_REQUEST,
+										new KeyValue("ID", m_IDBuffer.toString()),
+										new KeyValue("Password", m_PWBuffer.toString())
+										);
+								Network.getInstance().pushMessage(signUpData);
 							}else{
 								m_IDBuffer.delete(0, m_IDBuffer.length());
 								m_PWBuffer.delete(0, m_PWBuffer.length());
@@ -289,6 +313,11 @@ public class SignUpLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
+		JSONObject msg = Network.getInstance().pollMessage();
+		if(msg != null) {
+			protocolProcess(msg);
+		}
+		
 //		if(temp != null){
 //			if(temp.getBoolValue("Value")){
 //				Game.getInstance().setNextLevel(new LoginLevel());
@@ -334,5 +363,19 @@ public class SignUpLevel extends GameLevel{
 		drawTextCall("fontR11", m_IDBuffer.toString(), new Vector2f(-313,15), new Vector3f(0,0,0));
 		drawTextCall("fontR11", m_Star1.toString(), new Vector2f(-313,-116), new Vector3f(0,0,0));
 		drawTextCall("fontR11", m_Star2.toString(), new Vector2f(-313,-240), new Vector3f(0,0,0));
+	}
+	
+	private void protocolProcess(JSONObject data){
+		switch((String)data.get("Protocol")){
+		case Protocol.REGISTER_RESULT:{
+			if((boolean)data.get("Value")){
+				Game.getInstance().setNextLevel(new LoginLevel());
+			}else{
+				System.out.println("실패");
+			}
+		}break;
+		
+		default:System.out.println("unknownProtocol");
+		}
 	}
 }
