@@ -50,6 +50,7 @@ public class Game {
 	public void shutdown() {
 		m_Window.shutdown();
 		m_Sound.shutdown();
+		m_Network.shutdown();
 	}
 	
 	/**
