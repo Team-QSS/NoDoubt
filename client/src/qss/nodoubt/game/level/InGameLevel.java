@@ -8,6 +8,7 @@ import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.game.object.ingame.*;
 import qss.nodoubt.network.Network;
+import room.Room;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -21,6 +22,12 @@ public class InGameLevel extends GameLevel{
 		DICEROLL, DECLARE, DOUBT, STEPPUSH, ANIMATING
 	}
 	
+	public class TurnInfo
+	{
+		public String name;
+		public char color;
+	}
+	
 	private GameBoard m_Board;
 	private DiceResultPanel m_DiceResultPanel;
 	private Bike[] m_Bikes = new Bike[6];
@@ -31,6 +38,7 @@ public class InGameLevel extends GameLevel{
 	
 	private State m_State = State.DICEROLL;
 	private int m_Turn;
+	private TurnInfo m_TurnInfo[];
 	
 	private int m_DiceResult = 0;
 	
@@ -40,7 +48,7 @@ public class InGameLevel extends GameLevel{
 	 * @param playerCount 플레이어 총 수
 	 * @param colors (각 닉네임들의 색상, IDs[i]의 색상이 colors[i]의 색상이 됨, color는 0부터 차례대로 RBGYWP순)
 	 */
-	public InGameLevel(String IDs[], int playerCount, int colors[]) {
+	public InGameLevel(Room r) {
 		addObject(new Background("InGameBackground"));
 		for(int i = 1; i <= 6; i++) {
 			final int t = i;
@@ -88,6 +96,10 @@ public class InGameLevel extends GameLevel{
 	
 	@Override
 	public void update(float deltaTime) {
+		JSONObject msg = Network.getInstance().pollMessage();
+		if(msg != null) {
+			String protocol = (String) msg.get("Protocol");
+		}
 		updateObjects(deltaTime);
 		updateTime(deltaTime);
 		drawTextCall("fontB11", "Turn of", new Vector2f(465, 401), UI_COLOR);
@@ -139,7 +151,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void declare(int n) {
-		if(m_State.equals(State.DECLARE)) {
+		if(m_State.equals(State.DECLARE) && isMyTurn()) {
 			JSONObject msg = new JSONObject();
 			
 			msg.put("Protocol", "DeclareRequest");
@@ -148,7 +160,11 @@ public class InGameLevel extends GameLevel{
 			
 			System.out.println(msg.toJSONString());
 			
-			//Network.getInstance().pushMessage(msg);
+			Network.getInstance().pushMessage(msg);
 		}
+	}
+	
+	private boolean isMyTurn() {
+		return m_TurnInfo[m_Turn].name.equals(GameState.getInstance().m_myID);
 	}
 }
