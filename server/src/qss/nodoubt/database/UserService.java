@@ -37,7 +37,7 @@ public class UserService {
     
     public JSONArray read(String id) {
     	// 중복 사용자 확인을 위해 id만을 이용해서 사용자 조회 
-    	String sql = "SELECT id as ID, password FROM users WHERE id=?";
+    	String sql = "SELECT id as ID, password FROM users WHERE id = ?";
     	return database.executeAndGet(sql, id);
     }
     
