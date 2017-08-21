@@ -91,7 +91,9 @@ public class Network {
 				while(true) {
 					if(!m_OutputQueue.isEmpty()) {
 						try {
-							m_OutputStream.writeChars(m_OutputQueue.poll().toJSONString());
+							String s=m_OutputQueue.poll().toJSONString();
+							m_OutputStream.writeChars(s);
+							System.out.println(s);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
