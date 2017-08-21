@@ -62,7 +62,7 @@ public class Network {
 	}
 
 	private Network() {
-		
+		connect();
 	}
 	
 	public void connect() {

@@ -41,6 +41,7 @@ public class InGameLevel extends GameLevel{
 	private TurnInfo m_TurnInfo[];
 	
 	private int m_DiceResult = 0;
+	private int m_DeclareNum = 0;
 	
 	/**
 	 * 
@@ -54,7 +55,7 @@ public class InGameLevel extends GameLevel{
 			final int t = i;
 			addObject(new IButton(i, () -> declare(t)));
 		}
-		addObject(new IButton("Doubt", () -> {}));
+		addObject(new IButton("Doubt", () -> doubt()));
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DiceResultPanel = new DiceResultPanel());
 		addObject(new Stump());
@@ -161,10 +162,25 @@ public class InGameLevel extends GameLevel{
 			System.out.println(msg.toJSONString());
 			
 			Network.getInstance().pushMessage(msg);
+			m_DeclareNum = n;
+			m_State = State.DOUBT;
 		}
+	}
+	
+	private void recieveDeclare(int n) {
+		m_State = State.DOUBT;
+		m_DeclareNum = n;
+		m_DiceResultPanel.setResult(n);
 	}
 	
 	private boolean isMyTurn() {
 		return m_TurnInfo[m_Turn].name.equals(GameState.getInstance().m_myID);
+	}
+	
+	private void doubt() {
+		JSONObject msg = new JSONObject();
+		msg.put("Protocol", "DoubtRequest");
+		msg.put("Player", GameState.getInstance().m_myID);
+		Network.getInstance().pushMessage(msg);
 	}
 }
