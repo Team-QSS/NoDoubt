@@ -19,7 +19,6 @@ import qss.nodoubt.network.Network;
 
 public class LoadingLevel extends GameLevel{
 	
-	
 	//배경
 	private Background m_LoadingBG = null;
 	
@@ -47,8 +46,6 @@ public class LoadingLevel extends GameLevel{
 				}
 				if(key == GLFW_KEY_ENTER){
 					Game.getInstance().setNextLevel(new WaitingRoomLevel());
-					
-					
 				}
 			}
 		}, 

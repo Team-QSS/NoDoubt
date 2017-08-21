@@ -24,7 +24,7 @@ public class UserService {
     	
     	JSONArray users = read(id);
     	if (users.size() == 0) {
-    		String sql = "INSERT users (id, password) VALUES (?, ?, ?)";
+    		String sql = "INSERT users (id, password) VALUES (?, ?)";
         	return database.executeAndUpdate(sql, id, password);    // 예외 발생시 1 반환
     	} else {
     		return 0;    // 중복 사용자 확인 및  1 반환
@@ -37,7 +37,7 @@ public class UserService {
     
     public JSONArray read(String id) {
     	// 중복 사용자 확인을 위해 id만을 이용해서 사용자 조회 
-    	String sql = "SELECT id as ID, password FROM users WHERE id=?";
+    	String sql = "SELECT id as ID, password FROM users WHERE id = ?";
     	return database.executeAndGet(sql, id);
     }
     

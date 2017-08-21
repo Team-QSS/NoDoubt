@@ -52,6 +52,7 @@ public class Database {
         		return filterData(statement.executeQuery());
         	} 
     	} catch (SQLException sqlE) {
+    		sqlE.printStackTrace();
     		return null;
     	}
     }
@@ -70,6 +71,7 @@ public class Database {
         		return statement.executeUpdate();
         	} 
     	} catch (SQLException sqlE) {
+    		sqlE.printStackTrace();
     		return -1;
     	}
     }
