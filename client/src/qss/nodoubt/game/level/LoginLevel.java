@@ -78,20 +78,16 @@ public class LoginLevel extends GameLevel{
 								m_ActiveBuffer = 1;
 							}
 							if(m_IDBuffer.length() < 16){
-								if(m_isShiftPressed){
-									if(key>=65 && key<=90){
-										m_IDBuffer.append((char)key);
+								if(key>=65 && key<=90){
+									if(m_isShiftPressed){
+									m_IDBuffer.append((char)key);
 									}
-								}
-								else if (!m_isShiftPressed){
-									if(key>=65 && key <= 90){
+									else if (!m_isShiftPressed){
 										m_IDBuffer.append((char)(key+32));
 									}
 								}
-								else{
-									if(key>=48 && key<= 57){
-										m_IDBuffer.append((char)key);
-									}
+								else if(key>=48 && key<= 57){
+									m_IDBuffer.append((char)key);
 								}
 							}
 							if(m_IDBuffer.length() > 0){
@@ -102,20 +98,16 @@ public class LoginLevel extends GameLevel{
 						}
 						else if(action == GLFW_REPEAT){
 							if(m_IDBuffer.length() < 16){
-								if(m_isShiftPressed){
-									if(key>=65 && key<=90){
-										m_IDBuffer.append((char)key);
+								if(key>=65 && key<=90){
+									if(m_isShiftPressed){
+									m_IDBuffer.append((char)key);
 									}
-								}
-								else if (!m_isShiftPressed){
-									if(key>=65 && key <= 90){
+									else if (!m_isShiftPressed){
 										m_IDBuffer.append((char)(key+32));
 									}
 								}
-								else{
-									if(key>=48 && key<= 57){
-										m_IDBuffer.append((char)key);
-									}
+								else if(key>=48 && key<= 57){
+									m_IDBuffer.append((char)key);
 								}
 							}
 							if(m_IDBuffer.length() > 0){
@@ -135,20 +127,16 @@ public class LoginLevel extends GameLevel{
 							}
 							
 							if(m_PWBuffer.length() < 16){
-								if(m_isShiftPressed){
-									if(key>=65 && key<=90){
-										m_PWBuffer.append((char)key);
+								if(key>=65 && key<=90){
+									if(m_isShiftPressed){
+									m_PWBuffer.append((char)key);
 									}
-								}
-								else if (!m_isShiftPressed){
-									if(key>=65 && key <= 90){
+									else if (!m_isShiftPressed){
 										m_PWBuffer.append((char)(key+32));
 									}
 								}
-								else{
-									if(key>=48 && key<= 57){
-										m_PWBuffer.append((char)key);
-									}
+								else if(key>=48 && key<= 57){
+									m_PWBuffer.append((char)key);
 								}
 							}
 							
@@ -160,18 +148,16 @@ public class LoginLevel extends GameLevel{
 						}
 						else if(action == GLFW_REPEAT){
 							if(m_PWBuffer.length() < 16){
-								if(m_isShiftPressed){
+								if(m_PWBuffer.length() < 16){
 									if(key>=65 && key<=90){
+										if(m_isShiftPressed){
 										m_PWBuffer.append((char)key);
+										}
+										else if (!m_isShiftPressed){
+											m_PWBuffer.append((char)(key+32));
+										}
 									}
-								}
-								else if (!m_isShiftPressed){
-									if(key>=65 && key <= 90){
-										m_PWBuffer.append((char)(key+32));
-									}
-								}
-								else{
-									if(key>=48 && key<= 57){
+									else if(key>=48 && key<= 57){
 										m_PWBuffer.append((char)key);
 									}
 								}
