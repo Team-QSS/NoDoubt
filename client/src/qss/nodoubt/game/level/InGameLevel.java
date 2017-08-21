@@ -1,18 +1,27 @@
 package qss.nodoubt.game.level;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_B;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Y;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+
+import java.util.Random;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
 import qss.nodoubt.game.GameState;
-import qss.nodoubt.game.object.*;
+import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.ingame.*;
 import qss.nodoubt.network.Network;
+
 import room.Room;
-
-import static org.lwjgl.glfw.GLFW.*;
-
-import java.util.Random;
 
 public class InGameLevel extends GameLevel{
 	private static final Vector3f UI_COLOR = new Vector3f(0x9a / 255f, 0x6f / 255f, 0x52 / 255f);
@@ -41,6 +50,7 @@ public class InGameLevel extends GameLevel{
 	private TurnInfo m_TurnInfo[];
 	
 	private int m_DiceResult = 0;
+	private int m_DeclareNum = 0;
 	
 	/**
 	 * 
@@ -54,7 +64,7 @@ public class InGameLevel extends GameLevel{
 			final int t = i;
 			addObject(new IButton(i, () -> declare(t)));
 		}
-		addObject(new IButton("Doubt", () -> {}));
+		addObject(new IButton("Doubt", () -> doubt()));
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DiceResultPanel = new DiceResultPanel());
 		addObject(new Stump());
@@ -161,10 +171,25 @@ public class InGameLevel extends GameLevel{
 			System.out.println(msg.toJSONString());
 			
 			Network.getInstance().pushMessage(msg);
+			m_DeclareNum = n;
+			m_State = State.DOUBT;
 		}
+	}
+	
+	private void recieveDeclare(int n) {
+		m_State = State.DOUBT;
+		m_DeclareNum = n;
+		m_DiceResultPanel.setResult(n);
 	}
 	
 	private boolean isMyTurn() {
 		return m_TurnInfo[m_Turn].name.equals(GameState.getInstance().m_myID);
+	}
+	
+	private void doubt() {
+		JSONObject msg = new JSONObject();
+		msg.put("Protocol", "DoubtRequest");
+		msg.put("Player", GameState.getInstance().m_myID);
+		Network.getInstance().pushMessage(msg);
 	}
 }
