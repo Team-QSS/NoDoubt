@@ -338,15 +338,21 @@ public class Tester extends JFrame{
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JSONObject data=new JSONObject();
-					data=Util.packetGenerator(
+					String idText = ID.getText();
+					String passwordText = password.getText();
+					
+					if (!idText.equals("") && !passwordText.equals("")) {
+						JSONObject data=new JSONObject();
+						data=Util.packetGenerator(
 							Protocol.REGISTER_REQUEST,
 							new KeyValue("ID", ID.getText()),
 							new KeyValue("Password", password.getText())
-							);
-					Network.send(writer,data);
+						);
+						Network.send(writer,data);
+					} else {
+						Util.printLog(mainTextArea, "아이디, 비밀번호 미입력");
+					}
 				}
-				
 			});
 			add(register);
 			
@@ -356,13 +362,20 @@ public class Tester extends JFrame{
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JSONObject data=new JSONObject();
-					data=Util.packetGenerator(
+					String idText = ID.getText();
+					String passwordText = password.getText();
+					
+					if (!idText.equals("") && !passwordText.equals("")) {
+						JSONObject data=new JSONObject();
+						data=Util.packetGenerator(
 							Protocol.LOGIN_REQUEST,
 							new KeyValue("ID", ID.getText()),
 							new KeyValue("Password", password.getText())
-							);
-					Network.send(writer,data);
+						);
+						Network.send(writer,data);
+					} else {
+						Util.printLog(mainTextArea, "아이디, 비밀번호 미입력");
+					}
 				}
 				
 			});

@@ -262,6 +262,7 @@ public class LoginLevel extends GameLevel{
 				Game.getInstance().setNextLevel(new LobbyLevel());
 				System.out.println("로그인 성공");
 				Util.printJSONLookSimple(data.get("User").toString());
+				Util.printJSONLookSimple(data.get("RoomManager").toString());
 			}else{
 				System.out.println("실패");
 				m_IDBuffer.delete(0, m_IDBuffer.length());

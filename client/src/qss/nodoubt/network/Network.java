@@ -43,6 +43,9 @@ public class Network {
 			
 			m_InputStream.close();
 			m_OutputStream.close();
+			
+			m_Socket.getInputStream().close();
+			m_Socket.getOutputStream().close();
 			m_Socket.close();
 			
 		

@@ -28,7 +28,7 @@ public class InGameLevel extends GameLevel{
 	private static final Random RANDOM = new Random();
 	
 	private enum State {
-		DICEROLL, DECLARE, DOUBT, STEPPUSH, ANIMATING
+		DICEROLL, DECLARE, DOUBT, STEPPUSH
 	}
 	
 	public class TurnInfo
@@ -48,6 +48,7 @@ public class InGameLevel extends GameLevel{
 	private State m_State = State.DICEROLL;
 	private int m_Turn;
 	private TurnInfo m_TurnInfo[];
+	private boolean m_IsAnimating = false;
 	
 	private int m_DiceResult = 0;
 	private int m_DeclareNum = 0;
@@ -109,6 +110,12 @@ public class InGameLevel extends GameLevel{
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
 			String protocol = (String) msg.get("Protocol");
+			
+			if(protocol.equals("DeclareReport")) {
+				recieveDeclare((Integer) msg.get("Value"));
+			}else if(protocol.equals("DoubtCheck")) {
+				recieveDoubtCheck();
+			}
 		}
 		updateObjects(deltaTime);
 		updateTime(deltaTime);
@@ -116,7 +123,7 @@ public class InGameLevel extends GameLevel{
 		drawTextCall("fontB11", "Result is", new Vector2f(465, -302), UI_COLOR);
 		m_Board.update(deltaTime);
 		
-		if(m_State.equals(State.ANIMATING) && m_Board.isIdle()) {
+		if(m_IsAnimating && m_Board.isIdle()) {
 			m_State = State.DICEROLL;
 		}
 		
@@ -154,9 +161,9 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void moveBike(int n, int movingDistance) {
-		if(m_State.equals(State.DICEROLL)) {
+		if(m_State.equals(State.DICEROLL) && !m_IsAnimating) {
 			m_Board.moveBike(n, movingDistance);
-			m_State = State.ANIMATING;
+			m_IsAnimating = true;
 		}
 	}
 	
@@ -193,6 +200,17 @@ public class InGameLevel extends GameLevel{
 			msg.put("Player", GameState.getInstance().m_myID);
 			Network.getInstance().pushMessage(msg);
 		}
-		
+	}
+	
+	private void recieveDoubtCheck() {
+		JSONObject msg = new JSONObject();
+		msg.put("Protocol", "DoubtResult");
+		msg.put("Player", GameState.getInstance().m_myID);
+		if(m_DiceResult == m_DeclareNum) {
+			msg.put("Result", false);
+		}else {
+			msg.put("Result", true);
+		}
+		Network.getInstance().pushMessage(msg);
 	}
 }
