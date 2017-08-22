@@ -203,17 +203,10 @@ public class Server extends JFrame{
 					if (user != null) {
 						sendData.put("Protocol", Protocol.LOGIN_RESULT);
 						sendData.put("Value", true);
-						for(String key:users.keySet()){
-							User u=users.get(key);
-							if(!u.isOnline()&&u.equals(user)){
-								u.setOnline(true);
-								client.setCurrentUser(u);
-								roomManager.getRoom(RoomManager.LOBBY).enterUser(user);
-								sendData.put("Value", true);
-								sendData.put("User", gson.toJson(u));
-								break;
-							}
-						}
+						user.setOnline(true);
+						client.setCurrentUser(user);
+						roomManager.getRoom(RoomManager.LOBBY).enterUser(user);
+						sendData.put("User", gson.toJson(user));
 						sendData.put("RoomManager", gson.toJson(roomManager));
 					} else {
 						sendData.put("Protocol", Protocol.LOGIN_RESULT);
