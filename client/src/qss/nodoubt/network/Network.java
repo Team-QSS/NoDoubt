@@ -36,7 +36,7 @@ public class Network {
 		}
 	}
 	
-	private void shutdown() {
+	public void shutdown() {
 		try {
 			m_InputThread.interrupt();
 			m_OutputThread.interrupt();

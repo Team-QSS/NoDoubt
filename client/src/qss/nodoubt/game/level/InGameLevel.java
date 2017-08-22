@@ -187,9 +187,12 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void doubt() {
-		JSONObject msg = new JSONObject();
-		msg.put("Protocol", "DoubtRequest");
-		msg.put("Player", GameState.getInstance().m_myID);
-		Network.getInstance().pushMessage(msg);
+		if(m_State.equals(State.DOUBT) && isMyTurn()) {
+			JSONObject msg = new JSONObject();
+			msg.put("Protocol", "DoubtRequest");
+			msg.put("Player", GameState.getInstance().m_myID);
+			Network.getInstance().pushMessage(msg);
+		}
+		
 	}
 }
