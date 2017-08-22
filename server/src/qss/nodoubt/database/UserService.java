@@ -27,7 +27,7 @@ public class UserService {
     		String sql = "INSERT users (id, password) VALUES (?, ?)";
         	return database.executeAndUpdate(sql, id, password);    // 예외 발생시 1 반환
     	} else {
-    		return 0;    // 중복 사용자 확인 및  1 반환
+    		return 0;    // 중복 사용자 확인 및  0반환
     	}
     }
     

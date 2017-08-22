@@ -113,7 +113,7 @@ public class LobbyLevel extends GameLevel{
 						}
 					}
 					if(key == GLFW_KEY_Q) {
-						Game.getInstance().setNextLevel(new InGameLevel());
+						Game.getInstance().setNextLevel(new InGameLevel(null));
 					}
 				}
 			},

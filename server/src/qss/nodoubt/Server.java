@@ -50,8 +50,6 @@ public class Server extends JFrame{
 	
 	//현재 접속된클라이언트의 정보를 담는다
 	private ArrayList<Client> clients=new ArrayList<>();
-	//유저의 정보를 담으며 서버시작시 DB를 통해 유저 데이터를 불러온다.
-	private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
 	//gui
 	private final int WIDTH=640,HEIGHT=480;
 	private JTextArea mainTextArea=new JTextArea();
@@ -153,7 +151,6 @@ public class Server extends JFrame{
 			try{
 				while(client.getSocket().isConnected()){
 					String data=reader.readLine();
-					Util.printDebugLog(DEBUG_MODE, mainTextArea, data);
 					//종료
 					if(data.equals("exit")){
 						break;
@@ -189,7 +186,6 @@ public class Server extends JFrame{
 					
 					if (result == 1) {
 						sendData.put("Value", true);
-						users.put(user.getID(), user);
 					} else {
 						sendData.put("Value", false);
 					}
@@ -204,17 +200,10 @@ public class Server extends JFrame{
 					if (user != null) {
 						sendData.put("Protocol", Protocol.LOGIN_RESULT);
 						sendData.put("Value", true);
-						for(String key:users.keySet()){
-							User u=users.get(key);
-							if(!u.isOnline()&&u.equals(user)){
-								u.setOnline(true);
-								client.setCurrentUser(u);
-								roomManager.getRoom(RoomManager.LOBBY).enterUser(user);
-								sendData.put("Value", true);
-								sendData.put("User", gson.toJson(u));
-								break;
-							}
-						}
+						user.setOnline(true);
+						client.setCurrentUser(user);
+						roomManager.getRoom(RoomManager.LOBBY).enterUser(user);
+						sendData.put("User", gson.toJson(user));
 						sendData.put("RoomManager", gson.toJson(roomManager));
 					} else {
 						sendData.put("Protocol", Protocol.LOGIN_RESULT);
@@ -233,8 +222,8 @@ public class Server extends JFrame{
 					roomManager.addRoom(newRoom);
 
 					newRoom.setPassword((String)data.get("Password"));
-					newRoom.enterUser(users.get(masterID));
-					newRoom.setMaster(users.get(masterID));
+//					newRoom.enterUser(users.get(masterID));
+//					newRoom.setMaster(users.get(masterID));
 					
 					sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
 					sendData.put("Room",gson.toJson(newRoom));
