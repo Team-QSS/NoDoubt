@@ -88,7 +88,6 @@ public class SignUpLevel extends GameLevel{
 										new KeyValue("ID", m_IDBuffer.toString()),
 										new KeyValue("Password", m_PWBuffer.toString())
 										);
-								System.out.println("send");
 								Network.getInstance().pushMessage(signUpData);
 							}else{
 								m_IDBuffer.delete(0, m_IDBuffer.length());
@@ -344,6 +343,7 @@ public class SignUpLevel extends GameLevel{
 	}
 	
 	private void protocolProcess(JSONObject data){
+		System.out.println(data);
 		switch((String)data.get("Protocol")){
 		case Protocol.REGISTER_RESULT:{
 			if((boolean)data.get("Value")){

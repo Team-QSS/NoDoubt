@@ -153,7 +153,6 @@ public class Server extends JFrame{
 			try{
 				while(client.getSocket().isConnected()){
 					String data=reader.readLine();
-					Util.printDebugLog(DEBUG_MODE, mainTextArea, data);
 					//종료
 					if(data.equals("exit")){
 						break;
