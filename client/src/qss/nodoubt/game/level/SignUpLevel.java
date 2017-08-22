@@ -88,6 +88,7 @@ public class SignUpLevel extends GameLevel{
 										new KeyValue("ID", m_IDBuffer.toString()),
 										new KeyValue("Password", m_PWBuffer.toString())
 										);
+								System.out.println("send");
 								Network.getInstance().pushMessage(signUpData);
 							}else{
 								m_IDBuffer.delete(0, m_IDBuffer.length());
