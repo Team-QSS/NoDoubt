@@ -15,8 +15,8 @@ public class Network {
 	private static Network s_Instance = null;
 	
 	private Socket m_Socket = null;
-	private DataInputStream m_InputStream = null;
-	private DataOutputStream m_OutputStream = null;
+	private BufferedReader m_InputStream = null;
+	private BufferedWriter m_OutputStream = null;
 	private Thread m_InputThread = null;
 	private Thread m_OutputThread = null;
 	private Queue<JSONObject> m_InputQueue = new ConcurrentLinkedQueue<JSONObject>();
@@ -41,21 +41,10 @@ public class Network {
 			m_InputThread.interrupt();
 			m_OutputThread.interrupt();
 			
-			while(!m_OutputQueue.isEmpty()) {
-				try {
-					m_OutputStream.writeChars(m_OutputQueue.poll().toJSONString());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			
 			m_InputStream.close();
 			m_OutputStream.close();
 			m_Socket.close();
 			
-		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,13 +57,13 @@ public class Network {
 	public void connect() {
 		try {
 			m_Socket = new Socket(GameConstants.SERVER_IP, GameConstants.NETWORK_PORT);
-			m_InputStream = new DataInputStream(m_Socket.getInputStream());
-			m_OutputStream = new DataOutputStream(m_Socket.getOutputStream());
+			m_InputStream = new BufferedReader(new InputStreamReader(m_Socket.getInputStream()));
+			m_OutputStream = new BufferedWriter(new OutputStreamWriter(m_Socket.getOutputStream()));
 			
 			m_InputThread = new Thread( () -> {
 				while(true) {
 					try {
-						m_InputQueue.offer((JSONObject) new JSONParser().parse(m_InputStream.readUTF()));
+						m_InputQueue.offer((JSONObject) new JSONParser().parse(m_InputStream.readLine()));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -92,8 +81,9 @@ public class Network {
 					if(!m_OutputQueue.isEmpty()) {
 						try {
 							String s=m_OutputQueue.poll().toJSONString();
-							m_OutputStream.writeChars(s);
-							System.out.println(s);
+							m_OutputStream.write(s);
+							m_OutputStream.newLine();
+							m_OutputStream.flush();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
