@@ -105,6 +105,9 @@ public class LoginLevel extends GameLevel{
 								else if(key>=48 && key<= 57){
 									m_IDBuffer.append((char)key);
 								}
+								else if(key>=320 && key<=329){
+									m_IDBuffer.append((char)(key-272));
+								}
 							}
 							if(m_IDBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
@@ -124,6 +127,9 @@ public class LoginLevel extends GameLevel{
 								}
 								else if(key>=48 && key<= 57){
 									m_IDBuffer.append((char)key);
+								}
+								else if(key>=320 && key<=329){
+									m_IDBuffer.append((char)(key-272));
 								}
 							}
 							if(m_IDBuffer.length() > 0){
@@ -154,6 +160,9 @@ public class LoginLevel extends GameLevel{
 								else if(key>=48 && key<= 57){
 									m_PWBuffer.append((char)key);
 								}
+								else if(key>=320 && key<=329){
+									m_PWBuffer.append((char)(key-272));
+								}
 							}
 							
 							if(m_PWBuffer.length() > 0){
@@ -167,7 +176,7 @@ public class LoginLevel extends GameLevel{
 								if(m_PWBuffer.length() < 16){
 									if(key>=65 && key<=90){
 										if(m_isShiftPressed){
-										m_PWBuffer.append((char)key);
+											m_PWBuffer.append((char)key);
 										}
 										else if (!m_isShiftPressed){
 											m_PWBuffer.append((char)(key+32));
@@ -175,6 +184,9 @@ public class LoginLevel extends GameLevel{
 									}
 									else if(key>=48 && key<= 57){
 										m_PWBuffer.append((char)key);
+									}
+									else if(key>=320 && key<=329){
+										m_PWBuffer.append((char)(key-272));
 									}
 								}
 							}
@@ -220,21 +232,7 @@ public class LoginLevel extends GameLevel{
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
 			protocolProcess(msg);
-		}
-		
-		
-//		if(temp != null){
-//			if(temp.getBoolValue("Value")){
-//				GameState.getInstance().m_myID = m_IDBuffer.toString();
-//				Game.getInstance().setNextLevel(new LobbyLevel());
-//			}
-//			else{
-//				m_IDBuffer.delete(0, m_IDBuffer.length());
-//				m_PWBuffer.delete(0, m_PWBuffer.length());
-//				m_ActiveBuffer = 0;
-//			}
-//		}
-		
+		}	
 		if(m_Star.length() > m_PWBuffer.length()){
 			for(int i = 0; i < m_Star.length() - m_PWBuffer.length(); i++){
 				m_Star.deleteCharAt(m_Star.length()-1);
@@ -266,6 +264,8 @@ public class LoginLevel extends GameLevel{
 				Util.printJSONLookSimple(data.get("User").toString());
 			}else{
 				System.out.println("실패");
+				m_IDBuffer.delete(0, m_IDBuffer.length());
+				m_PWBuffer.delete(0, m_PWBuffer.length());
 			}
 		}break;
 		
