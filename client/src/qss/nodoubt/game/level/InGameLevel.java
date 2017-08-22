@@ -113,6 +113,8 @@ public class InGameLevel extends GameLevel{
 			
 			if(protocol.equals("DeclareReport")) {
 				recieveDeclare((Integer) msg.get("Value"));
+			}else if(protocol.equals("DoubtCheck")) {
+				recieveDoubtCheck();
 			}
 		}
 		updateObjects(deltaTime);
@@ -198,5 +200,17 @@ public class InGameLevel extends GameLevel{
 			msg.put("Player", GameState.getInstance().m_myID);
 			Network.getInstance().pushMessage(msg);
 		}
+	}
+	
+	private void recieveDoubtCheck() {
+		JSONObject msg = new JSONObject();
+		msg.put("Protocol", "DoubtResult");
+		msg.put("Player", GameState.getInstance().m_myID);
+		if(m_DiceResult == m_DeclareNum) {
+			msg.put("Result", false);
+		}else {
+			msg.put("Result", true);
+		}
+		Network.getInstance().pushMessage(msg);
 	}
 }
