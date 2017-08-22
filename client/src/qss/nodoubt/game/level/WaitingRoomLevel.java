@@ -9,6 +9,7 @@ import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
+import room.Room;
 
 public class WaitingRoomLevel extends GameLevel{
 
@@ -39,7 +40,7 @@ public class WaitingRoomLevel extends GameLevel{
 								m_StartButton.focus();
 							}
 							if(action == GLFW_RELEASE){
-								Game.getInstance().setNextLevel(new InGameLevel());
+								Game.getInstance().setNextLevel(new InGameLevel(null));
 							}
 						}
 						else{

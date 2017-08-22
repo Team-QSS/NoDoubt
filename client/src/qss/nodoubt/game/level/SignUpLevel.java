@@ -350,6 +350,9 @@ public class SignUpLevel extends GameLevel{
 				Game.getInstance().setNextLevel(new LoginLevel());
 			}else{
 				System.out.println("실패");
+				m_IDBuffer.delete(0, m_IDBuffer.length());
+				m_PWBuffer.delete(0, m_PWBuffer.length());
+				m_PWRepeat.delete(0, m_PWRepeat.length());
 			}
 		}break;
 		
