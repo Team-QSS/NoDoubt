@@ -77,7 +77,7 @@ public class Database {
     	}
     }
     
-    private static JSONArray filterData(ResultSet resultSet) throws SQLException{
+    private static JSONArray filterData(ResultSet resultSet) throws SQLException {
     	// 튜플들의 데이터가 담긴 ResultSet 객체를 ArrayList 형태로 가공 및 반환
     	JSONArray results = new JSONArray();
 
