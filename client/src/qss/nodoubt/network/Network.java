@@ -45,6 +45,7 @@ public class Network {
 			m_OutputStream.close();
 			m_Socket.close();
 			
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
