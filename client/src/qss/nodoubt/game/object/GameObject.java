@@ -38,7 +38,7 @@ public abstract class GameObject {
 	
 	public abstract void update(float deltaTime);
 	
-	public final void draw() {
+	public void draw() {
 		m_Texture.bind();
 		
 		glUniform4f(5, 0.0f, 0.0f, 0.0f, 0.0f);
