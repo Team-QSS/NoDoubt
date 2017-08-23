@@ -52,11 +52,11 @@ public class Server extends JFrame{
 	private ArrayList<Client> clients=new ArrayList<>();
 	//gui
 	private final int WIDTH=640,HEIGHT=480;
-	private JTextArea mainTextArea=new JTextArea();
+	public static JTextArea mainTextArea=new JTextArea();
 	private JTextArea enterTextArea=new JTextArea();
 	
 	//Debug
-	private boolean DEBUG_MODE;
+	public static boolean DEBUG_MODE;
 	
 	public Server(){
 		DEBUG_MODE=true;
@@ -222,8 +222,12 @@ public class Server extends JFrame{
 					roomManager.addRoom(newRoom);
 
 					newRoom.setPassword((String)data.get("Password"));
-//					newRoom.enterUser(users.get(masterID));
-//					newRoom.setMaster(users.get(masterID));
+					User user=roomManager.getUser((u)->{
+						return u.getID()==masterID;
+					});
+					
+					newRoom.enterUser(user);
+					newRoom.setMaster(user);
 					
 					sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
 					sendData.put("Room",gson.toJson(newRoom));
