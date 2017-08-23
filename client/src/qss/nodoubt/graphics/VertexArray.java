@@ -94,9 +94,7 @@ public class VertexArray {
 	public void draw(Matrix4f world){
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, m_Vertices);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, m_UVs);
-		//glUniformMatrix4fv(3, false, world.get(m_WorldMatrix));
 		glUniformMatrix4fv(3, false, world.get(m_WorldMatrixBuffer));
-		//glUniform4fv(5, s_Color);
 		
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

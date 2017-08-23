@@ -1,14 +1,6 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_B;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Y;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.Random;
 
@@ -124,7 +116,7 @@ public class InGameLevel extends GameLevel{
 		m_Board.update(deltaTime);
 		
 		if(m_IsAnimating && m_Board.isIdle()) {
-			m_State = State.DICEROLL;
+			m_IsAnimating = false;
 		}
 		
 		if(m_Board.getState().isConflict) {

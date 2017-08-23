@@ -1,5 +1,6 @@
 package qss.nodoubt.game.object;
 
+import qss.nodoubt.graphics.FontManager;
 import qss.nodoubt.graphics.Texture;
 import qss.nodoubt.graphics.TextureManager;
 import qss.nodoubt.graphics.VertexArray;
@@ -8,6 +9,9 @@ import qss.nodoubt.input.KeyListener;
 import qss.nodoubt.input.MouseListener;
 
 import static org.lwjgl.opengl.GL20.glUniform4f;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.joml.*;
 
@@ -21,6 +25,17 @@ public abstract class GameObject {
 	private KeyListener m_KeyListener = null;
 	private MouseListener m_MouseListener = null;
 	private boolean m_IsActive = false;
+	
+	private Queue<Text> m_TextDrawingQueue = new LinkedList<Text>();
+	
+	private class Text
+	{
+		String str;
+		String font;
+		Vector2f pos;
+		Vector3f color;
+		Text(String s, String f, Vector2f p, Vector3f c) {str = s; font = f; pos = p; color = c;}
+	}
 	
 	/**
 	 * 오브젝트 생성
@@ -44,6 +59,11 @@ public abstract class GameObject {
 		glUniform4f(5, 0.0f, 0.0f, 0.0f, 0.0f);
 		
 		m_VertexArray.draw(getWorldMatrix());
+		
+		while(!m_TextDrawingQueue.isEmpty()) {
+			Text t = m_TextDrawingQueue.poll();
+			FontManager.getInstance().getFont(t.font).draw(t.pos, t.str, t.color);
+		}
 	}
 	
 	private Matrix4f getWorldMatrix() {
@@ -142,5 +162,16 @@ public abstract class GameObject {
 	public final void act() {
 		m_IsActive = true;
 		setEventListener(m_KeyListener, m_MouseListener);
+	}
+	
+	/**
+	 * 텍스트 그리기 요청, 미리 받아두었다가 draw()함수에서 호출함
+	 * @param fontName 폰트 이름 일반폰트는 "fontR" 볼드체 폰트는 "fontB"로 넣으면 됨
+	 * @param str 출력할 텍스트
+	 * @param position 위치
+	 * @param color 색상
+	 */
+	protected final void drawTextCall(String fontName, String str, Vector2f position, Vector3f color) {
+		m_TextDrawingQueue.offer(new Text(str, fontName, position, color));
 	}
 }
