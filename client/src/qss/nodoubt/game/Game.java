@@ -51,6 +51,7 @@ public class Game {
 		m_Window.shutdown();
 		m_Sound.shutdown();
 		m_Network.shutdown();
+		GameState.getInstance().m_IsGameGoing = false;
 	}
 	
 	/**

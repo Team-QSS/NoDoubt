@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import qss.nodoubt.game.GameConstants;
+import qss.nodoubt.game.GameState;
 
 public class Network {
 	private static Network s_Instance = null;
@@ -65,7 +66,7 @@ public class Network {
 			m_OutputStream = new BufferedWriter(new OutputStreamWriter(m_Socket.getOutputStream()));
 			
 			m_InputThread = new Thread( () -> {
-				while(true) {
+				while(GameState.getInstance().m_IsGameGoing) {
 					try {
 						m_InputQueue.offer((JSONObject) new JSONParser().parse(m_InputStream.readLine()));
 					} catch (IOException e) {
@@ -81,7 +82,7 @@ public class Network {
 			m_InputThread.start();
 			
 			m_OutputThread = new Thread( () -> {
-				while(true) {
+				while(GameState.getInstance().m_IsGameGoing) {
 					if(!m_OutputQueue.isEmpty()) {
 						try {
 							String s=m_OutputQueue.poll().toJSONString();
