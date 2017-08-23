@@ -122,6 +122,9 @@ public class SignUpLevel extends GameLevel{
 								else if(key>=48 && key<= 57){
 									m_IDBuffer.append((char)key);
 								}
+								else if(key>=320 && key<=329){
+									m_IDBuffer.append((char)(key-272));
+								}
 							}
 							if(m_IDBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
@@ -141,6 +144,9 @@ public class SignUpLevel extends GameLevel{
 								}
 								else if(key>=48 && key<= 57){
 									m_IDBuffer.append((char)key);
+								}
+								else if(key>=320 && key<=329){
+									m_IDBuffer.append((char)(key-272));
 								}
 							}
 							if(m_IDBuffer.length() > 0){
@@ -174,6 +180,9 @@ public class SignUpLevel extends GameLevel{
 								else if(key>=48 && key<= 57){
 									m_PWBuffer.append((char)key);
 								}
+								else if(key>=320 && key<=329){
+									m_PWBuffer.append((char)(key-272));
+								}
 							}
 							if(m_PWBuffer.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
@@ -194,6 +203,9 @@ public class SignUpLevel extends GameLevel{
 									}
 									else if(key>=48 && key<= 57){
 										m_PWBuffer.append((char)key);
+									}
+									else if(key>=320 && key<=329){
+										m_PWBuffer.append((char)(key-272));
 									}
 								}
 							}
@@ -230,6 +242,9 @@ public class SignUpLevel extends GameLevel{
 								else if(key>=48 && key<= 57){
 									m_PWRepeat.append((char)key);
 								}
+								else if(key>=320 && key<=329){
+									m_PWRepeat.append((char)(key-272));
+								}
 							}
 							if(m_PWRepeat.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
@@ -249,6 +264,9 @@ public class SignUpLevel extends GameLevel{
 								}
 								else if(key>=48 && key<= 57){
 									m_PWRepeat.append((char)key);
+								}
+								else if(key>=320 && key<=329){
+									m_PWRepeat.append((char)(key-272));
 								}
 							}
 							
