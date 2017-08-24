@@ -49,7 +49,7 @@ public class GameWindow {
 		m_Width = vidMode.width();
 		m_Height = vidMode.height();
 		
-		m_Window = glfwCreateWindow(m_Width, m_Height, "No Doubt", monitor, NULL);
+		m_Window = glfwCreateWindow(m_Width, m_Height, "No Doubt", NULL, NULL);
 		if(m_Window == NULL) {
 			glfwTerminate();
 			throw new RuntimeException("Fail to create GLFW window");
