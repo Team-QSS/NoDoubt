@@ -6,6 +6,7 @@ import java.util.*;
 
 import org.json.simple.*;
 
+import protocol.Protocol;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
@@ -16,6 +17,7 @@ import qss.nodoubt.network.Network;
  * 대기실을 생성할 수 있는 레벨로 갈 수 있는 역할을 하는
  * 레벨이다.
  * */
+import util.Util;
 
 public class LoadingLevel extends GameLevel{
 	
@@ -99,9 +101,32 @@ public class LoadingLevel extends GameLevel{
 		// TODO Auto-generated method stub
 		time += deltaTime;
 		
+		JSONObject msg = Network.getInstance().pollMessage();
+		if(msg != null) {
+			protocolProcess(msg);
+		}
+		
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
+	}
+	
+	private void protocolProcess(JSONObject data){
+		System.out.println(data);
+		switch((String)data.get("Protocol")){
+		case Protocol.LOGIN_RESULT:{
+			if((boolean)data.get("Value")){
+				Game.getInstance().setNextLevel(new LobbyLevel());
+				System.out.println("로그인 성공");
+				Util.printJSONLookSimple(data.get("User").toString());
+				Util.printJSONLookSimple(data.get("RoomManager").toString());
+			}else{
+				System.out.println("실패");
+			}
+		}break;
+		
+		default:System.out.println("unknownProtocol");
+		}
 	}
 
 }

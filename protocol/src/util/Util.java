@@ -32,6 +32,7 @@ public class Util {
 	public static String printJSONLookSimple(String json){
 		int depth=0;
 		StringBuilder sb=new StringBuilder();
+//		StringBuilder sbb=new StringBuilder();
 		for(int i=0;i<json.length();i++){
 			
 			if(json.charAt(i)=='}'){
@@ -59,6 +60,14 @@ public class Util {
 				}
 			}
 		}
+		
+//		for(int i=0;i<sb.length();i++){
+//			
+//			if(sb.charAt(i)!='\\'){
+//				sbb.append(sb.charAt(i));
+//			}
+//		}
+
 		return sb.toString();
 	}
 	
