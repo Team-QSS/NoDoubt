@@ -46,7 +46,6 @@ public abstract class GameObject {
 		if(textureName != null) {
 			m_Texture = TextureManager.getInstance().getTexture(textureName);
 			m_VertexArray = new VertexArray(m_Texture.getWidth(), m_Texture.getHeight(), 0.0f, 1.0f, 0.0f, 1.0f);
-			
 		}
 		m_Depth = depth;
 	}
