@@ -21,6 +21,8 @@ public class TextBox extends GameObject{
 		// TODO Auto-generated constructor stub
 		setPosition(x,y);
 		m_Width = width;
+		
+		m_Location = new Vector2f();
 		m_Location.x = startX;
 		m_Location.y = startY;
 		m_IsStar = isStar;
