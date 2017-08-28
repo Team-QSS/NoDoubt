@@ -42,11 +42,8 @@ public class Network {
 			m_InputThread.interrupt();
 			m_OutputThread.interrupt();
 			
-			m_InputStream.close();
-			m_OutputStream.close();
-			
-			m_Socket.getInputStream().close();
-			m_Socket.getOutputStream().close();
+			//m_Socket.getInputStream().close();
+			//m_Socket.getOutputStream().close();
 			m_Socket.close();
 			
 		
@@ -68,7 +65,8 @@ public class Network {
 			m_InputThread = new Thread( () -> {
 				while(GameState.getInstance().m_IsGameGoing) {
 					try {
-						m_InputQueue.offer((JSONObject) new JSONParser().parse(m_InputStream.readLine()));
+						if(m_InputStream.ready())
+							m_InputQueue.offer((JSONObject) new JSONParser().parse(m_InputStream.readLine()));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -76,6 +74,12 @@ public class Network {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				}
+				try {
+					m_InputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			});
 			
@@ -93,6 +97,12 @@ public class Network {
 							e.printStackTrace();
 						}
 					}
+				}
+				try {
+					m_OutputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			});
 			
