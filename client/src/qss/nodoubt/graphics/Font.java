@@ -39,6 +39,39 @@ public class Font {
 		m_TextureName = textureName;
 	}
 	
+	public int getStringWidth(String str) {
+		int length = 0;
+		
+		for(int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			Map<String, Integer> tags = m_Chars[c];
+			
+			int width = tags.get("width");
+			int xoffset = tags.get("xoffset");
+			
+			if(i == str.length() - 1) {
+				length += width;
+			}else {
+				length += xoffset;
+			}
+			
+			if(i != 0) {
+				int prev = str.charAt(i - 1);
+				int cur = str.charAt(i);
+				int key = prev << 8 + cur;
+				
+				int kerning = 0;
+				
+				if(m_Kernings.containsKey(key)) {
+					kerning = m_Kernings.get(key);
+				}
+				
+				length += kerning;
+			}
+		}
+		return length;
+	}
+	
 	public void draw(Vector2f pos, String str, Vector3f color) {
 		Matrix4f translate = new Matrix4f();
 		float x = pos.x;
@@ -60,7 +93,7 @@ public class Font {
 			
 			if(i != 0) {
 				int prev = str.charAt(i - 1);
-				int cur = str.charAt(i - 1);
+				int cur = str.charAt(i);
 				int key = prev << 8 + cur;
 				
 				int kerning = 0;
