@@ -7,24 +7,14 @@ package qss.nodoubt.game.level;
  * 로그인을 추후에 구현해야 함.
  * Sign up 이란 버튼을 누르면 회원가입이 됨
  */
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_TAB;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
+import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
-import qss.nodoubt.game.object.Background;
-import qss.nodoubt.game.object.Button;
-import qss.nodoubt.game.object.TextBox;
+import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import util.KeyValue;
@@ -36,7 +26,6 @@ public class LoginLevel extends GameLevel{
 	private TextBox m_PW = null;
 
 	private int m_ActiveBuffer = 0;
-	private boolean m_isShiftPressed = false;
 	
 	//버튼
 	private Button m_Signin = null;		//로그인
@@ -94,119 +83,10 @@ public class LoginLevel extends GameLevel{
 				(action, key) ->{
 					if(m_ActiveBuffer == 0){
 						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = true;
-							}
 							if(key == GLFW_KEY_TAB){
 								m_ActiveBuffer = 1;
-							}
-							if(m_ID.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-										m_ID.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_ID.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_ID.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_ID.m_Text.append((char)(key-272));
-								}
-							}
-							if(m_ID.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_ID.m_Text.deleteCharAt(m_ID.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_REPEAT){
-							if(m_ID.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-										m_ID.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_ID.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_ID.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_ID.m_Text.append((char)(key-272));
-								}
-							}
-							if(m_ID.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_ID.m_Text.deleteCharAt(m_ID.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = false;
-						}
-					}
-					else if(m_ActiveBuffer == 1){
-						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = true;
-							}
-							
-							if(m_PW.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-									m_PW.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_PW.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_PW.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_PW.m_Text.append((char)(key-272));
-								}
-							}
-							
-							if(m_PW.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_PW.m_Text.deleteCharAt(m_PW.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_REPEAT){
-							if(m_PW.m_Text.length() < 16){
-								if(m_PW.m_Text.length() < 16){
-									if(key>=65 && key<=90){
-										if(m_isShiftPressed){
-											m_PW.m_Text.append((char)key);
-										}
-										else if (!m_isShiftPressed){
-											m_PW.m_Text.append((char)(key+32));
-										}
-									}
-									else if(key>=48 && key<= 57){
-										m_PW.m_Text.append((char)key);
-									}
-									else if(key>=320 && key<=329){
-										m_PW.m_Text.append((char)(key-272));
-									}
-								}
-							}
-							if(m_PW.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_PW.m_Text.deleteCharAt(m_PW.m_Text.length()-1);
-								}
-							}
-						}
-						
-						else if(action == GLFW_RELEASE){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = false;
+								m_ID.setInActive();
+								m_PW.setActive();
 							}
 						}
 					}
@@ -216,15 +96,21 @@ public class LoginLevel extends GameLevel{
 						if(mouseX>-340 && mouseX<340){
 							if(mouseY<22 && mouseY>-65){
 								m_ActiveBuffer = 0;
+								m_ID.setActive();
+								m_PW.setInActive();
 							}
 							else if(mouseY<-129 && mouseY>-216){
 								m_ActiveBuffer = 1;
+								m_ID.setInActive();
+								m_PW.setActive();
 							}
 						}
 					}
 				});
 		
 		m_LoginBG = new Background("LoginBG");
+		m_ID.setActive();
+		
 		addObject(m_Signin);
 		addObject(m_Signup);
 		addObject(m_LoginBG);
@@ -241,8 +127,7 @@ public class LoginLevel extends GameLevel{
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
 			protocolProcess(msg);
-		}	
-		
+		}
 		m_ID.update(deltaTime);
 		m_PW.update(deltaTime);
 	}
@@ -261,6 +146,9 @@ public class LoginLevel extends GameLevel{
 				System.out.println("실패");
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());
 				m_PW.m_Text.delete(0, m_PW.m_Text.length());
+				m_ID.setActive();
+				m_PW.setInActive();
+				m_ActiveBuffer = 0;
 			}
 		}break;
 		

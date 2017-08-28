@@ -59,26 +59,8 @@ public class SignUpLevel extends GameLevel{
 		m_Signup.setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
-						if(m_PW.m_Text.toString().equals(m_PWRepeat.toString())){
-							//메시지 전송
-							JSONObject signUpData=
-									Util.packetGenerator(Protocol.REGISTER_REQUEST,
-									new KeyValue("ID", m_ID.m_Text.toString()),
-									new KeyValue("Password", m_PW.m_Text.toString())
-									);
-							Network.getInstance().pushMessage(signUpData);
-						}else{
-							m_ID.m_Text.delete(0, m_ID.m_Text.length());
-							m_PW.m_Text.delete(0, m_PW.m_Text.length());
-							m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
-							m_ActiveBuffer = 0;
-						}
-					}
-				},
-				(action, button) ->{
-					if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
-						if(m_Signup.onButton(mouseX, mouseY)){
-							if(m_PW.m_Text.toString().equals(m_PWRepeat.m_Text.toString())){
+						if(!((m_PW.m_Text.length() < 4) && (m_ID.m_Text.length() < 4))){
+							if(m_PW.m_Text.toString().equals(m_PWRepeat.toString())){
 								//메시지 전송
 								JSONObject signUpData=
 										Util.packetGenerator(Protocol.REGISTER_REQUEST,
@@ -89,8 +71,30 @@ public class SignUpLevel extends GameLevel{
 							}else{
 								m_ID.m_Text.delete(0, m_ID.m_Text.length());
 								m_PW.m_Text.delete(0, m_PW.m_Text.length());
-								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+								m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
 								m_ActiveBuffer = 0;
+							}
+						}
+					}
+				},
+				(action, button) ->{
+					if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
+						if(m_Signup.onButton(mouseX, mouseY)){
+							if(!((m_PW.m_Text.length() < 4) && (m_ID.m_Text.length() < 4))){
+								if(m_PW.m_Text.toString().equals(m_PWRepeat.m_Text.toString())){
+									//메시지 전송
+									JSONObject signUpData=
+											Util.packetGenerator(Protocol.REGISTER_REQUEST,
+											new KeyValue("ID", m_ID.m_Text.toString()),
+											new KeyValue("Password", m_PW.m_Text.toString())
+											);
+									Network.getInstance().pushMessage(signUpData);
+								}else{
+									m_ID.m_Text.delete(0, m_ID.m_Text.length());
+									m_PW.m_Text.delete(0, m_PW.m_Text.length());
+									m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+									m_ActiveBuffer = 0;
+								}
 							}
 						}
 					}
@@ -101,181 +105,20 @@ public class SignUpLevel extends GameLevel{
 				(action, key) ->{
 					if(m_ActiveBuffer == 0){
 						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = true;
-							}
 							if(key == GLFW_KEY_TAB){
 								m_ActiveBuffer = 1;
+								m_ID.setInActive();
+								m_PW.setActive();
 							}
-							if(m_ID.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-									m_ID.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_ID.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_ID.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_ID.m_Text.append((char)(key-272));
-								}
-							}
-							if(m_ID.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_ID.m_Text.deleteCharAt(m_ID.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_REPEAT){
-							if(m_ID.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-									m_ID.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_ID.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_ID.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_ID.m_Text.append((char)(key-272));
-								}
-							}
-							if(m_ID.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_ID.m_Text.deleteCharAt(m_ID.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = false;
 						}
 					}
 					
 					else if(m_ActiveBuffer == 1){
 						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = true;
-							}
 							if(key == GLFW_KEY_TAB){
 								m_ActiveBuffer = 2;
-							}
-							if(m_PW.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-										m_PW.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_PW.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_PW.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_PW.m_Text.append((char)(key-272));
-								}
-							}
-							if(m_PW.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_PW.m_Text.deleteCharAt(m_PW.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_REPEAT){
-							if(m_PW.m_Text.length() < 16){
-								if(m_PW.m_Text.length() < 16){
-									if(key>=65 && key<=90){
-										if(m_isShiftPressed){
-											m_PW.m_Text.append((char)key);
-										}
-										else if (!m_isShiftPressed){
-											m_PW.m_Text.append((char)(key+32));
-										}
-									}
-									else if(key>=48 && key<= 57){
-										m_PW.m_Text.append((char)key);
-									}
-									else if(key>=320 && key<=329){
-										m_PW.m_Text.append((char)(key-272));
-									}
-								}
-							}
-							if(m_PW.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_PW.m_Text.deleteCharAt(m_PW.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_RELEASE){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = false;
-							}
-						}
-					}
-					
-					else if(m_ActiveBuffer == 2){
-						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = true;
-							}
-							if(key == GLFW_KEY_TAB){
-								m_ActiveBuffer = 2;
-							}
-							if(m_PWRepeat.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-										m_PWRepeat.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_PWRepeat.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_PWRepeat.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_PWRepeat.m_Text.append((char)(key-272));
-								}
-							}
-							if(m_PWRepeat.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_PWRepeat.m_Text.deleteCharAt(m_PWRepeat.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_REPEAT){
-							if(m_PWRepeat.m_Text.length() < 16){
-								if(key>=65 && key<=90){
-									if(m_isShiftPressed){
-										m_PWRepeat.m_Text.append((char)key);
-									}
-									else if (!m_isShiftPressed){
-										m_PWRepeat.m_Text.append((char)(key+32));
-									}
-								}
-								else if(key>=48 && key<= 57){
-									m_PWRepeat.m_Text.append((char)key);
-								}
-								else if(key>=320 && key<=329){
-									m_PWRepeat.m_Text.append((char)(key-272));
-								}
-							}
-							
-							if(m_PWRepeat.m_Text.length() > 0){
-								if(key == GLFW_KEY_BACKSPACE){
-									m_PWRepeat.m_Text.deleteCharAt(m_PWRepeat.m_Text.length()-1);
-								}
-							}
-						}
-						else if(action == GLFW_RELEASE){
-							if(key == GLFW_KEY_LEFT_SHIFT){
-								m_isShiftPressed = false;
+								m_PW.setInActive();
+								m_PWRepeat.setActive();
 							}
 						}
 					}
@@ -285,16 +128,28 @@ public class SignUpLevel extends GameLevel{
 						if(mouseX>-340 && mouseX<340){
 							if(mouseY<40 && mouseY>-46){
 								m_ActiveBuffer = 0;
+								m_ID.setActive();
+								m_PW.setInActive();
+								m_PWRepeat.setInActive();
 							}
 							else if(mouseY<-88 && mouseY>-176){
 								m_ActiveBuffer = 1;
+								m_ID.setInActive();
+								m_PW.setActive();
+								m_PWRepeat.setInActive();
 							}
 							else if(mouseY<-216 && mouseY>-304){
 								m_ActiveBuffer = 2;
+								m_ID.setInActive();
+								m_PW.setInActive();
+								m_PWRepeat.setActive();
 							}
 						}
 					}
 				});
+		
+		m_ID.setActive();
+		
 		addObject(m_SignUpBG);
 		addObject(m_Signup);
 		addObject(m_ID);
@@ -329,6 +184,9 @@ public class SignUpLevel extends GameLevel{
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());
 				m_PW.m_Text.delete(0, m_PW.m_Text.length());
 				m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+				m_ID.setActive();
+				m_PW.setInActive();
+				m_PWRepeat.setInActive();
 			}
 		}break;
 		
