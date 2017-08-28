@@ -7,9 +7,16 @@ package qss.nodoubt.game.level;
  * 로그인을 추후에 구현해야 함.
  * Sign up 이란 버튼을 누르면 회원가입이 됨
  */
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_TAB;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
@@ -22,6 +29,7 @@ import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import util.KeyValue;
 import util.Util;
+import room.RoomManager;
 
 public class LoginLevel extends GameLevel{
 	private TextBox m_ID = null;
@@ -56,7 +64,7 @@ public class LoginLevel extends GameLevel{
 								);
 						Network.getInstance().pushMessage(loginData);
 					}else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
-						Game.getInstance().setNextLevel(new LobbyLevel());
+//						Game.getInstance().setNextLevel(new LobbyLevel());
 					}
 				},
 				(action, button) ->{
@@ -244,10 +252,11 @@ public class LoginLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		case Protocol.LOGIN_RESULT:{
 			if((boolean)data.get("Value")){
-				Game.getInstance().setNextLevel(new LobbyLevel());
+				RoomManager rm=(RoomManager)data.get("RoomManager");
+				Game.getInstance().setNextLevel(new LobbyLevel(rm));
 				System.out.println("로그인 성공");
-				Util.printJSONLookSimple(data.get("User").toString());
-				Util.printJSONLookSimple(data.get("RoomManager").toString());
+				System.out.println(Util.printJSONLookSimple(data.get("User").toString()));
+				System.out.println(Util.printJSONLookSimple(rm.toString()));
 			}else{
 				System.out.println("실패");
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());

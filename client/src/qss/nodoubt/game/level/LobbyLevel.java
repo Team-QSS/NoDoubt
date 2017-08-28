@@ -1,11 +1,22 @@
 package qss.nodoubt.game.level;
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-import java.util.Set;
+import org.json.simple.JSONObject;
 
+import protocol.Protocol;
 import qss.nodoubt.game.Game;
-import qss.nodoubt.game.object.*;
+import qss.nodoubt.game.object.Background;
+import qss.nodoubt.game.object.Button;
 import qss.nodoubt.input.Input;
+import qss.nodoubt.network.Network;
+import room.RoomManager;
+import util.Util;
 
 
 public class LobbyLevel extends GameLevel{
@@ -23,12 +34,16 @@ public class LobbyLevel extends GameLevel{
 		"QuitButton1", "QuitButton2"
 	};
 	
+	private RoomManager rm;
+	
 	private float mouseX;
 	private float mouseY;
 	
 	//생성자
-	public LobbyLevel(){
-						
+	public LobbyLevel(RoomManager rm){
+		
+		this.rm=rm;
+
 		//배경 생성
 		m_LobbyBG = new Background("LobbyBG");
 		addObject(m_LobbyBG);
@@ -162,8 +177,29 @@ public class LobbyLevel extends GameLevel{
 	@Override
 	public void update(float deltaTime) {
 		updateObjects(deltaTime);
+		
+		JSONObject msg = Network.getInstance().pollMessage();
+		if(msg != null) {
+			protocolProcess(msg);
+		}
+		
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
+	}
+	
+	private void protocolProcess(JSONObject data){
+		System.out.println(data);
+		switch((String)data.get("Protocol")){
+		case Protocol.LOGIN_RESULT:{
+			if((boolean)data.get("Value")){
+				
+			}else{
+				System.out.println("실패");
+			}
+		}break;
+		
+		default:System.out.println("unknownProtocol");
+		}
 	}
 	
 }
