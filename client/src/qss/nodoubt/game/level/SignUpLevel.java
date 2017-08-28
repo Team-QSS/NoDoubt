@@ -17,6 +17,7 @@ import protocol.Protocol;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.TextBox;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import util.KeyValue;
@@ -30,11 +31,9 @@ import util.Util;
  */
 
 public class SignUpLevel extends GameLevel{
-	private StringBuffer m_IDBuffer = null;
-	private StringBuffer m_PWBuffer = null;
-	private StringBuffer m_PWRepeat = null;
-	private StringBuffer m_Star1 = null;
-	private StringBuffer m_Star2 = null;
+	private TextBox m_ID = null;
+	private TextBox m_PW = null;
+	private TextBox m_PWRepeat = null;
 	
 	private Network m_Network = null;
 	
@@ -48,11 +47,9 @@ public class SignUpLevel extends GameLevel{
 	private int m_ActiveBuffer = 0;
 	
 	public SignUpLevel() {
-		m_IDBuffer = new StringBuffer();
-		m_PWBuffer = new StringBuffer();
-		m_PWRepeat = new StringBuffer();
-		m_Star1 = new StringBuffer();
-		m_Star2 = new StringBuffer();
+		m_ID = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, 15.0f, false, "ID", new Vector3f(0, 0, 0));
+		m_PW = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -116.0f, true, "PW", new Vector3f(0, 0, 0));
+		m_PWRepeat = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -240.0f, true, "Retype", new Vector3f(0, 0, 0));
 		
 		m_Network = Network.getInstance();
 		
@@ -62,18 +59,18 @@ public class SignUpLevel extends GameLevel{
 		m_Signup.setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
-						if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
+						if(m_PW.m_Text.toString().equals(m_PWRepeat.toString())){
 							//메시지 전송
 							JSONObject signUpData=
 									Util.packetGenerator(Protocol.REGISTER_REQUEST,
-									new KeyValue("ID", m_IDBuffer.toString()),
-									new KeyValue("Password", m_PWBuffer.toString())
+									new KeyValue("ID", m_ID.m_Text.toString()),
+									new KeyValue("Password", m_PW.m_Text.toString())
 									);
 							Network.getInstance().pushMessage(signUpData);
 						}else{
-							m_IDBuffer.delete(0, m_IDBuffer.length());
-							m_PWBuffer.delete(0, m_PWBuffer.length());
-							m_PWRepeat.delete(0, m_PWRepeat.length());
+							m_ID.m_Text.delete(0, m_ID.m_Text.length());
+							m_PW.m_Text.delete(0, m_PW.m_Text.length());
+							m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
 							m_ActiveBuffer = 0;
 						}
 					}
@@ -81,18 +78,18 @@ public class SignUpLevel extends GameLevel{
 				(action, button) ->{
 					if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 						if(m_Signup.onButton(mouseX, mouseY)){
-							if(m_PWBuffer.toString().equals(m_PWRepeat.toString())){
+							if(m_PW.m_Text.toString().equals(m_PWRepeat.m_Text.toString())){
 								//메시지 전송
 								JSONObject signUpData=
 										Util.packetGenerator(Protocol.REGISTER_REQUEST,
-										new KeyValue("ID", m_IDBuffer.toString()),
-										new KeyValue("Password", m_PWBuffer.toString())
+										new KeyValue("ID", m_ID.m_Text.toString()),
+										new KeyValue("Password", m_PW.m_Text.toString())
 										);
 								Network.getInstance().pushMessage(signUpData);
 							}else{
-								m_IDBuffer.delete(0, m_IDBuffer.length());
-								m_PWBuffer.delete(0, m_PWBuffer.length());
-								m_PWRepeat.delete(0, m_PWRepeat.length());
+								m_ID.m_Text.delete(0, m_ID.m_Text.length());
+								m_PW.m_Text.delete(0, m_PW.m_Text.length());
+								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
 								m_ActiveBuffer = 0;
 							}
 						}
@@ -110,48 +107,48 @@ public class SignUpLevel extends GameLevel{
 							if(key == GLFW_KEY_TAB){
 								m_ActiveBuffer = 1;
 							}
-							if(m_IDBuffer.length() < 16){
+							if(m_ID.m_Text.length() < 16){
 								if(key>=65 && key<=90){
 									if(m_isShiftPressed){
-									m_IDBuffer.append((char)key);
+									m_ID.m_Text.append((char)key);
 									}
 									else if (!m_isShiftPressed){
-										m_IDBuffer.append((char)(key+32));
+										m_ID.m_Text.append((char)(key+32));
 									}
 								}
 								else if(key>=48 && key<= 57){
-									m_IDBuffer.append((char)key);
+									m_ID.m_Text.append((char)key);
 								}
 								else if(key>=320 && key<=329){
-									m_IDBuffer.append((char)(key-272));
+									m_ID.m_Text.append((char)(key-272));
 								}
 							}
-							if(m_IDBuffer.length() > 0){
+							if(m_ID.m_Text.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
-									m_IDBuffer.deleteCharAt(m_IDBuffer.length()-1);
+									m_ID.m_Text.deleteCharAt(m_ID.m_Text.length()-1);
 								}
 							}
 						}
 						else if(action == GLFW_REPEAT){
-							if(m_IDBuffer.length() < 16){
+							if(m_ID.m_Text.length() < 16){
 								if(key>=65 && key<=90){
 									if(m_isShiftPressed){
-									m_IDBuffer.append((char)key);
+									m_ID.m_Text.append((char)key);
 									}
 									else if (!m_isShiftPressed){
-										m_IDBuffer.append((char)(key+32));
+										m_ID.m_Text.append((char)(key+32));
 									}
 								}
 								else if(key>=48 && key<= 57){
-									m_IDBuffer.append((char)key);
+									m_ID.m_Text.append((char)key);
 								}
 								else if(key>=320 && key<=329){
-									m_IDBuffer.append((char)(key-272));
+									m_ID.m_Text.append((char)(key-272));
 								}
 							}
-							if(m_IDBuffer.length() > 0){
+							if(m_ID.m_Text.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
-									m_IDBuffer.deleteCharAt(m_IDBuffer.length()-1);
+									m_ID.m_Text.deleteCharAt(m_ID.m_Text.length()-1);
 								}
 							}
 						}
@@ -168,50 +165,50 @@ public class SignUpLevel extends GameLevel{
 							if(key == GLFW_KEY_TAB){
 								m_ActiveBuffer = 2;
 							}
-							if(m_PWBuffer.length() < 16){
+							if(m_PW.m_Text.length() < 16){
 								if(key>=65 && key<=90){
 									if(m_isShiftPressed){
-									m_PWBuffer.append((char)key);
+										m_PW.m_Text.append((char)key);
 									}
 									else if (!m_isShiftPressed){
-										m_PWBuffer.append((char)(key+32));
+										m_PW.m_Text.append((char)(key+32));
 									}
 								}
 								else if(key>=48 && key<= 57){
-									m_PWBuffer.append((char)key);
+									m_PW.m_Text.append((char)key);
 								}
 								else if(key>=320 && key<=329){
-									m_PWBuffer.append((char)(key-272));
+									m_PW.m_Text.append((char)(key-272));
 								}
 							}
-							if(m_PWBuffer.length() > 0){
+							if(m_PW.m_Text.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
-									m_PWBuffer.deleteCharAt(m_PWBuffer.length()-1);
+									m_PW.m_Text.deleteCharAt(m_PW.m_Text.length()-1);
 								}
 							}
 						}
 						else if(action == GLFW_REPEAT){
-							if(m_PWBuffer.length() < 16){
-								if(m_PWBuffer.length() < 16){
+							if(m_PW.m_Text.length() < 16){
+								if(m_PW.m_Text.length() < 16){
 									if(key>=65 && key<=90){
 										if(m_isShiftPressed){
-										m_PWBuffer.append((char)key);
+											m_PW.m_Text.append((char)key);
 										}
 										else if (!m_isShiftPressed){
-											m_PWBuffer.append((char)(key+32));
+											m_PW.m_Text.append((char)(key+32));
 										}
 									}
 									else if(key>=48 && key<= 57){
-										m_PWBuffer.append((char)key);
+										m_PW.m_Text.append((char)key);
 									}
 									else if(key>=320 && key<=329){
-										m_PWBuffer.append((char)(key-272));
+										m_PW.m_Text.append((char)(key-272));
 									}
 								}
 							}
-							if(m_PWBuffer.length() > 0){
+							if(m_PW.m_Text.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
-									m_PWBuffer.deleteCharAt(m_PWBuffer.length()-1);
+									m_PW.m_Text.deleteCharAt(m_PW.m_Text.length()-1);
 								}
 							}
 						}
@@ -230,49 +227,49 @@ public class SignUpLevel extends GameLevel{
 							if(key == GLFW_KEY_TAB){
 								m_ActiveBuffer = 2;
 							}
-							if(m_PWRepeat.length() < 16){
+							if(m_PWRepeat.m_Text.length() < 16){
 								if(key>=65 && key<=90){
 									if(m_isShiftPressed){
-									m_PWRepeat.append((char)key);
+										m_PWRepeat.m_Text.append((char)key);
 									}
 									else if (!m_isShiftPressed){
-										m_PWRepeat.append((char)(key+32));
+										m_PWRepeat.m_Text.append((char)(key+32));
 									}
 								}
 								else if(key>=48 && key<= 57){
-									m_PWRepeat.append((char)key);
+									m_PWRepeat.m_Text.append((char)key);
 								}
 								else if(key>=320 && key<=329){
-									m_PWRepeat.append((char)(key-272));
+									m_PWRepeat.m_Text.append((char)(key-272));
 								}
 							}
-							if(m_PWRepeat.length() > 0){
+							if(m_PWRepeat.m_Text.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
-									m_PWRepeat.deleteCharAt(m_PWRepeat.length()-1);
+									m_PWRepeat.m_Text.deleteCharAt(m_PWRepeat.m_Text.length()-1);
 								}
 							}
 						}
 						else if(action == GLFW_REPEAT){
-							if(m_PWRepeat.length() < 16){
+							if(m_PWRepeat.m_Text.length() < 16){
 								if(key>=65 && key<=90){
 									if(m_isShiftPressed){
-									m_PWRepeat.append((char)key);
+										m_PWRepeat.m_Text.append((char)key);
 									}
 									else if (!m_isShiftPressed){
-										m_PWRepeat.append((char)(key+32));
+										m_PWRepeat.m_Text.append((char)(key+32));
 									}
 								}
 								else if(key>=48 && key<= 57){
-									m_PWRepeat.append((char)key);
+									m_PWRepeat.m_Text.append((char)key);
 								}
 								else if(key>=320 && key<=329){
-									m_PWRepeat.append((char)(key-272));
+									m_PWRepeat.m_Text.append((char)(key-272));
 								}
 							}
 							
-							if(m_PWRepeat.length() > 0){
+							if(m_PWRepeat.m_Text.length() > 0){
 								if(key == GLFW_KEY_BACKSPACE){
-									m_PWRepeat.deleteCharAt(m_PWRepeat.length()-1);
+									m_PWRepeat.m_Text.deleteCharAt(m_PWRepeat.m_Text.length()-1);
 								}
 							}
 						}
@@ -300,6 +297,9 @@ public class SignUpLevel extends GameLevel{
 				});
 		addObject(m_SignUpBG);
 		addObject(m_Signup);
+		addObject(m_ID);
+		addObject(m_PW);
+		addObject(m_PWRepeat);
 	}
 	
 	@Override
@@ -313,51 +313,9 @@ public class SignUpLevel extends GameLevel{
 			protocolProcess(msg);
 		}
 		
-//		if(temp != null){
-//			if(temp.getBoolValue("Value")){
-//				Game.getInstance().setNextLevel(new LoginLevel());
-//			}
-//			else{
-//				m_IDBuffer.delete(0, m_IDBuffer.length());
-//				m_PWBuffer.delete(0, m_PWBuffer.length());
-//				m_PWRepeat.delete(0, m_PWRepeat.length());
-//				m_ActiveBuffer = 0;
-//			}
-//		}
-		
-		if(m_Star1.length() > m_PWBuffer.length()){
-			for(int i = 0; i < m_Star1.length() - m_PWBuffer.length(); i++){
-				m_Star1.deleteCharAt(m_Star1.length()-1);
-			}
-		}else if(m_Star1.length() < m_PWBuffer.length()){
-			for(int i = 0; i < m_PWBuffer.length() - m_Star1.length(); i++){
-				m_Star1.append("*");
-			}
-		}
-		
-		if(m_Star2.length() > m_PWRepeat.length()){
-			for(int i = 0; i < m_Star2.length() - m_PWRepeat.length(); i++){
-				m_Star2.deleteCharAt(m_Star2.length()-1);
-			}
-		}else if(m_Star2.length() < m_PWRepeat.length()){
-			for(int i = 0; i < m_PWRepeat.length() - m_Star2.length(); i++){
-				m_Star2.append("*");
-			}
-		}
-		
-		if(m_IDBuffer.length()==0){
-			drawTextCall("fontR11", "ID", new Vector2f(-313, 22), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
-		}
-		if(m_PWBuffer.length()==0){
-			drawTextCall("fontR11", "PW", new Vector2f(-313, -109), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
-		}
-		if(m_PWRepeat.length()==0){
-			drawTextCall("fontR11", "RetypePW", new Vector2f(-313, -233), new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
-		}
-		
-		drawTextCall("fontR11", m_IDBuffer.toString(), new Vector2f(-313,15), new Vector3f(0,0,0));
-		drawTextCall("fontR11", m_Star1.toString(), new Vector2f(-313,-116), new Vector3f(0,0,0));
-		drawTextCall("fontR11", m_Star2.toString(), new Vector2f(-313,-240), new Vector3f(0,0,0));
+		m_ID.update(deltaTime);
+		m_PW.update(deltaTime);
+		m_PWRepeat.update(deltaTime);
 	}
 	
 	private void protocolProcess(JSONObject data){
@@ -368,9 +326,9 @@ public class SignUpLevel extends GameLevel{
 				Game.getInstance().setNextLevel(new LoginLevel());
 			}else{
 				System.out.println("실패");
-				m_IDBuffer.delete(0, m_IDBuffer.length());
-				m_PWBuffer.delete(0, m_PWBuffer.length());
-				m_PWRepeat.delete(0, m_PWRepeat.length());
+				m_ID.m_Text.delete(0, m_ID.m_Text.length());
+				m_PW.m_Text.delete(0, m_PW.m_Text.length());
+				m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
 			}
 		}break;
 		
