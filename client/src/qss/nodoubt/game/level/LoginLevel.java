@@ -52,8 +52,6 @@ public class LoginLevel extends GameLevel{
 								new KeyValue("Password", m_PW.m_Text.toString())
 								);
 						Network.getInstance().pushMessage(loginData);
-					}else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
-//						Game.getInstance().setNextLevel(new LobbyLevel());
 					}
 				},
 				(action, button) ->{
