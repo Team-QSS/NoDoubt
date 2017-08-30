@@ -54,6 +54,8 @@ public class UserService {
     	if (users.size() == 1) {
     	    JSONObject data = (JSONObject) users.get(0);     // JSON 배열의 길이가 1일 때, 사용자 인증이 성공함 
     	    User user = gson.fromJson(data.toString(), User.class);    
+    	    
+    	    setIsOnline(user, true);    // 현재 사용자의 온라인 접속여부 갱신
     	    return user;
     	} else {
     		return null;
@@ -63,5 +65,13 @@ public class UserService {
     public User login(User user) {
     	// 아이디, 비밀번호가 담긴 User 객체를 이용해서 로그인 수행
     	return login(user.getID(), user.getPassword());
+    }
+    
+    public int setIsOnline(String id, boolean isOnline) {
+    	return database.executeAndUpdate("UPDATE users SET is_online = ? WHERE id = ?", isOnline, id);
+    }
+    
+    public int setIsOnline(User user, boolean isOnline) {
+    	return database.executeAndUpdate("UPDATE users SET is_online = ? WHERE id = ?", isOnline, user.getID());
     }
 }
