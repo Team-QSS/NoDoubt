@@ -1,13 +1,6 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_TAB;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
+import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -35,23 +28,18 @@ public class SignUpLevel extends GameLevel{
 	private TextBox m_PW = null;
 	private TextBox m_PWRepeat = null;
 	
-	private Network m_Network = null;
-	
 	private Background m_SignUpBG = null;
 	
 	private Button m_Signup = null;
 	
 	private float mouseX;
 	private float mouseY;
-	private boolean m_isShiftPressed = false;
 	private int m_ActiveBuffer = 0;
 	
 	public SignUpLevel() {
 		m_ID = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, 15.0f, false, "ID", new Vector3f(0, 0, 0));
 		m_PW = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -116.0f, true, "PW", new Vector3f(0, 0, 0));
 		m_PWRepeat = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -240.0f, true, "Retype", new Vector3f(0, 0, 0));
-		
-		m_Network = Network.getInstance();
 		
 		m_SignUpBG = new Background("SignupBG");
 		m_Signup = new Button("SignupButton", null, 0, -395);
@@ -73,7 +61,19 @@ public class SignUpLevel extends GameLevel{
 								m_PW.m_Text.delete(0, m_PW.m_Text.length());
 								m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
 								m_ActiveBuffer = 0;
+								m_ID.setActive();
+								m_PW.setInActive();
+								m_PWRepeat.setInActive();
 							}
+						}
+						else{
+							m_ID.m_Text.delete(0, m_ID.m_Text.length());
+							m_PW.m_Text.delete(0, m_PW.m_Text.length());
+							m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
+							m_ActiveBuffer = 0;
+							m_ID.setActive();
+							m_PW.setInActive();
+							m_PWRepeat.setInActive();
 						}
 					}
 				},
@@ -94,7 +94,19 @@ public class SignUpLevel extends GameLevel{
 									m_PW.m_Text.delete(0, m_PW.m_Text.length());
 									m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
 									m_ActiveBuffer = 0;
+									m_ID.setActive();
+									m_PW.setInActive();
+									m_PWRepeat.setInActive();
 								}
+							}
+							else{
+								m_ID.m_Text.delete(0, m_ID.m_Text.length());
+								m_PW.m_Text.delete(0, m_PW.m_Text.length());
+								m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
+								m_ActiveBuffer = 0;
+								m_ID.setActive();
+								m_PW.setInActive();
+								m_PWRepeat.setInActive();
 							}
 						}
 					}
@@ -184,6 +196,7 @@ public class SignUpLevel extends GameLevel{
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());
 				m_PW.m_Text.delete(0, m_PW.m_Text.length());
 				m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+				m_ActiveBuffer = 0;
 				m_ID.setActive();
 				m_PW.setInActive();
 				m_PWRepeat.setInActive();
