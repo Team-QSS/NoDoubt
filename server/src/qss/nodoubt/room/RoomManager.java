@@ -9,7 +9,7 @@ import qss.nodoubt.util.Util;
 
 public class RoomManager {
 	
-	public static RoomManager r;
+	private static RoomManager r;
 	
 	public static RoomManager getInstance(){
 		if(r==null)

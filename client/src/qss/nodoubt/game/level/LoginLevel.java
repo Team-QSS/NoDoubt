@@ -135,11 +135,9 @@ public class LoginLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		case Protocol.LOGIN_RESULT:{
 			if((boolean)data.get("Value")){
-				RoomManager rm=(RoomManager)data.get("RoomManager");
-				Game.getInstance().setNextLevel(new LobbyLevel(rm));
+				Game.getInstance().setNextLevel(new LobbyLevel());
 				System.out.println("로그인 성공");
 				System.out.println(Util.printJSONLookSimple(data.get("User").toString()));
-				System.out.println(Util.printJSONLookSimple(rm.toString()));
 			}else{
 				System.out.println("실패");
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());

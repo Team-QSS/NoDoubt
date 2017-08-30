@@ -42,7 +42,6 @@ public class Server extends JFrame{
 	private Gson gson=Network.gson;
 	private JSONParser parser=Network.jsonParser;
 	
-	
 	private RoomManager roomManager;
 	//현재 최대 동시접속 인원수는 4명으로 제한
 	private final int MAX_THREAD_NUM=4;
@@ -281,7 +280,7 @@ public class Server extends JFrame{
 			}
 			
 			//디버깅용 로그 출력
-			Util.printDebugLog(DEBUG_MODE,mainTextArea, (String)data.get("Protocol"));
+			Util.printDebugLog(DEBUG_MODE, mainTextArea, (String)data.get("Protocol"));
 		}
 		
 	}
