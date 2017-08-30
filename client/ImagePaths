@@ -36,7 +36,7 @@ LobbyBG:../res/image/Background/ND-Lobby-Background.png
 LoadBG:../res/image/Background/ND-Loading-Background.png
 WaitingBG:../res/image/Background/ND-Waiting-Background.png
 CreditBG:../res/image/Background/ND-Credit-Background.png
-
+CreateBG:../res/image/Background/ND-Create-Background.png
 
 
 //Ingame

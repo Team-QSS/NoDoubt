@@ -27,7 +27,6 @@ public class LoadingLevel extends GameLevel{
 	private Button m_Create = null;
 	private Button m_Back = null;
 	
-	private Network m_Network = null;
 	
 	//getCursor로 마우스의 좌표를 구함
 	
@@ -38,8 +37,6 @@ public class LoadingLevel extends GameLevel{
 	public LoadingLevel(){
 		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
 		m_Back = new Button("BackButton1", "BackButton2", 677, 414);
-		
-		m_Network = Network.getInstance();
 		
 		setEventListener((action,  key) -> { 
 			if(action == GLFW_PRESS){ 

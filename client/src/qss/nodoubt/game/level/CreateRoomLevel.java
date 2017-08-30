@@ -11,6 +11,9 @@ public class CreateRoomLevel extends GameLevel{
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
+		
+		m_CreateRoomBG = new Background("CreateBG");
+//		m_GameName = new TextBox(0, , y, width, startX, startY, isStar, label, color)
 	}
 
 }
