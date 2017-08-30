@@ -37,8 +37,6 @@ LoadBG:../res/image/Background/ND-Loading-Background.png
 WaitingBG:../res/image/Background/ND-Waiting-Background.png
 CreditBG:../res/image/Background/ND-Credit-Background.png
 
-
-
 //Ingame
 InGameBackground:../res/image/Background/ND-Game-Background.png
 IButton1:../res/image/Button&Obj/Game-Button11.png
@@ -47,6 +45,8 @@ IButton3:../res/image/Button&Obj/Game-Button31.png
 IButton4:../res/image/Button&Obj/Game-Button41.png
 IButton5:../res/image/Button&Obj/Game-Button51.png
 IButton6:../res/image/Button&Obj/Game-Button61.png
+IButtonP:../res/image/Button&Obj/Game-ButtonP1.png
+IButtonS:../res/image/Button&Obj/Game-ButtonS1.png
 IButtonDoubt:../res/image/Button&Obj/Game-ButtonD1.png
 IButtonRoll:../res/image/Button&Obj/Game-ButtonR1.png
 IButton1F:../res/image/Button&Obj/Game-Button12.png
@@ -55,6 +55,8 @@ IButton3F:../res/image/Button&Obj/Game-Button32.png
 IButton4F:../res/image/Button&Obj/Game-Button42.png
 IButton5F:../res/image/Button&Obj/Game-Button52.png
 IButton6F:../res/image/Button&Obj/Game-Button62.png
+IButtonPF:../res/image/Button&Obj/Game-ButtonP2.png
+IButtonSF:../res/image/Button&Obj/Game-ButtonS2.png
 IButtonDoubtF:../res/image/Button&Obj/Game-ButtonD2.png
 IButtonRollF:../res/image/Button&Obj/Game-ButtonR2.png
 Result1:../res/image/Button&Obj/Game-1.png
@@ -64,6 +66,7 @@ Result4:../res/image/Button&Obj/Game-4.png
 Result5:../res/image/Button&Obj/Game-5.png
 Result6:../res/image/Button&Obj/Game-6.png
 Stump:../res/image/Button&Obj/Game-Stump.png
+TabPanel:../res/image/Button&Obj/Game-Tab.png
 
 //인게임오토바이
 IBikeR:../res/image/Button&Obj/Game-MC1.png
