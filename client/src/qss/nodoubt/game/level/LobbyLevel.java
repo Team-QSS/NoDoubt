@@ -34,15 +34,11 @@ public class LobbyLevel extends GameLevel{
 		"QuitButton1", "QuitButton2"
 	};
 	
-	private RoomManager rm;
-	
 	private float mouseX;
 	private float mouseY;
 	
 	//생성자
-	public LobbyLevel(RoomManager rm){
-		
-		this.rm=rm;
+	public LobbyLevel(){
 
 		//배경 생성
 		m_LobbyBG = new Background("LobbyBG");

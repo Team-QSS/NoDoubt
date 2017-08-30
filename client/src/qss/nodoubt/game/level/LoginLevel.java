@@ -52,8 +52,6 @@ public class LoginLevel extends GameLevel{
 								new KeyValue("Password", m_PW.m_Text.toString())
 								);
 						Network.getInstance().pushMessage(loginData);
-					}else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
-//						Game.getInstance().setNextLevel(new LobbyLevel());
 					}
 				},
 				(action, button) ->{
@@ -137,11 +135,9 @@ public class LoginLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		case Protocol.LOGIN_RESULT:{
 			if((boolean)data.get("Value")){
-				RoomManager rm=(RoomManager)data.get("RoomManager");
-				Game.getInstance().setNextLevel(new LobbyLevel(rm));
+				Game.getInstance().setNextLevel(new LobbyLevel());
 				System.out.println("로그인 성공");
 				System.out.println(Util.printJSONLookSimple(data.get("User").toString()));
-				System.out.println(Util.printJSONLookSimple(rm.toString()));
 			}else{
 				System.out.println("실패");
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());
