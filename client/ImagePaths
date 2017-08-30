@@ -67,6 +67,12 @@ Result5:../res/image/Button&Obj/Game-5.png
 Result6:../res/image/Button&Obj/Game-6.png
 Stump:../res/image/Button&Obj/Game-Stump.png
 TabPanel:../res/image/Button&Obj/Game-Tab.png
+TabDotR:../res/image/Button&Obj/Game-Tab1.png
+TabDotB:../res/image/Button&Obj/Game-Tab2.png
+TabDotG:../res/image/Button&Obj/Game-Tab3.png
+TabDotY:../res/image/Button&Obj/Game-Tab4.png
+TabDotW:../res/image/Button&Obj/Game-Tab5.png
+TabDotP:../res/image/Button&Obj/Game-Tab6.png
 
 //인게임오토바이
 IBikeR:../res/image/Button&Obj/Game-MC1.png

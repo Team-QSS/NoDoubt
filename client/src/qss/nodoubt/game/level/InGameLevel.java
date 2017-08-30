@@ -45,6 +45,9 @@ public class InGameLevel extends GameLevel{
 	private int m_DiceResult = 0;
 	private int m_DeclareNum = 0;
 	
+	private boolean m_IsTabPushed = false;
+	private TabPanel m_TabPanel;
+	
 	/**
 	 * 
 	 * @param IDs 닉네임들 (자기 자신은 GameState를 통해서 얻을테니 닉네임만 적으면 됨)
@@ -71,22 +74,17 @@ public class InGameLevel extends GameLevel{
 		m_Board = new GameBoard(6, m_Bikes);
 		
 		setEventListener((action, key) -> {
-			if(action == GLFW_PRESS && key == GLFW_KEY_R) {
-				moveBike(0, 4);
-			} else if(action == GLFW_PRESS && key == GLFW_KEY_B) {
-				moveBike(1, 4);
-			} else if(action == GLFW_PRESS && key == GLFW_KEY_G) {
-				moveBike(2, 4);
-			} else if(action == GLFW_PRESS && key == GLFW_KEY_Y) {
-				moveBike(3, 4);
-			} else if(action == GLFW_PRESS && key == GLFW_KEY_W) {
-				moveBike(4, 4);
-			} else if(action == GLFW_PRESS && key == GLFW_KEY_P) {
-				moveBike(5, 4);
-			} else if(action == GLFW_PRESS && key == GLFW_KEY_Q) {
-				m_Board.push(0);
-			} else if(action == GLFW_PRESS && key == GLFW_KEY_Z) {
-				m_TurnLabel.nextTurn();
+			if(action == GLFW_PRESS) {
+				if(key == GLFW_KEY_TAB) {
+					m_IsTabPushed = true;
+					addObject(m_TabPanel = new TabPanel());
+				}
+				
+			}else if(action == GLFW_RELEASE) {
+				if(key == GLFW_KEY_TAB) {
+					m_IsTabPushed = false;
+					removeObject(m_TabPanel);
+				}
 			}
 		}, null);
 		
