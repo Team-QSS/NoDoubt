@@ -47,6 +47,8 @@ IButton3:../res/image/Button&Obj/Game-Button31.png
 IButton4:../res/image/Button&Obj/Game-Button41.png
 IButton5:../res/image/Button&Obj/Game-Button51.png
 IButton6:../res/image/Button&Obj/Game-Button61.png
+IButtonP:../res/image/Button&Obj/Game-ButtonP1.png
+IButtonS:../res/image/Button&Obj/Game-ButtonS1.png
 IButtonDoubt:../res/image/Button&Obj/Game-ButtonD1.png
 IButtonRoll:../res/image/Button&Obj/Game-ButtonR1.png
 IButton1F:../res/image/Button&Obj/Game-Button12.png
@@ -55,6 +57,8 @@ IButton3F:../res/image/Button&Obj/Game-Button32.png
 IButton4F:../res/image/Button&Obj/Game-Button42.png
 IButton5F:../res/image/Button&Obj/Game-Button52.png
 IButton6F:../res/image/Button&Obj/Game-Button62.png
+IButtonPF:../res/image/Button&Obj/Game-ButtonP2.png
+IButtonSF:../res/image/Button&Obj/Game-ButtonS2.png
 IButtonDoubtF:../res/image/Button&Obj/Game-ButtonD2.png
 IButtonRollF:../res/image/Button&Obj/Game-ButtonR2.png
 Result1:../res/image/Button&Obj/Game-1.png
@@ -64,6 +68,13 @@ Result4:../res/image/Button&Obj/Game-4.png
 Result5:../res/image/Button&Obj/Game-5.png
 Result6:../res/image/Button&Obj/Game-6.png
 Stump:../res/image/Button&Obj/Game-Stump.png
+TabPanel:../res/image/Button&Obj/Game-Tab.png
+TabDotR:../res/image/Button&Obj/Game-Tab1.png
+TabDotB:../res/image/Button&Obj/Game-Tab2.png
+TabDotG:../res/image/Button&Obj/Game-Tab3.png
+TabDotY:../res/image/Button&Obj/Game-Tab4.png
+TabDotW:../res/image/Button&Obj/Game-Tab5.png
+TabDotP:../res/image/Button&Obj/Game-Tab6.png
 
 //인게임오토바이
 IBikeR:../res/image/Button&Obj/Game-MC1.png
