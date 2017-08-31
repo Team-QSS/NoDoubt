@@ -21,12 +21,16 @@ public class RoomObject extends GameObject {
 	
 	private static final Vector3f COLOR = new Vector3f(0x9a, 0x6f, 0x52);
 	
-	public RoomObject(String textureName, float depth, float index) {
-		super(textureName, depth);
+	public RoomObject(float depth, float index, String gamename, String owner, int players) {
+		super("Blank", depth);
 		
 		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, 714, GAMENAMETEXT, TEXTY - 110 * index, false, null, COLOR);
 		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, 714, OWNERTEXT,    TEXTY - 110 * index, false, null, COLOR);
 		m_Players  = new TextBox(0, PLAYERSX,  Y - 110 * index, 321, PLAYERSTEXT,  TEXTY - 110 * index, false, null, COLOR);
+		
+		m_GameName.m_Text.append(gamename);
+		m_Owner.m_Text.append(owner);
+		m_Players.m_Text.append(String.valueOf(players) + "  /  6" );
 	}
 
 	@Override

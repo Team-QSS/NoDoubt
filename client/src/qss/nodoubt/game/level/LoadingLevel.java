@@ -1,16 +1,23 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-import java.util.*;
+import java.util.LinkedList;
 
-import org.json.simple.*;
+import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
-import qss.nodoubt.game.object.*;
+import qss.nodoubt.game.object.Background;
+import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.RoomObject;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
+import room.Room;
 import room.RoomManager;
 /*
  * 이 클래스는 대기실을 들어가기 전,
@@ -101,6 +108,8 @@ public class LoadingLevel extends GameLevel{
 	private void initAction(){
 		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
 		Network.getInstance().pushMessage(getRoomManager);
+		
+		RoomList.add(new RoomObject(0,0,"asd","aasd",2));
 	}
 
 	@Override
@@ -116,6 +125,9 @@ public class LoadingLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
+		for(RoomObject R : RoomList){
+			R.update(deltaTime);
+		}
 	}
 	
 	private void protocolProcess(JSONObject data){
@@ -123,6 +135,15 @@ public class LoadingLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		case Protocol.GET_ROOMMANAGER:{
 			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
+			
+			int i=0;
+			for(double id:rm.list.keySet()){
+				if(id==RoomManager.LOBBY)
+					continue;
+				Room room=rm.list.get(id);
+				RoomList.add(new RoomObject(0,i++,room.getName(),room.getMaster().getName(),room.list.size()));
+				System.out.println(RoomList.get(i-1));
+			}
 		}break;
 		
 		default:System.out.println("unknownProtocol");

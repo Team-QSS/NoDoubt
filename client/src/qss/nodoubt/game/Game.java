@@ -69,7 +69,7 @@ public class Game {
 			m_FrameCounter += 1;
 			
 			if(m_FrameTimer.totalTime() > 1.0f) {
-				System.out.println("FPS : " + m_FrameCounter + ", mSPF : " + (1000.0f * m_FrameTimer.totalTime() / m_FrameCounter));
+//				System.out.println("FPS : " + m_FrameCounter + ", mSPF : " + (1000.0f * m_FrameTimer.totalTime() / m_FrameCounter));
 				m_FrameTimer.reset();
 				m_FrameCounter = 0;
 			}
