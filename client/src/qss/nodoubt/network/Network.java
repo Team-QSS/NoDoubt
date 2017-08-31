@@ -9,10 +9,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.gson.Gson;
+
 import qss.nodoubt.game.GameConstants;
 import qss.nodoubt.game.GameState;
 
 public class Network {
+	
+	public static Gson gson = new Gson();
+	public static JSONParser parser = new JSONParser();
+	
 	private static Network s_Instance = null;
 	
 	private Socket m_Socket = null;

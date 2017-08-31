@@ -1,8 +1,10 @@
 package qss.nodoubt.game;
 
+import room.User;
+
 public class GameState {
 	private static GameState s_Instance = null;
-	public String m_myID = null;
+	public User m_Me = null;
 	public boolean m_IsGameGoing = true;
 	
 	public static GameState getInstance() {

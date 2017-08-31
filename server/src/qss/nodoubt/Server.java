@@ -214,12 +214,22 @@ public class Server extends JFrame{
 				
 				//방관련 메서드
 				
+				case Protocol.GET_ROOMMANAGER:{
+					
+					sendData.put("Protocol", Protocol.GET_ROOMMANAGER);
+					sendData.put("RoomManager",gson.toJson(roomManager));
+					
+					client.send(sendData);
+
+				}break;
+				
 				case Protocol.CREATE_ROOM_REQUEST:{
 					String masterID=(String)data.get("MasterID");
 					sendData=new JSONObject();
 					Room newRoom=new Room((String)data.get("RoomName"));
 					roomManager.addRoom(newRoom);
-
+					
+					//사실상 Password 안씀
 					newRoom.setPassword((String)data.get("Password"));
 					User user=roomManager.getUser((u)->{
 						return u.getID()==masterID;
