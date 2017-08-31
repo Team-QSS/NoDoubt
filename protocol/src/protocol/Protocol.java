@@ -21,6 +21,8 @@ public interface Protocol {
 	String JOIN_ROOM_REQUEST="JoinRoomRequest";
 	String JOIN_ROOM_RESULT="JoinRoomResult";
 	
+	String GET_ROOMMANAGER="GetRoomManager";
+	
 	//방목록을 보는사람
 	String UPDATE_ROOM="UpdateRoom";
 	

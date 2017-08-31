@@ -11,6 +11,7 @@ import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
+import room.RoomManager;
 /*
  * 이 클래스는 대기실을 들어가기 전,
  * 들어갈 수 있는 다른 대기실을 골라 들어가거나
@@ -34,6 +35,8 @@ public class LoadingLevel extends GameLevel{
 	private float mouseX;
 	private float mouseY;
 	private float time;
+	
+	private RoomManager rm;
 	
 	public LoadingLevel(){
 		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
@@ -92,6 +95,12 @@ public class LoadingLevel extends GameLevel{
 		addObject(m_Create);
 		addObject(m_Back);
 		addObject(m_LoadingBG);
+		initAction();
+	}
+	
+	private void initAction(){
+		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
+		Network.getInstance().pushMessage(getRoomManager);
 	}
 
 	@Override
@@ -112,15 +121,8 @@ public class LoadingLevel extends GameLevel{
 	private void protocolProcess(JSONObject data){
 		System.out.println(data);
 		switch((String)data.get("Protocol")){
-		case Protocol.LOGIN_RESULT:{
-			if((boolean)data.get("Value")){
-				Game.getInstance().setNextLevel(new LobbyLevel());
-				System.out.println("로그인 성공");
-				Util.printJSONLookSimple(data.get("User").toString());
-				Util.printJSONLookSimple(data.get("RoomManager").toString());
-			}else{
-				System.out.println("실패");
-			}
+		case Protocol.GET_ROOMMANAGER:{
+			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
 		}break;
 		
 		default:System.out.println("unknownProtocol");

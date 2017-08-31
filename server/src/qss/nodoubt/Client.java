@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
+import qss.nodoubt.database.Database;
+import qss.nodoubt.database.UserService;
 import qss.nodoubt.room.RoomManager;
 import qss.nodoubt.room.User;
 import qss.nodoubt.util.Util;
@@ -58,6 +60,7 @@ public class Client {
 			RoomManager.getInstance().getUser((u)->{
 				return u.getID()==this.getCurrentUser().getID();
 			}).getCurrentRoom().removeUser(this.getCurrentUser().getID());
+			UserService.getInstance().setIsOnline(this.currentUser, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
