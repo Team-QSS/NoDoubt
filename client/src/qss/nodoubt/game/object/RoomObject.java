@@ -19,7 +19,6 @@ public class RoomObject extends GameObject {
 	
 	private static final float Y = 410;
 	
-	
 	private static final Vector3f COLOR = new Vector3f(0x9a/255f, 0x6f/255f, 0x52/255f);
 	
 	public RoomObject(float depth, int index, String gamename, String owner, int players) {
