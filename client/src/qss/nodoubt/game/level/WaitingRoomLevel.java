@@ -10,6 +10,7 @@ import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import room.Room;
+import room.User;
 
 public class WaitingRoomLevel extends GameLevel{
 
@@ -20,7 +21,7 @@ public class WaitingRoomLevel extends GameLevel{
 	private float mouseX;
 	private float mouseY;
 	
-	private String[] m_PlayerList;
+	private LinkedList<User> m_Users= new LinkedList<User>();
 	
 	private Button m_StartButton;
 	private Button m_BackButton;
