@@ -135,4 +135,9 @@ public class TextBox extends GameObject{
 	public void setInActive(){
 		m_IsActived = false;
 	}
+	
+	public void setTextLocation(float startX, float startY){
+		m_Location.x = startX;
+		m_Location.y = startY;
+	}
 }
