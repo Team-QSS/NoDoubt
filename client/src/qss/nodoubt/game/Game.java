@@ -74,8 +74,6 @@ public class Game {
 				m_FrameCounter = 0;
 			}
 			
-			//Message msg = m_Network.pollMessage();
-			
 			m_Window.pollEvents();
 			
 			m_CurLevel.update(m_FrameTimer.deltaTime());

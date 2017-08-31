@@ -108,7 +108,13 @@ public class LoadingLevel extends GameLevel{
 		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
 		Network.getInstance().pushMessage(getRoomManager);
 		
-		RoomList.add(new RoomObject(0,0,"asd","aasd",2));
+		RoomList.add(new RoomObject(0,0,"asd","DDDDDDDDDDDDDDDD",2));
+		for(RoomObject R : RoomList){
+			addObject(R);
+			addObject(R.m_GameName);
+			addObject(R.m_Owner);
+			addObject(R.m_Players);
+		}
 	}
 
 	@Override

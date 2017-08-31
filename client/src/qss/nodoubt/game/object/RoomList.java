@@ -19,6 +19,7 @@ public class RoomList extends GameObject{
 		}
 	}
 	
+	//구현중
 	public void addRoomObject(RoomObject roomObj){
 		roomObj
 		RoomList.add(roomObj);
