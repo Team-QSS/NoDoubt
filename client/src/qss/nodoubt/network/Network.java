@@ -16,8 +16,8 @@ import qss.nodoubt.game.GameState;
 
 public class Network {
 	
-	public Gson gson = new Gson();
-	public JSONParser parser = new JSONParser();
+	public static Gson gson = new Gson();
+	public static JSONParser parser = new JSONParser();
 	
 	private static Network s_Instance = null;
 	
