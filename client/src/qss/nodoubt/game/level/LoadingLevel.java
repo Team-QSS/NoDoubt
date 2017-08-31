@@ -35,7 +35,6 @@ public class LoadingLevel extends GameLevel{
 	private Button m_Create = null;
 	private Button m_Back = null;
 	
-	private LinkedList<RoomObject> RoomList = new LinkedList<RoomObject>();
 	
 	//getCursor로 마우스의 좌표를 구함
 	
@@ -144,6 +143,13 @@ public class LoadingLevel extends GameLevel{
 				RoomList.add(new RoomObject(0,i++,room.getName(),room.getMaster().getName(),room.list.size()));
 				System.out.println(RoomList.get(i-1));
 			}
+		}break;
+		
+		case Protocol.ADD_ROOM:{
+			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			rm.addRoom(room);
+			
+			RoomList.add(new RoomObject(0,i++,room.getName(),room.getMaster().getName(),room.list.size()));
 		}break;
 		
 		default:System.out.println("unknownProtocol");
