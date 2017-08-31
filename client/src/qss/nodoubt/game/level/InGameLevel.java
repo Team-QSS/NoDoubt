@@ -48,6 +48,8 @@ public class InGameLevel extends GameLevel{
 	private boolean m_IsTabPushed = false;
 	private TabPanel m_TabPanel;
 	
+	private double m_RoomID;
+	
 	/**
 	 * 
 	 * @param IDs 닉네임들 (자기 자신은 GameState를 통해서 얻을테니 닉네임만 적으면 됨)
@@ -142,7 +144,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void rollDice() {
-		if(m_State.equals(State.DICEROLL)){
+		if(m_State.equals(State.DICEROLL) && !m_IsTabPushed){
 			Random r = RANDOM;
 			int n = r.nextInt(6) + 1;
 			m_DiceResultPanel.setResult(n);
@@ -158,12 +160,13 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void declare(int n) {
-		if(m_State.equals(State.DECLARE) && isMyTurn()) {
+		if(m_State.equals(State.DECLARE) && isMyTurn() && !m_IsTabPushed) {
 			JSONObject msg = new JSONObject();
 			
 			msg.put("Protocol", "DeclareRequest");
 			msg.put("Value", n);
-			msg.put("ID", GameState.getInstance().m_myID);
+			msg.put("Player", GameState.getInstance().m_Me.getID());
+			msg.put("RoomID", m_RoomID);
 			
 			System.out.println(msg.toJSONString());
 			
@@ -180,14 +183,15 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private boolean isMyTurn() {
-		return m_TurnInfo[m_Turn].name.equals(GameState.getInstance().m_myID);
+		return m_TurnInfo[m_Turn].name.equals(GameState.getInstance().m_Me.getID());
 	}
 	
 	private void doubt() {
-		if(m_State.equals(State.DOUBT) && isMyTurn()) {
+		if(m_State.equals(State.DOUBT) && isMyTurn() && !m_IsTabPushed) {
 			JSONObject msg = new JSONObject();
 			msg.put("Protocol", "DoubtRequest");
-			msg.put("Player", GameState.getInstance().m_myID);
+			msg.put("Player", GameState.getInstance().m_Me.getID());
+			msg.put("RoomID", m_RoomID);
 			Network.getInstance().pushMessage(msg);
 		}
 	}
@@ -195,7 +199,8 @@ public class InGameLevel extends GameLevel{
 	private void recieveDoubtCheck() {
 		JSONObject msg = new JSONObject();
 		msg.put("Protocol", "DoubtResult");
-		msg.put("Player", GameState.getInstance().m_myID);
+		msg.put("Player", GameState.getInstance().m_Me.getID());
+		msg.put("RoomID", m_RoomID);
 		if(m_DiceResult == m_DeclareNum) {
 			msg.put("Result", false);
 		}else {
