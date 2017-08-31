@@ -266,6 +266,23 @@ public class Server extends JFrame{
 					});
 				}break;
 				
+				case Protocol.UPDATE_ROOM:{
+					User user=gson.fromJson((String)data.get("User"), User.class);
+					double roomID=(double)data.get("RoomID");
+					roomManager.getRoom(roomID).enterUser(user);
+					
+					sendData=Util.packetGenerator(
+							Protocol.JOIN_ROOM_RESULT,
+							new KeyValue("User",gson.toJson(user))
+							);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}break;
+				
 				//방안에서 사용하는 메서드
 				
 				case "Chat":{// 클라이언트는 자신의 user정보와 채팅정보를 보냄 그러면 서버에서는 user가 속한방의 유저에게 채팅정보를 전달함

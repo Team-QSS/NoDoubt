@@ -21,8 +21,8 @@ public class RoomObject extends GameObject {
 	
 	private static final Vector3f COLOR = new Vector3f(0x9a, 0x6f, 0x52);
 	
-	public RoomObject(String textureName, float depth, float index, String gamename, String owner, int players) {
-		super(textureName, depth);
+	public RoomObject(float depth, float index, String gamename, String owner, int players) {
+		super("Blank", depth);
 		
 		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, 714, GAMENAMETEXT, TEXTY - 110 * index, false, null, COLOR);
 		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, 714, OWNERTEXT,    TEXTY - 110 * index, false, null, COLOR);

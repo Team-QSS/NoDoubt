@@ -26,6 +26,11 @@ public class RoomManager {
 		Room lobby=new Room("Lobby");
 		lobby.id=LOBBY;
 		addRoom(lobby);
+		
+		Room room1=new Room("wow");
+		room1.id=1.234;
+		room1.setMaster(new User("Splash","123"));
+		addRoom(room1);
 	}
 	
 	public void addRoom(Room room){
