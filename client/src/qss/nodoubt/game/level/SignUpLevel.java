@@ -59,7 +59,7 @@ public class SignUpLevel extends GameLevel{
 							}else{
 								m_ID.m_Text.delete(0, m_ID.m_Text.length());
 								m_PW.m_Text.delete(0, m_PW.m_Text.length());
-								m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
+								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
 								m_ActiveBuffer = 0;
 								m_ID.setActive();
 								m_PW.setInActive();
@@ -69,7 +69,7 @@ public class SignUpLevel extends GameLevel{
 						else{
 							m_ID.m_Text.delete(0, m_ID.m_Text.length());
 							m_PW.m_Text.delete(0, m_PW.m_Text.length());
-							m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
+							m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
 							m_ActiveBuffer = 0;
 							m_ID.setActive();
 							m_PW.setInActive();
@@ -102,7 +102,7 @@ public class SignUpLevel extends GameLevel{
 							else{
 								m_ID.m_Text.delete(0, m_ID.m_Text.length());
 								m_PW.m_Text.delete(0, m_PW.m_Text.length());
-								m_PWRepeat.m_Text.delete(0, m_PW.m_Text.length());
+								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
 								m_ActiveBuffer = 0;
 								m_ID.setActive();
 								m_PW.setInActive();
