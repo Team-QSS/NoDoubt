@@ -27,6 +27,7 @@ public class LoadingLevel extends GameLevel{
 	private Button m_Create = null;
 	private Button m_Back = null;
 	
+	private LinkedList<RoomObject> RoomList = new LinkedList<RoomObject>();
 	
 	//getCursor로 마우스의 좌표를 구함
 	
