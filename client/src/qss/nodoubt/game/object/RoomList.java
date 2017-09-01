@@ -6,10 +6,8 @@ public class RoomList extends GameObject{
 	
 	private LinkedList<RoomObject> RoomList = new LinkedList<RoomObject>();
 	
-	private float distance=110;
-	
-	public RoomList(String textureName, float depth) {
-		super(textureName, depth);
+	public RoomList() {
+		super("Blank", 0);
 	}
 
 	@Override
@@ -21,16 +19,21 @@ public class RoomList extends GameObject{
 	
 	//구현중
 	public void addRoomObject(RoomObject roomObj){
-		roomObj
+		roomObj.setIndex(RoomList.size());
 		RoomList.add(roomObj);
-	}
-	
-	public void addRoomObject(int index,RoomObject roomObj){
-		RoomList.add(index,roomObj);
 	}
 	
 	public void removeRoomObject(int index){
 		RoomList.remove(index);
+		
+		for(int i=index;i<RoomList.size();i++){
+			RoomList.get(i).setIndex(i);
+		}
+	}
+	
+	public void addRoomObject(int index,RoomObject roomObj){
+		roomObj.setIndex(index);
+		RoomList.add(index,roomObj);
 	}
 
 }

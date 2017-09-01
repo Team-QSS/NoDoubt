@@ -6,14 +6,13 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-import java.util.LinkedList;
-
 import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.RoomList;
 import qss.nodoubt.game.object.RoomObject;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
@@ -43,6 +42,8 @@ public class LoadingLevel extends GameLevel{
 	private float time;
 	
 	private RoomManager rm;
+	
+	private RoomList roomList=new RoomList();
 	
 	public LoadingLevel(){
 		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
@@ -108,13 +109,8 @@ public class LoadingLevel extends GameLevel{
 		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
 		Network.getInstance().pushMessage(getRoomManager);
 		
-		RoomList.add(new RoomObject(0,0,"asd","DDDDDDDDDDDDDDDD",2));
-		for(RoomObject R : RoomList){
-			addObject(R);
-			addObject(R.m_GameName);
-			addObject(R.m_Owner);
-			addObject(R.m_Players);
-		}
+		roomList.addRoomObject(new RoomObject(0,"asd","aasd",2));
+		
 	}
 
 	@Override
@@ -130,9 +126,9 @@ public class LoadingLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
-		for(RoomObject R : RoomList){
-			R.update(deltaTime);
-		}
+		roomList.update(deltaTime);
+		
+		
 	}
 	
 	private void protocolProcess(JSONObject data){
@@ -146,16 +142,16 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				RoomList.add(new RoomObject(0,i++,room.getName(),room.getMaster().getName(),room.list.size()));
-				System.out.println(RoomList.get(i-1));
+				roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getName(),room.list.size()));
 			}
+			System.out.println(Protocol.GET_ROOMMANAGER);
 		}break;
 		
 		case Protocol.ADD_ROOM:{
 			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 			rm.addRoom(room);
 			
-			RoomList.add(new RoomObject(0,i++,room.getName(),room.getMaster().getName(),room.list.size()));
+			roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getName(),room.list.size()));
 		}break;
 		
 		default:System.out.println("unknownProtocol");
