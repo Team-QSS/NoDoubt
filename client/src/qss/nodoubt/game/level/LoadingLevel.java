@@ -110,7 +110,7 @@ public class LoadingLevel extends GameLevel{
 		Network.getInstance().pushMessage(getRoomManager);
 		
 		roomList.addRoomObject(new RoomObject(0,"asd","aasd",2));
-		
+		addRoomObject(0);
 	}
 
 	@Override
@@ -131,6 +131,13 @@ public class LoadingLevel extends GameLevel{
 		
 	}
 	
+	private void addRoomObject(int index){
+		addObject(roomList.getIndex(index));
+		addObject(roomList.getIndex(index).m_GameName);
+		addObject(roomList.getIndex(index).m_Owner);
+		addObject(roomList.getIndex(index).m_Players);
+	}
+	
 	private void protocolProcess(JSONObject data){
 		System.out.println(data);
 		switch((String)data.get("Protocol")){
@@ -142,7 +149,9 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getName(),room.list.size()));
+				roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.getIndex(1).setIndex(1);
+				addRoomObject(1);
 			}
 			System.out.println(Protocol.GET_ROOMMANAGER);
 		}break;
@@ -151,7 +160,7 @@ public class LoadingLevel extends GameLevel{
 			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 			rm.addRoom(room);
 			
-			roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getName(),room.list.size()));
+			roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
 		}break;
 		
 		default:System.out.println("unknownProtocol");

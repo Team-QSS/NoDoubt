@@ -8,7 +8,6 @@ public class User {
 	
 	private String ID;
 	private String password;
-    private String name;
     
 	private double currentRoomId;
 	
@@ -17,11 +16,6 @@ public class User {
 	public User(String id,String password){
 		this.ID=id;
 		this.password=password;
-	}
-	
-	public User(String id,String password, String name){
-		this(id, password);
-		this.name = name;
 	}
 	
 	@Override
@@ -59,14 +53,6 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public double getCurrentRoomId() {

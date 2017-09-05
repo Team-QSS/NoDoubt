@@ -38,8 +38,11 @@ public class RoomObject extends GameObject {
 	public void setIndex(int index){
 		this.index=index;
 		m_GameName.setPosition(GAMENAMEX, Y - 110 * this.index);
+		m_GameName.setTextLocation(GAMENAMETEXT, TEXTY - 110 * this.index);
 		m_Owner.setPosition(OWNERX, Y - 110 * this.index);
+		m_Owner.setTextLocation(OWNERTEXT, TEXTY - 110 * this.index);
 		m_Players.setPosition(PLAYERSX, Y - 110 * this.index);
+		m_Players.setTextLocation(PLAYERSTEXT, TEXTY - 110 * this.index);
 	}
 	
 	public int getIndex(){
