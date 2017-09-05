@@ -250,7 +250,7 @@ public class Server extends JFrame{
 				}break;
 				
 				case Protocol.JOIN_ROOM_REQUEST:{
-					User user=gson.fromJson((String)data.get("User"), User.class);
+					User user=client.getCurrentUser();
 					double roomID=(double)data.get("RoomID");
 					roomManager.getRoom(roomID).enterUser(user);
 					
@@ -266,14 +266,44 @@ public class Server extends JFrame{
 					});
 				}break;
 				
-				case Protocol.UPDATE_ROOM:{
-					User user=gson.fromJson((String)data.get("User"), User.class);
+				case Protocol.QUIT_ROOM_REQUEST:{
+					User user=client.getCurrentUser();
 					double roomID=(double)data.get("RoomID");
-					roomManager.getRoom(roomID).enterUser(user);
+					roomManager.getRoom(roomID).removeUser(user.getID());
 					
 					sendData=Util.packetGenerator(
-							Protocol.JOIN_ROOM_RESULT,
+							Protocol.QUIT_ROOM_REPORT,
 							new KeyValue("User",gson.toJson(user))
+							);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}break;
+				
+				case Protocol.READY_ROOM_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(
+							Protocol.READY_ROOM_REPORT,
+							new KeyValue("Value",data.get("Value"))
+							);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}break;
+				
+				case Protocol.KICK_ROOM_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(
+							Protocol.KICK_ROOM_REPORT,
+							new KeyValue("Name",data.get("TargetName"))
 							);
 
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
@@ -294,10 +324,6 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
-				}break;
-				
-				case "ExitRoom":{
-					
 				}break;
 				
 				default:{
