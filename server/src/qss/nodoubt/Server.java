@@ -2,13 +2,14 @@ package qss.nodoubt;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
@@ -22,6 +23,7 @@ import org.json.simple.parser.JSONParser;
 
 import com.google.gson.Gson;
 
+import qss.nodoubt.database.Database;
 import qss.nodoubt.database.UserService;
 import qss.nodoubt.room.Room;
 import qss.nodoubt.room.RoomManager;
@@ -76,6 +78,13 @@ public class Server extends JFrame{
 		
 		addJScrollPane(contentPane,mainTextArea,200,0,WIDTH-200,HEIGHT);
 		addJScrollPane(contentPane,enterTextArea,0,0,200,HEIGHT);
+		
+		this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e) { 
+            	Database.getInstance().executeAndUpdate("UPDATE users SET is_online = ?", false);
+            	System.exit(0);
+            }
+		});
 	}
 	
 	private void addJScrollPane(Container contentPane,JTextArea jTextArea,int x,int y,int width,int height){
@@ -224,16 +233,15 @@ public class Server extends JFrame{
 				}break;
 				
 				case Protocol.CREATE_ROOM_REQUEST:{
-					String masterID=(String)data.get("MasterID");
 					sendData=new JSONObject();
 					Room newRoom=new Room((String)data.get("RoomName"));
 					roomManager.addRoom(newRoom);
 					
 					//사실상 Password 안씀
 					newRoom.setPassword((String)data.get("Password"));
-					User user=roomManager.getUser((u)->{
-						return u.getID()==masterID;
-					});
+					User user=client.getCurrentUser();
+					
+					double roomID=user.getCurrentRoomId();
 					
 					newRoom.enterUser(user);
 					newRoom.setMaster(user);
@@ -246,7 +254,21 @@ public class Server extends JFrame{
 					sendData=new JSONObject();
 					sendData.put("Protocol", Protocol.ADD_ROOM);
 					sendData.put("Room",gson.toJson(newRoom));
-					sendExceptSelf(sendData, client);
+					
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+					});
+					
+					if(roomManager.getRoom(roomID)==null){
+						sendData=new JSONObject();
+						sendData.put("Protocol", Protocol.REMOVE_ROOM);
+						sendData.put("RoomID",roomID);
+						send(sendData,c->{
+							User u=c.getCurrentUser();
+							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+						});
+					}
 				}break;
 				
 				case Protocol.JOIN_ROOM_REQUEST:{

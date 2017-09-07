@@ -8,7 +8,7 @@ public class User {
 	
 	private String ID;
 	private String password;
-    
+	
 	private double currentRoomId;
 	
 	transient private Room currentRoom=null;
@@ -17,7 +17,7 @@ public class User {
 		this.ID=id;
 		this.password=password;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof User){
