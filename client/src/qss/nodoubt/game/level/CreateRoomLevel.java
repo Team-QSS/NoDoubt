@@ -1,14 +1,22 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+
 import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
-import qss.nodoubt.game.Game;
-import qss.nodoubt.game.object.*;
-import qss.nodoubt.input.Input;
-import util.Util;
 import protocol.Protocol;
+import qss.nodoubt.game.Game;
+import qss.nodoubt.game.object.Background;
+import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.TextBox;
+import qss.nodoubt.input.Input;
+import qss.nodoubt.network.Network;
+import util.KeyValue;
+import util.Util;
 
 public class CreateRoomLevel extends GameLevel{
 	
@@ -40,7 +48,12 @@ public class CreateRoomLevel extends GameLevel{
 					if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 						if(m_CreateRoom.onButton(mouseX, mouseY)){
 							if(!(m_GameName.m_Text.length() < 1)){
-								//JSONObject 채우기
+								JSONObject msg=Util.packetGenerator(Protocol.CREATE_ROOM_REQUEST,
+										new KeyValue("RoomName",m_GameName.m_Text.toString()),
+										new KeyValue("Password","")
+										);
+								Network.getInstance().pushMessage(msg);
+								Game.getInstance().setNextLevel(new LoadingLevel());
 							}
 							else{
 								m_GameName.m_Text.delete(0, m_GameName.m_Text.length());

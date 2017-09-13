@@ -47,6 +47,7 @@ public class Room {
 		list.remove(ID);
 		if(list.size()==0){
 			isEmpty=true;
+			RoomManager.getInstance().removeRoom(this.id);
 		}
 	}
 

@@ -14,6 +14,7 @@ import protocol.Protocol;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.RoomList;
 import qss.nodoubt.game.object.RoomObject;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
@@ -35,7 +36,6 @@ public class LoadingLevel extends GameLevel{
 	private Button m_Create = null;
 	private Button m_Back = null;
 	
-	private LinkedList<RoomObject> RoomList = new LinkedList<RoomObject>();
 	
 	//getCursor로 마우스의 좌표를 구함
 	
@@ -44,6 +44,8 @@ public class LoadingLevel extends GameLevel{
 	private float time;
 	
 	private RoomManager rm;
+	
+	private RoomList roomList=new RoomList();
 	
 	public LoadingLevel(){
 		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
@@ -109,7 +111,6 @@ public class LoadingLevel extends GameLevel{
 		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
 		Network.getInstance().pushMessage(getRoomManager);
 		
-		RoomList.add(new RoomObject(0,0,"asd","aasd",2));
 	}
 
 	@Override
@@ -125,9 +126,16 @@ public class LoadingLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
-		for(RoomObject R : RoomList){
-			R.update(deltaTime);
-		}
+		roomList.update(deltaTime);
+		
+		
+	}
+	
+	private void addRoomObject(int index){
+		addObject(roomList.getIndex(index));
+		addObject(roomList.getIndex(index).m_GameName);
+		addObject(roomList.getIndex(index).m_Owner);
+		addObject(roomList.getIndex(index).m_Players);
 	}
 	
 	private void protocolProcess(JSONObject data){
@@ -141,8 +149,40 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				RoomList.add(new RoomObject(0,i++,room.getName(),room.getMaster().getName(),room.list.size()));
-				System.out.println(RoomList.get(i-1));
+				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.getIndex(i).setIndex(i);
+				addRoomObject(i);
+				i++;
+			}
+			System.out.println(Protocol.GET_ROOMMANAGER);
+		}break;
+		
+		case Protocol.ADD_ROOM:{
+			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			rm.addRoom(room);
+			
+			int i=roomList.getListSize();
+			roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+			roomList.getIndex(i).setIndex(i);
+			addRoomObject(i);
+		}break;
+		
+		case Protocol.REMOVE_ROOM:{
+			double roomID=(double)data.get("RoomID");
+			rm.removeRoom(roomID);
+			
+			//초기화
+			roomList.clearList();
+			
+			int i=0;
+			for(double id:rm.list.keySet()){
+				if(id==RoomManager.LOBBY)
+					continue;
+				Room room=rm.list.get(id);
+				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.getIndex(i).setIndex(i);
+				addRoomObject(i);
+				i++;
 			}
 		}break;
 		

@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 public class RoomManager {
 	
-	public static RoomManager r;
+	private static RoomManager r;
 	
 	public static RoomManager getInstance(){
 		if(r==null)
@@ -30,6 +30,11 @@ public class RoomManager {
 		list.put(room.id, room);
 	}
 	
+	public void removeRoom(double id){
+		if(id!=LOBBY)
+			list.remove(id);
+	}
+	
 	public Room getRoom(double id){
 		return list.get(id);
 	}
@@ -44,7 +49,37 @@ public class RoomManager {
 		return rooms;
 	}
 	
-	public void removeRoom(double id){
-		list.remove(id);
+	public Room getRoom(Predicate<Room> p){
+		for(double id:list.keySet()){
+			Room room=list.get(id);
+			if(p.test(room))
+				return room;
+		}
+		return null;
+	}
+	
+	public ArrayList<User> getUsers(Predicate<User> p){
+		ArrayList<User> users=new ArrayList<>();
+		for(double id:list.keySet()){
+			Room room=list.get(id);
+			for(String userID:room.list.keySet()){
+				User user=room.list.get(userID);
+				if(p.test(user))
+					users.add(user);
+			}
+		}
+		return users;
+	}
+	
+	public User getUser(Predicate<User> p){
+		for(double id:list.keySet()){
+			Room room=list.get(id);
+			for(String userID:room.list.keySet()){
+				User user=room.list.get(userID);
+				if(p.test(user))
+					return user;
+			}
+		}
+		return null;
 	}
 }
