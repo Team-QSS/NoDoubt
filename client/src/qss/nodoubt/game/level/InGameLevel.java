@@ -50,6 +50,9 @@ public class InGameLevel extends GameLevel{
 	
 	private double m_RoomID;
 	
+	private IButton m_StepButton = null;
+	private IButton m_PushButton = null;
+	
 	/**
 	 * 
 	 * @param IDs 닉네임들 (자기 자신은 GameState를 통해서 얻을테니 닉네임만 적으면 됨)
@@ -102,15 +105,16 @@ public class InGameLevel extends GameLevel{
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
 			String protocol = (String) msg.get("Protocol");
-			
 			if(protocol.equals("DeclareReport")) {
 				recieveDeclare((Integer) msg.get("Value"));
 			}else if(protocol.equals("DoubtCheck")) {
 				recieveDoubtCheck();
 			}
 		}
+		
 		updateObjects(deltaTime);
 		updateTime(deltaTime);
+		
 		drawTextCall("fontB11", "Turn of", new Vector2f(465, 401), UI_COLOR);
 		drawTextCall("fontB11", "Result is", new Vector2f(465, -302), UI_COLOR);
 		m_Board.update(deltaTime);
@@ -120,8 +124,11 @@ public class InGameLevel extends GameLevel{
 		}
 		
 		if(m_Board.getState().isConflict) {
-			System.out.println("Conflict pos : " + m_Board.getState().conflictPos);
-			System.out.println("Conflict bike : " + m_Board.getState().conflictBike);
+			m_State = State.STEPPUSH;
+			if(m_StepButton != null) {
+				addObject(m_StepButton = new IButton("Step", () -> step()));
+				addObject(m_PushButton = new IButton("Push", () -> push()));
+			}
 		}
 		
 		drawTextCall("fontB11", m_TurnLabel.getID(), new Vector2f(465, 347), m_TurnLabel.getColor());
@@ -207,5 +214,23 @@ public class InGameLevel extends GameLevel{
 			msg.put("Result", true);
 		}
 		Network.getInstance().pushMessage(msg);
+	}
+	
+	private void step() {
+		removeObject(m_PushButton);
+		removeObject(m_StepButton);
+		m_PushButton = null;
+		m_StepButton = null;
+		
+		JSONObject msg = new JSONObject();
+	}
+	
+	private void push() {
+		removeObject(m_PushButton);
+		removeObject(m_StepButton);
+		m_PushButton = null;
+		m_StepButton = null;
+		
+		JSONObject msg = new JSONObject();
 	}
 }
