@@ -109,7 +109,7 @@ public class CreateRoomLevel extends GameLevel{
 		case Protocol.CREATE_ROOM_RESULT:{
 			Room createdRoom=Network.gson.fromJson((String)data.get("Room"), Room.class);
 			//만들고자 하는 방의 이름과 아이디를 인자로 넘김
-			Game.getInstance().setNextLevel(new WaitingRoomLevel(createdRoom.getName(),createdRoom.id));
+			Game.getInstance().setNextLevel(new WaitingRoomLevel(createdRoom.getName(), createdRoom.id));
 		}break;
 		
 		default:System.out.println("unknownProtocol");

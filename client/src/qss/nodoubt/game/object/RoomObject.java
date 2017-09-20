@@ -2,6 +2,9 @@ package qss.nodoubt.game.object;
 
 import org.joml.Vector3f;
 
+import qss.nodoubt.input.KeyListener;
+import qss.nodoubt.input.MouseListener;
+
 public class RoomObject extends GameObject {
 	
 	public TextBox m_GameName;
@@ -37,6 +40,7 @@ public class RoomObject extends GameObject {
 		m_GameName.m_Text.append(gamename);
 		m_Owner.m_Text.append(owner);
 		m_Players.m_Text.append(String.valueOf(players) + "  /  6" );
+		
 	}
 	
 	public void setIndex(int index){
@@ -53,11 +57,30 @@ public class RoomObject extends GameObject {
 		return this.index;
 	}
 
+	public double getID() {
+		return this.m_ID;
+	}
 	@Override
 	public void update(float deltaTime) {
 		m_GameName.update(deltaTime);
 		m_Owner.update(deltaTime);
 		m_Players.update(deltaTime);
 	}
-
+	
+	public boolean onObject(float mouseX, float mouseY) {
+		if((mouseX >= getPosition().x-828)&&(mouseX <= getPosition().x+828)){
+			if((mouseY >= getPosition().y-369)&&(mouseY <= getPosition().y+369)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	public void setListener(KeyListener key, MouseListener mouse){
+		setEventListener(key, mouse);
+	}
 }
