@@ -6,6 +6,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
+import java.util.LinkedList;
+
 import org.json.simple.JSONObject;
 
 import protocol.Protocol;
@@ -109,8 +111,6 @@ public class LoadingLevel extends GameLevel{
 		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
 		Network.getInstance().pushMessage(getRoomManager);
 		
-		roomList.addRoomObject(new RoomObject(0,"asd","aasd",2));
-		addRoomObject(0);
 	}
 
 	@Override
@@ -148,9 +148,10 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
-				roomList.getIndex(1).setIndex(1);
-				addRoomObject(1);
+				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.getIndex(i).setIndex(i);
+				addRoomObject(i);
+				i++;
 			}
 			System.out.println(Protocol.GET_ROOMMANAGER);
 		}break;
@@ -159,7 +160,29 @@ public class LoadingLevel extends GameLevel{
 			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 			rm.addRoom(room);
 			
-			roomList.addRoomObject(new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+			int i=roomList.getListSize();
+			roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+			roomList.getIndex(i).setIndex(i);
+			addRoomObject(i);
+		}break;
+		
+		case Protocol.REMOVE_ROOM:{
+			double roomID=(double)data.get("RoomID");
+			rm.removeRoom(roomID);
+			
+			//초기화
+			roomList.clearList();
+			
+			int i=0;
+			for(double id:rm.list.keySet()){
+				if(id==RoomManager.LOBBY)
+					continue;
+				Room room=rm.list.get(id);
+				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.getIndex(i).setIndex(i);
+				addRoomObject(i);
+				i++;
+			}
 		}break;
 		
 		default:System.out.println("unknownProtocol");

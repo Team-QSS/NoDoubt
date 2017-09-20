@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class RoomList extends GameObject{
 	
-	private LinkedList<RoomObject> roomList = new LinkedList<RoomObject>();
+	public LinkedList<RoomObject> roomList = new LinkedList<RoomObject>();
 	
 	public RoomList() {
 		super("Blank", 0);
@@ -38,6 +38,14 @@ public class RoomList extends GameObject{
 	
 	public RoomObject getIndex(int index){
 		return roomList.get(index);
+	}
+	
+	public int getListSize(){
+		return roomList.size();
+	}
+	
+	public void clearList(){
+		roomList.clear();
 	}
 
 }

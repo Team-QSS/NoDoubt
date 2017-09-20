@@ -26,15 +26,15 @@ public class RoomManager {
 		Room lobby=new Room("Lobby");
 		lobby.id=LOBBY;
 		addRoom(lobby);
-		
-		Room room1=new Room("wow");
-		room1.id=1.234;
-		room1.setMaster(new User("Splash","123"));
-		addRoom(room1);
 	}
 	
 	public void addRoom(Room room){
 		list.put(room.id, room);
+	}
+	
+	public void removeRoom(double id){
+		if(id!=LOBBY)
+			list.remove(id);
 	}
 	
 	public Room getRoom(double id){
@@ -85,9 +85,5 @@ public class RoomManager {
 		}
 		Util.printDebugLog("해당 유저를 찾을수 없습니다.");
 		return null;
-	}
-	
-	public void removeRoom(double id){
-		list.remove(id);
 	}
 }

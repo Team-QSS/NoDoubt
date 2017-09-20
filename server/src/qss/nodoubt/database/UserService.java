@@ -8,13 +8,15 @@ import com.google.gson.Gson;
 import qss.nodoubt.room.User;
 
 public class UserService {
-    private static UserService instance = new UserService();
+    private static UserService instance;
     
     private Database database = Database.getInstance();
     private Gson gson = new Gson();
     
     private UserService(){}
     public static UserService getInstance() {
+    	if(instance==null)
+    		instance=new UserService();
     	return instance;
     }
     
@@ -37,13 +39,13 @@ public class UserService {
     
     public JSONArray read(String id) {
     	// 중복 사용자 확인을 위해 id만을 이용해서 사용자 조회 
-    	String sql = "SELECT id as ID, password FROM users WHERE id = ?";
+    	String sql = "SELECT id as ID, password FROM users WHERE id = ? && is_online=false";
     	return database.executeAndGet(sql, id);
     }
     
     public JSONArray read(String id, String password) {
     	// 로그인을 위해 id, password를 이용해서 사용자 조회
-    	String sql = "SELECT id as ID, password FROM users WHERE id=? && password=?";
+    	String sql = "SELECT id as ID, password FROM users WHERE id=? && password=? && is_online=false";
     	return database.executeAndGet(sql, id, password);
     }
     
@@ -74,4 +76,5 @@ public class UserService {
     public int setIsOnline(User user, boolean isOnline) {
     	return database.executeAndUpdate("UPDATE users SET is_online = ? WHERE id = ?", isOnline, user.getID());
     }
+    
 }
