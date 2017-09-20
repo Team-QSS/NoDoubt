@@ -144,7 +144,6 @@ public class LoadingLevel extends GameLevel{
 		case Protocol.GET_ROOMMANAGER:{
 			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
 			
-			int i=0;
 			for(double id:rm.list.keySet()){
 				if(id==RoomManager.LOBBY)
 					continue;
