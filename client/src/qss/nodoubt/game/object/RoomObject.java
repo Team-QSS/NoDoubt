@@ -51,7 +51,6 @@ public class RoomObject extends GameObject {
 
 	@Override
 	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
 		m_GameName.update(deltaTime);
 		m_Owner.update(deltaTime);
 		m_Players.update(deltaTime);
