@@ -149,7 +149,7 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
 				roomList.getIndex(i).setIndex(i);
 				
 				//RoomObject를 렌더링 대상으로 추가함
@@ -164,7 +164,7 @@ public class LoadingLevel extends GameLevel{
 			rm.addRoom(room);
 			
 			int i = roomList.getListSize();
-			roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+			roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
 			roomList.getIndex(i).setIndex(i);
 			addRoomObject(i);
 		}break;
@@ -181,7 +181,7 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
 				roomList.getIndex(i).setIndex(i);
 				addRoomObject(i);
 				i++;

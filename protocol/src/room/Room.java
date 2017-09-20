@@ -74,4 +74,8 @@ public class Room {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public double getID() {
+		return id;
+	}
 }

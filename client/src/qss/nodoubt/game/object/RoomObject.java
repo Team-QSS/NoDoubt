@@ -8,6 +8,8 @@ public class RoomObject extends GameObject {
 	public TextBox m_Owner;
 	public TextBox m_Players;
 	
+	private final double m_ID;
+	
 	private static final float GAMENAMETEXT = -812;
 	private static final float OWNERTEXT = -123;
 	private static final float PLAYERSTEXT = 614;
@@ -23,12 +25,14 @@ public class RoomObject extends GameObject {
 	
 	private int index=0;
 	
-	public RoomObject(float depth, String gamename, String owner, int players) {
+	public RoomObject(float depth, String gamename, String owner, int players, double id) {
 		super("Blank", depth);
 		
 		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, 714, GAMENAMETEXT, TEXTY - 110 * index, false, null, COLOR);
 		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, 714, OWNERTEXT,    TEXTY - 110 * index, false, null, COLOR);
 		m_Players  = new TextBox(0, PLAYERSX,  Y - 110 * index, 321, PLAYERSTEXT,  TEXTY - 110 * index, false, null, COLOR);
+	
+		m_ID = id;
 		
 		m_GameName.m_Text.append(gamename);
 		m_Owner.m_Text.append(owner);
