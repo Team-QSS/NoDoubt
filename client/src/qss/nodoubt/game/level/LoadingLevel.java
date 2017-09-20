@@ -57,7 +57,7 @@ public class LoadingLevel extends GameLevel{
 					Game.getInstance().setNextLevel(new LobbyLevel());
 				}
 				if(key == GLFW_KEY_ENTER){
-					Game.getInstance().setNextLevel(new WaitingRoomLevel("Test"));
+//					Game.getInstance().setNextLevel(new WaitingRoomLevel("Test"));
 				}
 			}
 		}, 
@@ -191,5 +191,5 @@ public class LoadingLevel extends GameLevel{
 		default:System.out.println("unknownProtocol");
 		}
 	}
-
+	
 }

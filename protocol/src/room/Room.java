@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Room {
 	public boolean isEmpty=false;
 	
-	public double id=Math.random();
+	public double id = Math.random();
 	
 	private User master;
 	

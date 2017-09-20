@@ -12,9 +12,12 @@ import protocol.Protocol;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.RoomObject;
 import qss.nodoubt.game.object.TextBox;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
+import room.Room;
+import room.RoomManager;
 import util.KeyValue;
 import util.Util;
 
@@ -43,9 +46,6 @@ public class CreateRoomLevel extends GameLevel{
 									new KeyValue("Password","")
 									);
 							Network.getInstance().pushMessage(msg);
-							
-							//만들고자 하는 방의 이름을 인자로 넘김
-							Game.getInstance().setNextLevel(new WaitingRoomLevel(m_GameName.m_Text.toString()));
 						}
 					}
 				},
@@ -58,9 +58,6 @@ public class CreateRoomLevel extends GameLevel{
 										new KeyValue("Password","")
 										);
 								Network.getInstance().pushMessage(msg);
-								
-								//만들고자 하는 방의 이름을 인자로 넘김
-								Game.getInstance().setNextLevel(new WaitingRoomLevel(m_GameName.m_Text.toString()));
 							}
 						}
 					}
@@ -97,9 +94,26 @@ public class CreateRoomLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
-		//JSONObject 메시지 받고 처리하기
+		JSONObject msg = Network.getInstance().pollMessage();
+		if(msg != null) {
+			protocolProcess(msg);
+		}
 		
 		m_GameName.update(deltaTime);
+	}
+	
+	private void protocolProcess(JSONObject data){
+		System.out.println(data);
+		switch((String)data.get("Protocol")){
+		
+		case Protocol.CREATE_ROOM_RESULT:{
+			Room createdRoom=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			//만들고자 하는 방의 이름과 아이디를 인자로 넘김
+			Game.getInstance().setNextLevel(new WaitingRoomLevel(createdRoom.getName(),createdRoom.id));
+		}break;
+		
+		default:System.out.println("unknownProtocol");
+		}
 	}
 
 }
