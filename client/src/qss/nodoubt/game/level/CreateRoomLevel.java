@@ -30,7 +30,7 @@ public class CreateRoomLevel extends GameLevel{
 	public CreateRoomLevel(){
 		m_CreateRoomBG = new Background("CreateBG");
 		m_GameName = new TextBox(0, 0, 2, 679, -313, 26, false, "Room Name", new Vector3f(0, 0, 0));
-		m_CreateRoom = new Button("RoomCreateButton", null, 0, -144);
+		m_CreateRoom = new Button("RoomCreateButton", null, 0, -144, 680, 101);
 		m_Back = new Button ("BackButton1", "BackButton2", 677, 414);
 		
 		m_CreateRoom.setListener(
@@ -38,9 +38,14 @@ public class CreateRoomLevel extends GameLevel{
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
 						if(!(m_GameName.m_Text.length() < 1)){
 							//JSONObject 채우기
-						}
-						else{
-							m_GameName.m_Text.delete(0, m_GameName.m_Text.length());
+							JSONObject msg=Util.packetGenerator(Protocol.CREATE_ROOM_REQUEST,
+									new KeyValue("RoomName",m_GameName.m_Text.toString()),
+									new KeyValue("Password","")
+									);
+							Network.getInstance().pushMessage(msg);
+							
+							//만들고자 하는 방의 이름을 인자로 넘김
+							Game.getInstance().setNextLevel(new WaitingRoomLevel(m_GameName.m_Text.toString()));
 						}
 					}
 				},
@@ -53,10 +58,9 @@ public class CreateRoomLevel extends GameLevel{
 										new KeyValue("Password","")
 										);
 								Network.getInstance().pushMessage(msg);
-								Game.getInstance().setNextLevel(new LoadingLevel());
-							}
-							else{
-								m_GameName.m_Text.delete(0, m_GameName.m_Text.length());
+								
+								//만들고자 하는 방의 이름을 인자로 넘김
+								Game.getInstance().setNextLevel(new WaitingRoomLevel(m_GameName.m_Text.toString()));
 							}
 						}
 					}
