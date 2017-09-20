@@ -57,7 +57,7 @@ public class LoadingLevel extends GameLevel{
 					Game.getInstance().setNextLevel(new LobbyLevel());
 				}
 				if(key == GLFW_KEY_ENTER){
-					Game.getInstance().setNextLevel(new WaitingRoomLevel());
+					Game.getInstance().setNextLevel(new WaitingRoomLevel("Test"));
 				}
 			}
 		}, 
@@ -143,13 +143,16 @@ public class LoadingLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		case Protocol.GET_ROOMMANAGER:{
 			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
-			int i=0;
+			int i = 0;
+
 			for(double id:rm.list.keySet()){
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
 				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
 				roomList.getIndex(i).setIndex(i);
+				
+				//RoomObject를 렌더링 대상으로 추가함
 				addRoomObject(i);
 				i++;
 			}
@@ -160,7 +163,7 @@ public class LoadingLevel extends GameLevel{
 			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 			rm.addRoom(room);
 			
-			int i=roomList.getListSize();
+			int i = roomList.getListSize();
 			roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
 			roomList.getIndex(i).setIndex(i);
 			addRoomObject(i);
