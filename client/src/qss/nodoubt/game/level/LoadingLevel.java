@@ -1,11 +1,6 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-
+import static org.lwjgl.glfw.GLFW.*;
 import java.util.LinkedList;
 
 import org.json.simple.JSONObject;
@@ -45,7 +40,7 @@ public class LoadingLevel extends GameLevel{
 	
 	private RoomManager rm;
 	
-	private RoomList roomList=new RoomList();
+	private RoomList roomList = new RoomList();
 	
 	public LoadingLevel(){
 		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
@@ -57,7 +52,7 @@ public class LoadingLevel extends GameLevel{
 					Game.getInstance().setNextLevel(new LobbyLevel());
 				}
 				if(key == GLFW_KEY_ENTER){
-					Game.getInstance().setNextLevel(new WaitingRoomLevel());
+//					Game.getInstance().setNextLevel(new WaitingRoomLevel("Test"));
 				}
 			}
 		}, 
@@ -126,12 +121,27 @@ public class LoadingLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
-		roomList.update(deltaTime);
 		
+		roomList.update(deltaTime);
 		
 	}
 	
 	private void addRoomObject(int index){
+		
+		/*
+		 * 여기서 roomobject의 마우스 입력을 받기를 시도했으나 실패함.
+		 */
+		roomList.getIndex(index).setListener(null,
+				(action, button) ->{
+					System.out.println("hello");
+					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
+						System.out.println("hello");
+						if(roomList.getIndex(index).onObject(mouseX, mouseY)) {
+							Game.getInstance().setNextLevel(new WaitingRoomLevel(roomList.getIndex(index).m_GameName.toString(), roomList.getIndex(index).getID()));
+							System.out.println("hello");
+						}
+					}
+				});
 		addObject(roomList.getIndex(index));
 		addObject(roomList.getIndex(index).m_GameName);
 		addObject(roomList.getIndex(index).m_Owner);
@@ -143,14 +153,18 @@ public class LoadingLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		case Protocol.GET_ROOMMANAGER:{
 			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
-			
-			int i=0;
+			int i = 0;
+
 			for(double id:rm.list.keySet()){
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
 				roomList.getIndex(i).setIndex(i);
+				
+				
+				
+				//RoomObject를 렌더링 대상으로 추가함
 				addRoomObject(i);
 				i++;
 			}
@@ -161,8 +175,8 @@ public class LoadingLevel extends GameLevel{
 			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 			rm.addRoom(room);
 			
-			int i=roomList.getListSize();
-			roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+			int i = roomList.getListSize();
+			roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
 			roomList.getIndex(i).setIndex(i);
 			addRoomObject(i);
 		}break;
@@ -179,7 +193,7 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(i,new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size()));
+				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
 				roomList.getIndex(i).setIndex(i);
 				addRoomObject(i);
 				i++;
@@ -189,5 +203,5 @@ public class LoadingLevel extends GameLevel{
 		default:System.out.println("unknownProtocol");
 		}
 	}
-
+	
 }

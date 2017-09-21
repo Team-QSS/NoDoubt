@@ -2,11 +2,16 @@ package qss.nodoubt.game.object;
 
 import org.joml.Vector3f;
 
+import qss.nodoubt.input.KeyListener;
+import qss.nodoubt.input.MouseListener;
+
 public class RoomObject extends GameObject {
 	
 	public TextBox m_GameName;
 	public TextBox m_Owner;
 	public TextBox m_Players;
+	
+	private final double m_ID;
 	
 	private static final float GAMENAMETEXT = -812;
 	private static final float OWNERTEXT = -123;
@@ -23,16 +28,19 @@ public class RoomObject extends GameObject {
 	
 	private int index=0;
 	
-	public RoomObject(float depth, String gamename, String owner, int players) {
+	public RoomObject(float depth, String gamename, String owner, int players, double id) {
 		super("Blank", depth);
 		
 		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, 714, GAMENAMETEXT, TEXTY - 110 * index, false, null, COLOR);
 		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, 714, OWNERTEXT,    TEXTY - 110 * index, false, null, COLOR);
 		m_Players  = new TextBox(0, PLAYERSX,  Y - 110 * index, 321, PLAYERSTEXT,  TEXTY - 110 * index, false, null, COLOR);
+	
+		m_ID = id;
 		
 		m_GameName.m_Text.append(gamename);
 		m_Owner.m_Text.append(owner);
 		m_Players.m_Text.append(String.valueOf(players) + "  /  6" );
+		
 	}
 	
 	public void setIndex(int index){
@@ -49,12 +57,30 @@ public class RoomObject extends GameObject {
 		return this.index;
 	}
 
+	public double getID() {
+		return this.m_ID;
+	}
 	@Override
 	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
 		m_GameName.update(deltaTime);
 		m_Owner.update(deltaTime);
 		m_Players.update(deltaTime);
 	}
-
+	
+	public boolean onObject(float mouseX, float mouseY) {
+		if((mouseX >= getPosition().x-828)&&(mouseX <= getPosition().x+828)){
+			if((mouseY >= getPosition().y-369)&&(mouseY <= getPosition().y+369)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	public void setListener(KeyListener key, MouseListener mouse){
+		setEventListener(key, mouse);
+	}
 }

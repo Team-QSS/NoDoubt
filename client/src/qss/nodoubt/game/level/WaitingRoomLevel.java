@@ -10,6 +10,7 @@ import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import room.Room;
+import room.RoomManager;
 import room.User;
 
 public class WaitingRoomLevel extends GameLevel{
@@ -31,7 +32,17 @@ public class WaitingRoomLevel extends GameLevel{
 	
 	private Network m_Network;
 	
-	public WaitingRoomLevel(){
+	private RoomManager rm;
+
+	
+	/**
+	 * CreateRoomLevel에서 방을 만들거나 LoadingLevel에서 방을 클릭하면 호출하게 되는 생성자이다.
+	 * @param gamename
+	 * 현재 입장한 방의 이름을 나타내는 임시 변수
+	 * @param roomid
+	 * 현재 입장한 방의 아이디를 나타내는 임시 변수
+	 */
+	public WaitingRoomLevel(String gamename, double roomid){
 		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
 		m_StartButton.setListener(null,
 				(action, button) -> {
@@ -52,6 +63,8 @@ public class WaitingRoomLevel extends GameLevel{
 						
 					}
 				});
+		
+		
 		
 		m_BackButton = new Button("BackButton1", "BackButton2", 667, 414);
 		m_BackButton.setListener(null,

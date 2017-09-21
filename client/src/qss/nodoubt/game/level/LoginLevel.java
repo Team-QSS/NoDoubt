@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
+import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
