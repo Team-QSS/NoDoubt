@@ -40,7 +40,7 @@ public class RoomManager {
 	public Room getRoom(double id){
 		return list.get(id);
 	}
-	
+		
 	public ArrayList<Room> getRooms(Predicate<Room> p){
 		ArrayList<Room> rooms=new ArrayList<>();
 		for(double id:list.keySet()){
@@ -60,6 +60,17 @@ public class RoomManager {
 		Util.printDebugLog("해당 방을 찾을수 없습니다.");
 		return null;
 	}
+	
+	// 이름을 이용하여 방을 찾는 메서드
+    public Room getRoom(String name) {
+    	for(double id:list.keySet()){
+			Room room=list.get(id);
+			if(room.getName().equals(name))
+				return room;
+		}
+    	
+    	return null;
+    }
 	
 	public ArrayList<User> getUsers(Predicate<User> p){
 		ArrayList<User> users=new ArrayList<>();
