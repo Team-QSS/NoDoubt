@@ -80,6 +80,12 @@ public class InGameLevel extends GameLevel{
 		
 		setEventListener((action, key) -> {
 			if(action == GLFW_PRESS) {
+				if(key == GLFW_KEY_R) m_Board.moveBike(0, 1);
+				if(key == GLFW_KEY_B) m_Board.moveBike(1, 1);
+				if(key == GLFW_KEY_G) m_Board.moveBike(2, 1);
+				if(key == GLFW_KEY_Y) m_Board.moveBike(3, 1);
+				if(key == GLFW_KEY_W) m_Board.moveBike(4, 1);
+				if(key == GLFW_KEY_P) m_Board.moveBike(5, 1);
 				if(key == GLFW_KEY_TAB) {
 					m_IsTabPushed = true;
 					addObject(m_TabPanel = new TabPanel());
