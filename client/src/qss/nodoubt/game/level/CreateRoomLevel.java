@@ -107,7 +107,6 @@ public class CreateRoomLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		
 		case Protocol.CREATE_ROOM_RESULT:{
-<<<<<<< HEAD
 			if ((boolean)data.get("Value")) {
 				// 서버에 방을 성공적으로 등록 시 실행 
 				Room createdRoom=Network.gson.fromJson((String)data.get("Room"), Room.class);
@@ -115,12 +114,8 @@ public class CreateRoomLevel extends GameLevel{
 				Game.getInstance().setNextLevel(new WaitingRoomLevel(createdRoom.getName(),createdRoom.id));
 			} else {
 				// 서버에 방을 성공적으로 등록하지 못할 시 실행
+				System.out.println("방생성 오류");
 			}
-=======
-			Room createdRoom=Network.gson.fromJson((String)data.get("Room"), Room.class);
-			//만들고자 하는 방의 이름과 아이디를 인자로 넘김
-			Game.getInstance().setNextLevel(new WaitingRoomLevel(createdRoom.getName(), createdRoom.id));
->>>>>>> cf69888bece34c157f5918e904322edcc2e354d3
 		}break;
 		
 		default:System.out.println("unknownProtocol");

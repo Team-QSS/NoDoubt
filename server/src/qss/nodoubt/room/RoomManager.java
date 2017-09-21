@@ -61,17 +61,6 @@ public class RoomManager {
 		return null;
 	}
 	
-	// 이름을 이용하여 방을 찾는 메서드
-    public Room getRoom(String name) {
-    	for(double id:list.keySet()){
-			Room room=list.get(id);
-			if(room.getName().equals(name))
-				return room;
-		}
-    	
-    	return null;
-    }
-	
 	public ArrayList<User> getUsers(Predicate<User> p){
 		ArrayList<User> users=new ArrayList<>();
 		for(double id:list.keySet()){

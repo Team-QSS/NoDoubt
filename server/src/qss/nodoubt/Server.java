@@ -236,7 +236,7 @@ public class Server extends JFrame{
 					sendData=new JSONObject();
 					String roomName = (String) data.get("RoomName");
 					
-					if (roomManager.getRoom(roomName) == null) {
+					if (roomManager.getRoom((r)->{return r.getName().equals(roomName);}) == null) {
 						// 중복된 이름의 방이 없을 시 방 생성 성공
 						Room newRoom=new Room((String)data.get("RoomName"));
 						roomManager.addRoom(newRoom);
