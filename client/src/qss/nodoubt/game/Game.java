@@ -33,7 +33,7 @@ public class Game {
 		m_Window = GameWindow.getInstance();
 		m_Graphic = Graphic.getInstance();
 		m_Sound = Sound.getInstance();
-		m_Network = Network.getInstance();
+		//m_Network = Network.getInstance();
 		m_FrameTimer = new GameTimer();
 		m_FrameCounter = 0;
 		

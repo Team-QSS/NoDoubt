@@ -234,40 +234,53 @@ public class Server extends JFrame{
 				
 				case Protocol.CREATE_ROOM_REQUEST:{
 					sendData=new JSONObject();
-					Room newRoom=new Room((String)data.get("RoomName"));
-					roomManager.addRoom(newRoom);
+					String roomName = (String) data.get("RoomName");
 					
-					//사실상 Password 안씀
-					newRoom.setPassword((String)data.get("Password"));
-					User user=client.getCurrentUser();
-					
-					double roomID=user.getCurrentRoomId();
-					
-					newRoom.enterUser(user);
-					newRoom.setMaster(user);
-					
-					sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
-					sendData.put("Room",gson.toJson(newRoom));
-					
-					client.send(sendData);
-					//다른애들한태 방이 생성됨을 알림
-					sendData=new JSONObject();
-					sendData.put("Protocol", Protocol.ADD_ROOM);
-					sendData.put("Room",gson.toJson(newRoom));
-					
-					send(sendData,c->{
-						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
-					});
-					
-					if(roomManager.getRoom(roomID)==null){
+					if (roomManager.getRoom((r)->{return r.getName().equals(roomName);}) == null) {
+						// 중복된 이름의 방이 없을 시 방 생성 성공
+						Room newRoom=new Room((String)data.get("RoomName"));
+						roomManager.addRoom(newRoom);
+						
+						//사실상 Password 안씀
+						newRoom.setPassword((String)data.get("Password"));
+						User user=client.getCurrentUser();
+						
+						double roomID=user.getCurrentRoomId();
+						
+						newRoom.enterUser(user);
+						newRoom.setMaster(user);
+						
+						sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
+						sendData.put("Value", true);
+						sendData.put("Room",gson.toJson(newRoom));
+						
+						client.send(sendData);
+						
+						//다른애들한태 방이 생성됨을 알림
 						sendData=new JSONObject();
-						sendData.put("Protocol", Protocol.REMOVE_ROOM);
-						sendData.put("RoomID",roomID);
+						sendData.put("Protocol", Protocol.ADD_ROOM);
+						sendData.put("Room",gson.toJson(newRoom));
+						
 						send(sendData,c->{
 							User u=c.getCurrentUser();
 							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 						});
+						
+						if(roomManager.getRoom(roomID)==null){
+							sendData=new JSONObject();
+							sendData.put("Protocol", Protocol.REMOVE_ROOM);
+							sendData.put("RoomID",roomID);
+							send(sendData,c->{
+								User u=c.getCurrentUser();
+								return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+							});
+						}
+					} else {
+						// 중복된 이름의 방이 았을 시 방 생성 실패
+						sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
+						sendData.put("Value", false);
+						
+						client.send(sendData);
 					}
 				}break;
 				
