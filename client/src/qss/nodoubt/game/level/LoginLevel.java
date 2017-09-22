@@ -45,13 +45,7 @@ public class LoginLevel extends GameLevel{
 		
 		m_Signin.setListener(
 				(action, key) -> {
-					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER) {
-						Game.getInstance().setNextLevel(new InGameLevel(null));
-					}
 					
-					if(action == GLFW_PRESS && key == GLFW_KEY_R) {
-						Game.getInstance().setNextLevel(new LobbyLevel());
-					}
 				},
 				(action, button) ->{
 						if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
