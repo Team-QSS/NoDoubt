@@ -20,7 +20,7 @@ public abstract class GameLevel {
 	private boolean m_IsActive = false;
 	
 	private Queue<Text> m_TextDrawingQueue = new LinkedList<Text>();
-	
+	private Set<GameObject> m_AddedObject = new HashSet<GameObject>();
 	
 	private class Text
 	{
@@ -50,6 +50,12 @@ public abstract class GameLevel {
 		for(GameObject obj : m_ObjectList) {
 			obj.update(deltaTime);
 		}
+		
+		for(GameObject obj : m_AddedObject)
+		{
+			obj.act();
+		}
+		m_AddedObject.clear();
 	}
 	
 	protected final void drawObjects() {
@@ -70,6 +76,11 @@ public abstract class GameLevel {
 			m_ObjectList.set(i + 1, m_ObjectList.get(i));
 		}
 		m_ObjectList.set(i + 1, obj);
+		
+		if(m_IsActive)
+		{
+			m_AddedObject.add(obj);
+		}
 	}
 	
 	/**

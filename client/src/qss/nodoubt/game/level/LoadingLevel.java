@@ -113,6 +113,8 @@ public class LoadingLevel extends GameLevel{
 		// TODO Auto-generated method stub
 		time += deltaTime;
 		
+		updateObjects(deltaTime);
+		
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
 			protocolProcess(msg);
@@ -127,15 +129,14 @@ public class LoadingLevel extends GameLevel{
 	}
 	
 	private void addRoomObject(int index){
-		
 		/*
 		 * 여기서 roomobject의 마우스 입력을 받기를 시도했으나 실패함.
 		 */
+		System.out.println("hello");
 		roomList.getIndex(index).setListener(null,
-				(action, button) ->{
+				(action, button) -> {
 					System.out.println("hello");
 					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
-						System.out.println("hello");
 						if(roomList.getIndex(index).onObject(mouseX, mouseY)) {
 							Game.getInstance().setNextLevel(new WaitingRoomLevel(roomList.getIndex(index).m_GameName.toString(), roomList.getIndex(index).getID()));
 							System.out.println("hello");
