@@ -44,7 +44,10 @@ public class LoginLevel extends GameLevel{
 		m_PW = new TextBox(0.0f, 0.0f, -172.5f, 680.0f, -313.0f, -148.0f, true, "PW", new Vector3f(0,0,0));
 		
 		m_Signin.setListener(
-				(action, key) -> {
+				/*
+				 * 동준이 테스트용 남겨놓음
+				 * 
+				 * (action, key) -> {
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER) {
 						Game.getInstance().setNextLevel(new InGameLevel(null));
 					}
@@ -65,7 +68,33 @@ public class LoginLevel extends GameLevel{
 							Network.getInstance().pushMessage(loginData);
 						}
 					}
+				}
+				*/
+				(action, key) -> {
+					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
+						//메시지 전송
+						JSONObject loginData=
+								Util.packetGenerator(Protocol.LOGIN_REQUEST,
+								new KeyValue("ID", m_ID.m_Text.toString()),
+								new KeyValue("Password", m_PW.m_Text.toString())
+								);
+						Network.getInstance().pushMessage(loginData);
+					}
+				},
+				(action, button) ->{
+						if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
+							if(m_Signin.onButton(mouseX, mouseY)){
+							//메시지 전송
+							JSONObject loginData=
+									Util.packetGenerator(Protocol.LOGIN_REQUEST,
+									new KeyValue("ID", m_ID.m_Text.toString()),
+									new KeyValue("Password", m_PW.m_Text.toString())
+									);
+							Network.getInstance().pushMessage(loginData);
+						}
+					}
 				});
+				
 		m_Signup.setListener(
 				null,
 				(action, button) ->{
