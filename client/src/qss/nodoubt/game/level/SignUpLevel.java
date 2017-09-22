@@ -38,8 +38,8 @@ public class SignUpLevel extends GameLevel{
 	
 	public SignUpLevel() {
 		m_ID = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, 15.0f, false, "ID", new Vector3f(0, 0, 0));
-		m_PW = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -116.0f, true, "PW", new Vector3f(0, 0, 0));
-		m_PWRepeat = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -240.0f, true, "Retype", new Vector3f(0, 0, 0));
+		m_PW = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -116.0f, false, "PW", new Vector3f(0, 0, 0));
+		m_PWRepeat = new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -240.0f, false, "Retype", new Vector3f(0, 0, 0));
 		
 		m_SignUpBG = new Background("SignupBG");
 		m_Signup = new Button("SignupButton", null, 0, -395);
@@ -47,8 +47,38 @@ public class SignUpLevel extends GameLevel{
 		m_Signup.setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS && key == GLFW_KEY_ENTER){
-						if(!((m_PW.m_Text.length() < 4) && (m_ID.m_Text.length() < 4))){
-							if(m_PW.m_Text.toString().equals(m_PWRepeat.toString())){
+//						if( ((m_PW.m_Text.length() >= 4) && (m_ID.m_Text.length() >= 4)) ){
+//							if(m_PW.m_Text.toString().equals(m_PWRepeat.toString())){
+//								//메시지 전송
+//								JSONObject signUpData=
+//										Util.packetGenerator(Protocol.REGISTER_REQUEST,
+//										new KeyValue("ID", m_ID.m_Text.toString()),
+//										new KeyValue("Password", m_PW.m_Text.toString())
+//										);
+//								Network.getInstance().pushMessage(signUpData);
+//							}else{
+//								m_ID.m_Text.delete(0, m_ID.m_Text.length());
+//								m_PW.m_Text.delete(0, m_PW.m_Text.length());
+//								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+//								System.out.println("비번확인" + m_PW.m_Text.toString() + m_PWRepeat.m_Text.toString());
+//								m_ActiveBuffer = 0;
+//								m_ID.setActive();
+//								m_PW.setInActive();
+//								m_PWRepeat.setInActive();
+//							}
+//						}
+//						else{
+//							m_ID.m_Text.delete(0, m_ID.m_Text.length());
+//							m_PW.m_Text.delete(0, m_PW.m_Text.length());
+//							m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+//							System.out.println("아이디 or 비번 4자리 이하" + m_PW.m_Text.toString() + m_PWRepeat.m_Text.toString());
+//							m_ActiveBuffer = 0;
+//							m_ID.setActive();
+//							m_PW.setInActive();
+//							m_PWRepeat.setInActive();
+//						}
+						if( ((m_PW.m_Text.length() >= 4) && (m_ID.m_Text.length() >= 4)) ){
+							if(m_PW.m_Text.toString().equals(m_PWRepeat.m_Text.toString())){
 								//메시지 전송
 								JSONObject signUpData=
 										Util.packetGenerator(Protocol.REGISTER_REQUEST,
@@ -60,6 +90,7 @@ public class SignUpLevel extends GameLevel{
 								m_ID.m_Text.delete(0, m_ID.m_Text.length());
 								m_PW.m_Text.delete(0, m_PW.m_Text.length());
 								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+								System.out.println("비번확인" + m_PW.m_Text.toString() + m_PWRepeat.m_Text.toString());
 								m_ActiveBuffer = 0;
 								m_ID.setActive();
 								m_PW.setInActive();
@@ -70,6 +101,7 @@ public class SignUpLevel extends GameLevel{
 							m_ID.m_Text.delete(0, m_ID.m_Text.length());
 							m_PW.m_Text.delete(0, m_PW.m_Text.length());
 							m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+							System.out.println("아이디 or 비번 4자리 이하" + m_PW.m_Text.toString() + m_PWRepeat.m_Text.toString());
 							m_ActiveBuffer = 0;
 							m_ID.setActive();
 							m_PW.setInActive();
@@ -80,7 +112,7 @@ public class SignUpLevel extends GameLevel{
 				(action, button) ->{
 					if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 						if(m_Signup.onButton(mouseX, mouseY)){
-							if(!((m_PW.m_Text.length() < 4) && (m_ID.m_Text.length() < 4))){
+							if( ((m_PW.m_Text.length() >= 4) && (m_ID.m_Text.length() >= 4)) ){
 								if(m_PW.m_Text.toString().equals(m_PWRepeat.m_Text.toString())){
 									//메시지 전송
 									JSONObject signUpData=
@@ -90,9 +122,10 @@ public class SignUpLevel extends GameLevel{
 											);
 									Network.getInstance().pushMessage(signUpData);
 								}else{
-									m_ID.m_Text.delete(0, m_ID.m_Text.length());
-									m_PW.m_Text.delete(0, m_PW.m_Text.length());
-									m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+//									m_ID.m_Text.delete(0, m_ID.m_Text.length());
+//									m_PW.m_Text.delete(0, m_PW.m_Text.length());
+//									m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+									System.out.println("비번확인" + m_PW.m_Text.toString() + m_PWRepeat.m_Text.toString());
 									m_ActiveBuffer = 0;
 									m_ID.setActive();
 									m_PW.setInActive();
@@ -100,9 +133,10 @@ public class SignUpLevel extends GameLevel{
 								}
 							}
 							else{
-								m_ID.m_Text.delete(0, m_ID.m_Text.length());
-								m_PW.m_Text.delete(0, m_PW.m_Text.length());
-								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+//								m_ID.m_Text.delete(0, m_ID.m_Text.length());
+//								m_PW.m_Text.delete(0, m_PW.m_Text.length());
+//								m_PWRepeat.m_Text.delete(0, m_PWRepeat.m_Text.length());
+								System.out.println("아이디 or 비번 4자리 이하" + m_PW.m_Text.toString() + m_PWRepeat.m_Text.toString());
 								m_ActiveBuffer = 0;
 								m_ID.setActive();
 								m_PW.setInActive();
@@ -115,19 +149,14 @@ public class SignUpLevel extends GameLevel{
 		
 		setEventListener(
 				(action, key) ->{
-					if(m_ActiveBuffer == 0){
-						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_TAB){
+					if(action == GLFW_PRESS){
+						if(key == GLFW_KEY_TAB){
+							if(m_ActiveBuffer == 0){
 								m_ActiveBuffer = 1;
 								m_ID.setInActive();
 								m_PW.setActive();
 							}
-						}
-					}
-					
-					else if(m_ActiveBuffer == 1){
-						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_TAB){
+							else if(m_ActiveBuffer == 1){
 								m_ActiveBuffer = 2;
 								m_PW.setInActive();
 								m_PWRepeat.setActive();
@@ -161,6 +190,8 @@ public class SignUpLevel extends GameLevel{
 				});
 		
 		m_ID.setActive();
+		m_PW.setInActive();
+		m_PWRepeat.setInActive();
 		
 		addObject(m_SignUpBG);
 		addObject(m_Signup);

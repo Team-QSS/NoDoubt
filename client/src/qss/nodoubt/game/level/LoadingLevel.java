@@ -163,8 +163,6 @@ public class LoadingLevel extends GameLevel{
 				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
 				roomList.getIndex(i).setIndex(i);
 				
-				
-				
 				//RoomObject를 렌더링 대상으로 추가함
 				addRoomObject(i);
 				i++;
