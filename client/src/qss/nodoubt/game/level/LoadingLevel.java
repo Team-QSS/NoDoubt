@@ -31,7 +31,6 @@ public class LoadingLevel extends GameLevel{
 	private Button m_Create = null;
 	private Button m_Back = null;
 	
-	
 	//getCursor로 마우스의 좌표를 구함
 	
 	private float mouseX;

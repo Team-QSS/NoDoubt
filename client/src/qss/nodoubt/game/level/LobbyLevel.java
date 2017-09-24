@@ -125,12 +125,11 @@ public class LobbyLevel extends GameLevel{
 			(action, button) ->{
 				if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT){
 					for(int index = 0; index < m_Buttons.length; index++){
-						if(index == m_ActiveIndex) {
-							continue;
-						}
 						if(m_Buttons[index].onButton(mouseX, mouseY)){
-							m_Buttons[index].toggle();
-							m_Buttons[m_ActiveIndex].toggle();
+							if(m_ActiveIndex != index) {
+								m_Buttons[index].toggle();
+								m_Buttons[m_ActiveIndex].toggle();
+							}
 							m_Buttons[index].setPressedin(true);
 						}else{
 							m_Buttons[index].setPressedin(false);

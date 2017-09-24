@@ -24,16 +24,16 @@ public class RoomObject extends GameObject {
 	
 	private static final float Y = 410;
 	
-	private static final Vector3f COLOR = new Vector3f(0x9a/255f, 0x6f/255f, 0x52/255f);
+	private static final Vector3f COLOR = new Vector3f(0x80/255f, 0x43/255f, 0x1b/255f);
 	
 	private int index=0;
 	
 	public RoomObject(float depth, String gamename, String owner, int players, double id) {
 		super("Blank", depth);
 		
-		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, 714, GAMENAMETEXT, TEXTY - 110 * index, false, null, COLOR);
-		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, 714, OWNERTEXT,    TEXTY - 110 * index, false, null, COLOR);
-		m_Players  = new TextBox(0, PLAYERSX,  Y - 110 * index, 321, PLAYERSTEXT,  TEXTY - 110 * index, false, null, COLOR);
+		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, 714, GAMENAMETEXT, TEXTY - 110 * index, false, true, null, COLOR);
+		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, 714, OWNERTEXT,    TEXTY - 110 * index, false, true, null, COLOR);
+		m_Players  = new TextBox(0, PLAYERSX,  Y - 110 * index, 321, PLAYERSTEXT,  TEXTY - 110 * index, false, true, null, COLOR);
 	
 		m_ID = id;
 		
