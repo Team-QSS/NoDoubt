@@ -55,11 +55,9 @@ public class InGameLevel extends GameLevel{
 	
 	/**
 	 * 
-	 * @param IDs 닉네임들 (자기 자신은 GameState를 통해서 얻을테니 닉네임만 적으면 됨)
-	 * @param playerCount 플레이어 총 수
-	 * @param colors (각 닉네임들의 색상, IDs[i]의 색상이 colors[i]의 색상이 됨, color는 0부터 차례대로 RBGYWP순)
+	 * @param roomID 방 식별번호
 	 */
-	public InGameLevel(Room r) {
+	public InGameLevel(double roomID) {
 		addObject(new Background("InGameBackground"));
 		for(int i = 1; i <= 6; i++) {
 			final int t = i;
