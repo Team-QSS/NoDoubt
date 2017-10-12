@@ -31,7 +31,6 @@ public class LoadingLevel extends GameLevel{
 	private Button m_Create = null;
 	private Button m_Back = null;
 	
-	
 	//getCursor로 마우스의 좌표를 구함
 	
 	private float mouseX;
@@ -123,23 +122,16 @@ public class LoadingLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
-		
 		roomList.update(deltaTime);
 		
 	}
 	
 	private void addRoomObject(int index){
-		/*
-		 * 여기서 roomobject의 마우스 입력을 받기를 시도했으나 실패함.
-		 */
-		System.out.println("hello");
 		roomList.getIndex(index).setListener(null,
 				(action, button) -> {
-					System.out.println("hello");
 					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
 						if(roomList.getIndex(index).onObject(mouseX, mouseY)) {
 							Game.getInstance().setNextLevel(new WaitingRoomLevel(roomList.getIndex(index).m_GameName.toString(), roomList.getIndex(index).getID()));
-							System.out.println("hello");
 						}
 					}
 				});

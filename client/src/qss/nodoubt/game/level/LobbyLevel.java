@@ -117,17 +117,19 @@ public class LobbyLevel extends GameLevel{
 							m_Buttons[--m_ActiveIndex].toggle();
 						}
 					}
-					if(key == GLFW_KEY_Q) {
-						Game.getInstance().setNextLevel(new InGameLevel(null));
-					}
+//					if(key == GLFW_KEY_Q) {
+//						Game.getInstance().setNextLevel(new InGameLevel(null));
+//					}
 				}
 			},
 			(action, button) ->{
 				if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT){
 					for(int index = 0; index < m_Buttons.length; index++){
 						if(m_Buttons[index].onButton(mouseX, mouseY)){
-							m_Buttons[index].toggle();
-							m_Buttons[m_ActiveIndex].toggle();
+							if(m_ActiveIndex != index) {
+								m_Buttons[index].toggle();
+								m_Buttons[m_ActiveIndex].toggle();
+							}
 							m_Buttons[index].setPressedin(true);
 						}else{
 							m_Buttons[index].setPressedin(false);
@@ -136,19 +138,22 @@ public class LobbyLevel extends GameLevel{
 				}
 				else if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT){
 					for(int index = 0; index < m_Buttons.length; index++){
-						if(m_Buttons[index].onButton(mouseX, mouseY)){
-							m_ActiveIndex = index;
-							switch(index){
-							case 0: Game.getInstance().setNextLevel(new LoadingLevel()); break;
-							case 1: break;
-							case 2: break;
-							case 3: Game.getInstance().setNextLevel(new CreditLevel()); break;
-							case 4: Game.getInstance().goodBye();
+						if(m_Buttons[index].getPressedin()){
+							if(m_Buttons[index].onButton(mouseX, mouseY)) {
+								m_ActiveIndex = index;
+								switch(index){
+									case 0: Game.getInstance().setNextLevel(new LoadingLevel()); break;
+									case 1: break;
+									case 2: break;
+									case 3: Game.getInstance().setNextLevel(new CreditLevel()); break;
+									case 4: Game.getInstance().goodBye();
+								}
 							}
-						}
-						else if(m_Buttons[index].getPressedin()){
-							m_Buttons[index].toggle();
-							m_Buttons[m_ActiveIndex].toggle();
+							else {
+								m_Buttons[index].toggle();
+								m_Buttons[m_ActiveIndex].toggle();
+								m_Buttons[index].setPressedin(false);
+							}
 						}
 					}
 				}
