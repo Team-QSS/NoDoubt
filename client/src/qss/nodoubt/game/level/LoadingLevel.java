@@ -15,13 +15,14 @@ import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import room.Room;
 import room.RoomManager;
+import util.Util;
+import util.KeyValue;
 /*
  * 이 클래스는 대기실을 들어가기 전,
  * 들어갈 수 있는 다른 대기실을 골라 들어가거나
  * 대기실을 생성할 수 있는 레벨로 갈 수 있는 역할을 하는
  * 레벨이다.
  * */
-import util.Util;
 
 public class LoadingLevel extends GameLevel{
 	
@@ -104,7 +105,6 @@ public class LoadingLevel extends GameLevel{
 	private void initAction(){
 		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
 		Network.getInstance().pushMessage(getRoomManager);
-		
 	}
 
 	@Override
@@ -122,6 +122,7 @@ public class LoadingLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
+		
 		roomList.update(deltaTime);
 		
 	}
@@ -131,7 +132,9 @@ public class LoadingLevel extends GameLevel{
 				(action, button) -> {
 					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
 						if(roomList.getIndex(index).onObject(mouseX, mouseY)) {
-							Game.getInstance().setNextLevel(new WaitingRoomLevel(roomList.getIndex(index).m_GameName.toString(), roomList.getIndex(index).getID()));
+//							RoomObject를 좌클릭했을 시 Protocol.JOIN_ROOM_REQUEST 프로토콜의 메시지를 보낸다.
+//							JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomList.getIndex(index).getID()));
+//							Network.getInstance().pushMessage(msg);
 						}
 					}
 				});
@@ -152,7 +155,7 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
+				roomList.addRoomObject(i, new RoomObject(0, room.getName(), room.getMaster().getID(), room.list.size(), room.getID()));
 				roomList.getIndex(i).setIndex(i);
 				
 				//RoomObject를 렌더링 대상으로 추가함
@@ -184,12 +187,19 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.getID()));
+				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(), room.list.size(), room.getID()));
 				roomList.getIndex(i).setIndex(i);
 				addRoomObject(i);
 				i++;
 			}
 		}break;
+		
+		case Protocol.JOIN_ROOM_REQUEST:{
+//			double roomID = (double)data.get("RoomID");
+//			Game.getInstance().setNextLevel(new WaitingRoomLevel(roomID));
+		}break;
+		
+		// Update Protocol 추가 요청
 		
 		default:System.out.println("unknownProtocol");
 		}

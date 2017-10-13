@@ -56,7 +56,11 @@ public class RoomObject extends GameObject {
 	public int getIndex(){
 		return this.index;
 	}
-
+	
+	public void setPlayers(int players) {
+		m_Players.m_Text.deleteCharAt(0);
+		m_Players.m_Text.insert(0, players);
+	}
 	public double getID() {
 		return this.m_ID;
 	}

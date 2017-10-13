@@ -25,7 +25,6 @@ import room.RoomManager;
 public class LoginLevel extends GameLevel{
 	private TextBox m_ID = null;
 	private TextBox m_PW = null;
-
 	private int m_ActiveBuffer = 0;
 	
 	//버튼

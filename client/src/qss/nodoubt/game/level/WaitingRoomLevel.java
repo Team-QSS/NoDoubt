@@ -15,9 +15,9 @@ import room.User;
 
 public class WaitingRoomLevel extends GameLevel{
 
-	private String m_GameName;
-	private String m_Owner;
-	private int m_Players;
+//	private String m_GameName;
+//	private String m_Owner;
+//	private int m_Players;
 	
 	private float mouseX;
 	private float mouseY;
@@ -34,6 +34,7 @@ public class WaitingRoomLevel extends GameLevel{
 	
 	private RoomManager rm;
 
+	private double m_Roomid;
 	
 	/**
 	 * CreateRoomLevel에서 방을 만들거나 LoadingLevel에서 방을 클릭하면 호출하게 되는 생성자이다.
@@ -42,7 +43,7 @@ public class WaitingRoomLevel extends GameLevel{
 	 * @param roomid
 	 * 현재 입장한 방의 아이디를 나타내는 임시 변수
 	 */
-	public WaitingRoomLevel(String gamename, double roomid){
+	public WaitingRoomLevel(double roomid){
 		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
 		m_StartButton.setListener(null,
 				(action, button) -> {
@@ -89,6 +90,7 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		m_WaitingRoomBG = new Background("WaitingBG");
 		
+		m_Roomid = roomid;
 		
 		addObject(m_StartButton);
 		addObject(m_BackButton);
@@ -101,6 +103,18 @@ public class WaitingRoomLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
+		
+		/*
+		 * 서버에서 정보를 받아 갱신해야 함 
+		 * m_Users (User들을 담는 연결리스트)		 
+		 */
 	}
 
+	/**
+	 * InGameLevel로 넘어가는 함수
+	 * 게임 스타트
+	 */
+	public void HelloNodoubt() {
+//		Game.getInstance().setNextLevel(new InGameLevel(ROOM));
+	}
 }
