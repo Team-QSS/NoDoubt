@@ -348,6 +348,18 @@ public class Server extends JFrame{
 					});
 				}break;
 				
+				case Protocol.GET_ROOM_DATA:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(
+							Protocol.GET_ROOM_DATA,
+							new KeyValue("Room",gson.toJson(roomManager.getRoom((double)data.get("RoomId"))))
+					);
+
+					//자신에게 리턴
+					client.send(sendData);
+				}break;
+				
 				//방안에서 사용하는 메서드
 				
 				case "Chat":{// 클라이언트는 자신의 user정보와 채팅정보를 보냄 그러면 서버에서는 user가 속한방의 유저에게 채팅정보를 전달함
