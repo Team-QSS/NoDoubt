@@ -39,4 +39,6 @@ public interface Protocol {
 	
 	String BAN_ROOM_REQUEST="BanRoomRequest";
 	String BAN_ROOM_REPORT="BanRoomReport";
+	
+	String GET_ROOM_DATA="GetRoomData";
 }
