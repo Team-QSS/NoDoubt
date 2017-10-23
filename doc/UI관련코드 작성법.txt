@@ -1,0 +1,26 @@
+RoomList 란?
+LoadingLevel에서 방 목록을 띄울 때 사용하는 것으로 객체는 한 개만 있으면 됨
+RoomObject 를 담는 컨테이너가 있다.
+
+
+RoomObject란?
+RoomList에 채워지는 내용으로, 방의 정보를 담고 있다.
+각각 방 제목, 방장, 인원수를 담는 TextBox를 갖고 있다.
+RoomObject를 클릭하면 해당하는 WaitingRoom으로 입장한다.
+void setPlayers(int) 메서드를 사용하여 TextBox 중 인원수를 담당하는 m_Players의 내용을 조작할 수 있다.
+
+
+TextBox란?
+글자를 표시하기 위한 객체로, 하나의 TextBox는 하나의 StringBuffer를 갖는다.
+생성자에서 TextBox의 좌표(x, y)와 너비(width), 글자가 시작하는 위치(startX, startY),
+별표 처리 여부(isStar)와 볼드체 여부(isBold), 
+StringBuffer가 비었을 때 표시하는 내용인 label, 글씨 색은 color로 설정할 수 있다.
+
+RoomObject를 사용하면 딱히 조작할 것 없다. 이미 만들어진 객체를 참고해서 만들면 됨
+
+
+
+<요구사항>
+WaitingRoomLevel에서 멤버가 추가되고 삭제되는 것이 적용되어야 한다
+LoadingLevel에서 각 방의 인원 현황이 업데이트되어 실제로 화면상에서 적용되어야 한다.
+LoadingLevel에서 각 방의 추가와 삭제가 갱신되어야 한다

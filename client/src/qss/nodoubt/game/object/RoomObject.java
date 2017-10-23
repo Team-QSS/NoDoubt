@@ -57,6 +57,11 @@ public class RoomObject extends GameObject {
 		return this.index;
 	}
 	
+	/**
+	 * player를 입력하면 m_Players의 StringBuffer를 변경할 수 있다.
+	 * 예 : setPlayers(3) -> 결과 : "3 / 6"
+	 * @param players
+	 */
 	public void setPlayers(int players) {
 		m_Players.m_Text.deleteCharAt(0);
 		m_Players.m_Text.insert(0, players);
