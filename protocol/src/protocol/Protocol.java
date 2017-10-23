@@ -30,6 +30,8 @@ public interface Protocol {
 	
 	String QUIT_ROOM_REQUEST="QuitRoomRequest";
 	String QUIT_ROOM_REPORT="QuitRoomReport";
+
+	String UPDATE_ROOM_CURRENT_USER_NUM="UpdateRoomCurrentUserNum";
 	
 	String READY_ROOM_REQUEST="ReadyRoomRequest";
 	String READY_ROOM_REPORT="ReadyRoomReport";

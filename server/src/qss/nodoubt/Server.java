@@ -236,8 +236,9 @@ public class Server extends JFrame{
 					sendData=new JSONObject();
 					String roomName = (String) data.get("RoomName");
 					
+					// 중복된 이름의 방이 없을 시 방 생성 성공
 					if (roomManager.getRoom((r)->{return r.getName().equals(roomName);}) == null) {
-						// 중복된 이름의 방이 없을 시 방 생성 성공
+						
 						Room newRoom=new Room((String)data.get("RoomName"));
 						roomManager.addRoom(newRoom);
 						
@@ -261,20 +262,12 @@ public class Server extends JFrame{
 						sendData.put("Protocol", Protocol.ADD_ROOM);
 						sendData.put("Room",gson.toJson(newRoom));
 						
+						//lobby에 있는 모든유저에게 전송
 						send(sendData,c->{
 							User u=c.getCurrentUser();
 							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 						});
 						
-						if(roomManager.getRoom(roomID)==null){
-							sendData=new JSONObject();
-							sendData.put("Protocol", Protocol.REMOVE_ROOM);
-							sendData.put("RoomID",roomID);
-							send(sendData,c->{
-								User u=c.getCurrentUser();
-								return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
-							});
-						}
 					} else {
 						// 중복된 이름의 방이 았을 시 방 생성 실패
 						sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
@@ -299,12 +292,46 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
+					
+					//lobby에 있는 유저에게 방인원변경을 통지한다.
+					int currentUserNum=roomManager.getRoom(roomID).list.size();
+					sendData=Util.packetGenerator(
+							Protocol.UPDATE_ROOM_CURRENT_USER_NUM,
+							new KeyValue("RoomID",roomID),
+							new KeyValue("UserNum",currentUserNum)
+							);
+					
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+					});
 				}break;
 				
 				case Protocol.QUIT_ROOM_REQUEST:{
 					User user=client.getCurrentUser();
 					double roomID=(double)data.get("RoomID");
-					roomManager.getRoom(roomID).removeUser(user.getID());
+					
+					Room room=roomManager.getRoom(roomID);
+					room.removeUser(user.getID());
+					
+					//만약 방의 인원이 0이면
+					if(room.isEmpty){
+						//방을 제거
+						roomManager.removeRoom(roomID);
+						
+						sendData=Util.packetGenerator(
+								Protocol.REMOVE_ROOM,
+								new KeyValue("RoomID",roomID)
+								);
+						
+						//로비의 모든 유저에게 전달
+						send(sendData,c->{
+							User u=c.getCurrentUser();
+							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+						});
+						
+						return;
+					}
 					
 					sendData=Util.packetGenerator(
 							Protocol.QUIT_ROOM_REPORT,
@@ -316,6 +343,20 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
+					
+					//lobby에 있는 유저에게 방인원변경을 통지한다.
+					int currentUserNum=roomManager.getRoom(roomID).list.size();
+					sendData=Util.packetGenerator(
+							Protocol.UPDATE_ROOM_CURRENT_USER_NUM,
+							new KeyValue("RoomID",roomID),
+							new KeyValue("UserNum",currentUserNum)
+							);
+					
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+					});
+					
 				}break;
 				
 				case Protocol.READY_ROOM_REQUEST:{

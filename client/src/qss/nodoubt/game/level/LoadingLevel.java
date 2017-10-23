@@ -162,7 +162,6 @@ public class LoadingLevel extends GameLevel{
 				addRoomObject(i);
 				i++;
 			}
-			System.out.println(Protocol.GET_ROOMMANAGER);
 		}break;
 		
 		case Protocol.ADD_ROOM:{
@@ -194,14 +193,27 @@ public class LoadingLevel extends GameLevel{
 			}
 		}break;
 		
-		case Protocol.JOIN_ROOM_REQUEST:{
-//			double roomID = (double)data.get("RoomID");
-//			Game.getInstance().setNextLevel(new WaitingRoomLevel(roomID));
+		case Protocol.UPDATE_ROOM_CURRENT_USER_NUM:{
+			double roomID = (double)data.get("RoomID");
+			int currentUserNum=(int)data.get("UserNum");
+			//수정중임 아직 룸리스트의 인원수가 업데이트 되지 않음
+			for(roomList.roomList){
+				if(id==RoomManager.LOBBY)
+					continue;
+				Room room=rm.list.get(id);
+				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(), room.list.size(), room.getID()));
+				roomList.getIndex(i).setIndex(i);
+				addRoomObject(i);
+				i++;
+			}
+			
 		}break;
 		
-		// Update Protocol 추가 요청
+		default:{
+			System.out.println("unknownProtocol");
+			System.out.println(data);
+		}break;
 		
-		default:System.out.println("unknownProtocol");
 		}
 	}
 	
