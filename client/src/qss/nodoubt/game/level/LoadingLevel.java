@@ -135,6 +135,8 @@ public class LoadingLevel extends GameLevel{
 //							RoomObject를 좌클릭했을 시 Protocol.JOIN_ROOM_REQUEST 프로토콜의 메시지를 보낸다.
 //							JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomList.getIndex(index).getID()));
 //							Network.getInstance().pushMessage(msg);
+							System.out.println(roomList.getIndex(index).getID());
+							Game.getInstance().setNextLevel(new WaitingRoomLevel(roomList.getIndex(index).getID()));
 						}
 					}
 				});
@@ -195,8 +197,7 @@ public class LoadingLevel extends GameLevel{
 		}break;
 		
 		case Protocol.JOIN_ROOM_REQUEST:{
-//			double roomID = (double)data.get("RoomID");
-//			Game.getInstance().setNextLevel(new WaitingRoomLevel(roomID));
+			
 		}break;
 		
 		// Update Protocol 추가 요청
