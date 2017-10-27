@@ -1,17 +1,25 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
+import org.json.simple.JSONObject;
+
+import protocol.Protocol;
 import qss.nodoubt.game.Game;
-import qss.nodoubt.game.object.*;
+import qss.nodoubt.game.object.Background;
+import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.RoomObject;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import room.Room;
 import room.RoomManager;
 import room.User;
+import util.KeyValue;
+import util.Util;
 
 public class WaitingRoomLevel extends GameLevel{
 
@@ -32,7 +40,7 @@ public class WaitingRoomLevel extends GameLevel{
 	
 	private Network m_Network;
 	
-	private RoomManager rm;
+	private Room room;
 
 	private double m_Roomid;
 	
@@ -44,6 +52,7 @@ public class WaitingRoomLevel extends GameLevel{
 	 * 현재 입장한 방의 아이디를 나타내는 임시 변수
 	 */
 	public WaitingRoomLevel(double roomid){
+		
 		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
 		m_StartButton.setListener(null,
 				(action, button) -> {
@@ -76,6 +85,8 @@ public class WaitingRoomLevel extends GameLevel{
 								m_BackButton.focus();
 							}
 							if(action == GLFW_RELEASE){
+								JSONObject msg=Util.packetGenerator(Protocol.QUIT_ROOM_REQUEST, new KeyValue("RoomID",m_Roomid));
+								Network.getInstance().pushMessage(msg);
 								Game.getInstance().setNextLevel(new LoadingLevel());
 							}
 						}
@@ -95,6 +106,14 @@ public class WaitingRoomLevel extends GameLevel{
 		addObject(m_StartButton);
 		addObject(m_BackButton);
 		addObject(m_WaitingRoomBG);
+		
+		 networkInit();
+	}
+	
+	private void networkInit(){
+		//초기화
+		JSONObject msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_Roomid));
+		Network.getInstance().pushMessage(msg);
 	}
 	
 	@Override
@@ -104,10 +123,42 @@ public class WaitingRoomLevel extends GameLevel{
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
 		
+		JSONObject msg = Network.getInstance().pollMessage();
+		if(msg != null) {
+			protocolProcess(msg);
+		}
+		
 		/*
 		 * 서버에서 정보를 받아 갱신해야 함 
 		 * m_Users (User들을 담는 연결리스트)		 
 		 */
+	}
+	
+	private void protocolProcess(JSONObject data){
+		System.out.println(data);
+		switch((String)data.get("Protocol")){
+		
+		case Protocol.GET_ROOM_DATA:{
+			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+		}break;
+		
+//		원래 이 프로토콜은 같은 방에 있는 사람이 나갈때 누가 나갔는지를 알려주는 프로토콜이다.
+		case Protocol.JOIN_ROOM_RESULT:{
+			User joinUser=Network.gson.fromJson((String)data.get("User"), User.class);
+			room.enterUser(joinUser);
+		}break;
+		
+		case Protocol.QUIT_ROOM_REPORT:{
+			String quitUserID=(String)data.get("UserID");
+			room.removeUser(quitUserID);
+		}break;
+		
+		default:{
+			System.out.println("unknownProtocol");
+			System.out.println(data);
+		}break;
+		
+		}
 	}
 
 	/**
