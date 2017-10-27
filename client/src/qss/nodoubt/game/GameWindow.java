@@ -13,6 +13,7 @@ public class GameWindow {
 	private GLFWErrorCallback m_ErrorCallback = null;
 	private int m_Width;
 	private int m_Height;
+	private final boolean DEBUG=true;
 	
 	/**
 	 * @exception IllegalStateException glfw초기화에 실패했을 때 호출
@@ -46,8 +47,13 @@ public class GameWindow {
 		
 		long monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode vidMode = glfwGetVideoMode(monitor);
+		
 		m_Width = vidMode.width();
 		m_Height = vidMode.height();
+		if(DEBUG){
+			m_Width = vidMode.width()/3;
+			m_Height = vidMode.height()/3;
+		}
 		
 		if(GameConstants.IS_FULLSCREEN) {
 			m_Window = glfwCreateWindow(m_Width, m_Height, "No Doubt", monitor, NULL);

@@ -81,6 +81,7 @@ public class Server extends JFrame{
 		
 		this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e) { 
+            	Util.printLog(mainTextArea, "종료 처리(유저의 모든 online을 false로 만든다.)");
             	Database.getInstance().executeAndUpdate("UPDATE users SET is_online = ?", false);
             	System.exit(0);
             }
@@ -335,7 +336,7 @@ public class Server extends JFrame{
 					
 					sendData=Util.packetGenerator(
 							Protocol.QUIT_ROOM_REPORT,
-							new KeyValue("User",gson.toJson(user))
+							new KeyValue("UserID",user.getID())
 							);
 
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
@@ -394,7 +395,7 @@ public class Server extends JFrame{
 					
 					sendData=Util.packetGenerator(
 							Protocol.GET_ROOM_DATA,
-							new KeyValue("Room",gson.toJson(roomManager.getRoom((double)data.get("RoomId"))))
+							new KeyValue("Room",gson.toJson(roomManager.getRoom((double)data.get("RoomID"))))
 					);
 
 					//자신에게 리턴

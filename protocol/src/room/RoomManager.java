@@ -1,7 +1,6 @@
 package room;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
@@ -38,7 +37,7 @@ public class RoomManager {
 	public Room getRoom(double id){
 		return list.get(id);
 	}
-	
+		
 	public ArrayList<Room> getRooms(Predicate<Room> p){
 		ArrayList<Room> rooms=new ArrayList<>();
 		for(double id:list.keySet()){
