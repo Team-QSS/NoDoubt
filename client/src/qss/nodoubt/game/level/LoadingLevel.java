@@ -131,7 +131,7 @@ public class LoadingLevel extends GameLevel{
 		roomList.getIndex(index).setListener(null,
 				(action, button) -> {
 					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
-						if(roomList.getIndex(index).onObject(mouseX, mouseY)) {
+						if((roomList.getIndex(index)).onObject(mouseX, mouseY)) {
 							//RoomObject를 좌클릭했을 시 Protocol.JOIN_ROOM_REQUEST 프로토콜의 메시지를 보낸다.
 //							JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomList.getIndex(index).getID()));
 //							Network.getInstance().pushMessage(msg);

@@ -37,10 +37,16 @@ public class RoomObject extends GameObject {
 	
 		m_ID = id;
 		
+		setPosition();
+		
 		m_GameName.m_Text.append(gamename);
 		m_Owner.m_Text.append(owner);
 		m_Players.m_Text.append(String.valueOf(players) + "  /  6" );
 		
+	}
+	
+	public void setPosition() {
+		setPosition(-10, 130 - 110 * index);
 	}
 	
 	public void setIndex(int index){
@@ -78,7 +84,8 @@ public class RoomObject extends GameObject {
 	
 	public boolean onObject(float mouseX, float mouseY) {
 		if((mouseX >= getPosition().x-828)&&(mouseX <= getPosition().x+828)){
-			if((mouseY >= getPosition().y-369)&&(mouseY <= getPosition().y+369)){
+			if((mouseY >= getPosition().y-43)&&(mouseY <= getPosition().y+43)){
+				System.out.println(getPosition().x+", "+getPosition().y);
 				return true;
 			}
 			else{
