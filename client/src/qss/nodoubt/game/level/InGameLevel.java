@@ -8,12 +8,16 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
+import protocol.Protocol;
 import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.ingame.*;
 import qss.nodoubt.network.Network;
 
 import room.Room;
+import room.User;
+import util.KeyValue;
+import util.Util;
 
 public class InGameLevel extends GameLevel{
 	private static final Vector3f UI_COLOR = new Vector3f(0x9a / 255f, 0x6f / 255f, 0x52 / 255f);
@@ -52,6 +56,8 @@ public class InGameLevel extends GameLevel{
 	
 	private IButton m_StepButton = null;
 	private IButton m_PushButton = null;
+	
+	private Room room;
 	
 	/**
 	 * 
@@ -102,6 +108,14 @@ public class InGameLevel extends GameLevel{
 		m_TurnLabel = new TurnLabel(new String[] {
 				"Test1", "Test2", "Test3", "Test4", "Test5", "Test6"
 		}, 6);
+		
+		networkInit();
+	}
+	
+	private void networkInit(){
+		//초기화
+		JSONObject msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_RoomID));
+		Network.getInstance().pushMessage(msg);
 	}
 	
 	@Override
@@ -114,6 +128,7 @@ public class InGameLevel extends GameLevel{
 			}else if(protocol.equals("DoubtCheck")) {
 				recieveDoubtCheck();
 			}
+			protocolProcess(msg);
 		}
 		
 		updateObjects(deltaTime);
@@ -137,6 +152,22 @@ public class InGameLevel extends GameLevel{
 		
 		drawTextCall("fontB11", m_TurnLabel.getID(), new Vector2f(465, 347), m_TurnLabel.getColor());
 		
+	}
+	
+	private void protocolProcess(JSONObject data){
+		System.out.println(data);
+		switch((String)data.get("Protocol")){
+		
+		case Protocol.GET_ROOM_DATA:{
+			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+		}break;
+		
+		default:{
+			System.out.println("unknownProtocol");
+			System.out.println(data);
+		}break;
+		
+		}
 	}
 	
 	private void updateTime(float deltaTime) {

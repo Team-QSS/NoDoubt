@@ -136,6 +136,8 @@ public class LoadingLevel extends GameLevel{
 //							JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomList.getIndex(index).getID()));
 //							Network.getInstance().pushMessage(msg);
 							//오류남(버튼 입력 범위 오류로 보임)
+							System.out.println("리스트"+index+"클릭");
+							System.out.println(mouseX+" "+mouseY);
 						}
 					}
 				});

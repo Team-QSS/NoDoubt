@@ -107,7 +107,7 @@ public class WaitingRoomLevel extends GameLevel{
 		addObject(m_BackButton);
 		addObject(m_WaitingRoomBG);
 		
-		 networkInit();
+		networkInit();
 	}
 	
 	private void networkInit(){
@@ -146,11 +146,13 @@ public class WaitingRoomLevel extends GameLevel{
 		case Protocol.JOIN_ROOM_RESULT:{
 			User joinUser=Network.gson.fromJson((String)data.get("User"), User.class);
 			room.enterUser(joinUser);
+			//ui처리
 		}break;
 		
 		case Protocol.QUIT_ROOM_REPORT:{
 			String quitUserID=(String)data.get("UserID");
 			room.removeUser(quitUserID);
+			//
 		}break;
 		
 		default:{
