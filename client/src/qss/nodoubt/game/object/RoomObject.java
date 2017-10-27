@@ -37,8 +37,6 @@ public class RoomObject extends GameObject {
 	
 		m_ID = id;
 		
-		setPosition();
-		
 		m_GameName.m_Text.append(gamename);
 		m_Owner.m_Text.append(owner);
 		m_Players.m_Text.append(String.valueOf(players) + "  /  6" );
@@ -57,6 +55,7 @@ public class RoomObject extends GameObject {
 		m_Owner.setTextLocation(OWNERTEXT, TEXTY - 110 * this.index);
 		m_Players.setPosition(PLAYERSX, Y - 110 * this.index);
 		m_Players.setTextLocation(PLAYERSTEXT, TEXTY - 110 * this.index);
+		setPosition();
 	}
 	
 	public int getIndex(){
