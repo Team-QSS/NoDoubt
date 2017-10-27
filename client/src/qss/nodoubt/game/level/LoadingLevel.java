@@ -181,19 +181,12 @@ public class LoadingLevel extends GameLevel{
 			double roomID=(double)data.get("RoomID");
 			rm.removeRoom(roomID);
 			
-			//초기화
-			roomList.clearList();
-			
 			int i=0;
-			for(double id:rm.list.keySet()){
-				if(id==RoomManager.LOBBY)
-					continue;
-				Room room=rm.list.get(id);
-				roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(), room.list.size(), room.id));
-				roomList.getIndex(i).setIndex(i);
-				addRoomObject(i);
-				i++;
-				System.out.println(i);
+			for(i=0;i<roomList.roomList.size();i++){
+				if(roomList.roomList.get(i).getID()==roomID){
+					System.out.println("deleteRoom"+i);
+					deleteRoom(i);
+				}
 			}
 		}break;
 		
@@ -216,4 +209,13 @@ public class LoadingLevel extends GameLevel{
 		}
 	}
 	
+	public void deleteRoom(int index){
+		removeObject(roomList.getIndex(index).m_GameName);
+		removeObject(roomList.getIndex(index).m_Owner);
+		removeObject(roomList.getIndex(index).m_Players);
+		removeObject(roomList.getIndex(index));
+		roomList.removeRoomObject(index);
+	}
+
 }
+

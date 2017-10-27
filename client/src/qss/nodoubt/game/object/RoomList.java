@@ -47,5 +47,4 @@ public class RoomList extends GameObject{
 	public void clearList(){
 		roomList=new LinkedList<RoomObject>();
 	}
-
 }
