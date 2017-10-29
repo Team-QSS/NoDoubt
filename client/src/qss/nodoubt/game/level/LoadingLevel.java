@@ -126,18 +126,19 @@ public class LoadingLevel extends GameLevel{
 		roomList.update(deltaTime);
 		
 	}
-	
+
 	private void addRoomObject(int index){
 		roomList.getIndex(index).setListener(null,
 				(action, button) -> {
 					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
 						if((roomList.getIndex(index)).onObject(mouseX, mouseY)) {
+							double roomID=roomList.getIndex(index).getID();
 							//RoomObject를 좌클릭했을 시 Protocol.JOIN_ROOM_REQUEST 프로토콜의 메시지를 보낸다.
-//							JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomList.getIndex(index).getID()));
-//							Network.getInstance().pushMessage(msg);
-							//오류남(버튼 입력 범위 오류로 보임)
+							JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomID));
+							Network.getInstance().pushMessage(msg);
 							System.out.println("리스트"+index+"클릭");
 							System.out.println(mouseX+" "+mouseY);
+							Game.getInstance().setNextLevel(new WaitingRoomLevel(roomID));
 						}
 					}
 				});
@@ -192,13 +193,12 @@ public class LoadingLevel extends GameLevel{
 		
 		case Protocol.UPDATE_ROOM_CURRENT_USER_NUM:{
 			double roomID = (double)data.get("RoomID");
-			int currentUserNum=(int)data.get("UserNum");
+			int currentUserNum=((Long)data.get("UserNum")).intValue();
 			//수정중임 아직 룸리스트의 인원수가 업데이트 되지 않음
 			for(RoomObject room:roomList.roomList){
 				if(room.getID()==roomID)
 					room.setPlayers(currentUserNum);
 			}
-			
 		}break;
 		
 		default:{

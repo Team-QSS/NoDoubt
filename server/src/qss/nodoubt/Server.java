@@ -312,8 +312,12 @@ public class Server extends JFrame{
 					User user=client.getCurrentUser();
 					double roomID=(double)data.get("RoomID");
 					
+					//방고유 아이디에 해당하는 방을찾아 유저를 제거한후
 					Room room=roomManager.getRoom(roomID);
 					room.removeUser(user.getID());
+					
+					//로비로 보낸다.//사실 enterUser메소드 자체가 전에 있던 방에서 나가고 들어가기 때문에 위의 함수는 굳이 필요 없을 수도 있다.
+					roomManager.getRoom(RoomManager.LOBBY).enterUser(user);
 					
 					//만약 방의 인원이 0이면
 					if(room.isEmpty){
