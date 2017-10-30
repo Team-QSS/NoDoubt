@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.json.simple.JSONObject;
@@ -12,6 +13,7 @@ import protocol.Protocol;
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
+import qss.nodoubt.game.object.Player;
 import qss.nodoubt.game.object.RoomObject;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
@@ -30,7 +32,8 @@ public class WaitingRoomLevel extends GameLevel{
 	private float mouseX;
 	private float mouseY;
 	
-	private LinkedList<User> m_Users= new LinkedList<User>();
+	//각 플레이어의 UI를 출력할 때 사용하는 리스트
+	private ArrayList<Player> m_PlayerList;
 	
 	private Button m_StartButton;
 	private Button m_BackButton;
@@ -73,8 +76,6 @@ public class WaitingRoomLevel extends GameLevel{
 						
 					}
 				});
-		
-		
 		
 		m_BackButton = new Button("BackButton1", "BackButton2", 667, 414);
 		m_BackButton.setListener(null,

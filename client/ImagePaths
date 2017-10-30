@@ -85,3 +85,11 @@ IBikeG:../res/image/Button&Obj/Game-MC3.png
 IBikeY:../res/image/Button&Obj/Game-MC4.png
 IBikeW:../res/image/Button&Obj/Game-MC5.png
 IBikeP:../res/image/Button&Obj/Game-MC6.png
+
+//대기실오토바이
+BikeR:../res/image/Button&Obj/Waiting-MC1.png
+BikeB:../res/image/Button&Obj/Waiting-MC2.png
+BikeG:../res/image/Button&Obj/Waiting-MC3.png
+BikeY:../res/image/Button&Obj/Waiting-MC4.png
+BikeW:../res/image/Button&Obj/Waiting-MC5.png
+BikeP:../res/image/Button&Obj/Waiting-MC6.png

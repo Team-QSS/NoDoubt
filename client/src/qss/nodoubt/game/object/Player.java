@@ -13,19 +13,20 @@ public class Player extends GameObject{
 	private Icon m_MotorCycle;
 	
 	final private Vector2f[] m_Locs = {
-			new Vector2f(0,0),
-			new Vector2f(0,0),
-			new Vector2f(0,0),
-			new Vector2f(0,0),
-			new Vector2f(0,0),
-			new Vector2f(0,0)};
+			new Vector2f(-596, 174),
+			new Vector2f(-596, -83),
+			new Vector2f(-596, -340),
+			new Vector2f(586, 174),
+			new Vector2f(586, -83),
+			new Vector2f(586, -340)};	
+	
 	final private String[] m_Textures = {
-		new String(""),
-		new String(""),
-		new String(""),
-		new String(""),
-		new String(""),
-		new String("")
+		new String("BikeR"),
+		new String("BikeB"),
+		new String("BikeG"),
+		new String("BikeY"),
+		new String("BikeW"),
+		new String("BikeP")
 	};
 	
 	/**
@@ -39,7 +40,7 @@ public class Player extends GameObject{
 		super("Blank", 0);
 		setPosition(m_Locs[index]);
 		
-		this.m_Name.setPosition(m_Locs[index]);
+		this.m_Name.setPosition(m_Locs[index].x - 156, m_Locs[index].y + 67);
 		this.m_Name.m_Text.append(m_Name);
 		
 		this.m_MotorCycle.setTexture(m_Textures[index]);
