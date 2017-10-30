@@ -143,7 +143,6 @@ public class WaitingRoomLevel extends GameLevel{
 			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 		}break;
 		
-//		원래 이 프로토콜은 같은 방에 있는 사람이 나갈때 누가 나갔는지를 알려주는 프로토콜이다.
 		case Protocol.JOIN_ROOM_RESULT:{
 			User joinUser=Network.gson.fromJson((String)data.get("User"), User.class);
 			room.enterUser(joinUser);
