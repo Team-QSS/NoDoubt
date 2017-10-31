@@ -338,6 +338,42 @@ public class Server extends JFrame{
 						return;
 					}
 					
+					//만약 나간 사람이 방장이면
+					if(user.getID()==room.getMaster().getID()){
+						
+						//방의 모든 인원을 lobby로 이동 
+						for(String key:room.list.keySet()){			
+							User quitUser=room.list.get(key);
+							roomManager.getRoom(RoomManager.LOBBY).enterUser(quitUser);
+						}
+						
+						sendData=Util.packetGenerator(
+								Protocol.KICK_ROOM_REPORT
+								);
+
+						//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
+						send(sendData,c->{
+							User u=c.getCurrentUser();
+							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
+						});
+						
+						//방을 제거
+						roomManager.removeRoom(roomID);
+						
+						sendData=Util.packetGenerator(
+								Protocol.REMOVE_ROOM,
+								new KeyValue("RoomID",roomID)
+								);
+						
+						//로비의 모든 유저에게 전달
+						send(sendData,c->{
+							User u=c.getCurrentUser();
+							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+						});
+						
+						return;
+					}
+					
 					sendData=Util.packetGenerator(
 							Protocol.QUIT_ROOM_REPORT,
 							new KeyValue("UserID",user.getID())
@@ -382,15 +418,45 @@ public class Server extends JFrame{
 				case Protocol.KICK_ROOM_REQUEST:{
 					User user=client.getCurrentUser();
 					
+					Room room=roomManager.getRoom(user.getCurrentRoomId());
+					
+					User targetUser=room.getUser((String)data.get("TargetID"));
+					//킥 대상 유저를 현재 방에서 로비로 이동
+					roomManager.getRoom(RoomManager.LOBBY).enterUser(targetUser);
+					
 					sendData=Util.packetGenerator(
-							Protocol.KICK_ROOM_REPORT,
-							new KeyValue("Name",data.get("TargetName"))
+							Protocol.KICK_ROOM_REPORT
 							);
 
-					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
+					//킥 당한 사람에게 보냄
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return u.equals(targetUser);
+					});
+					
+					//킥을 당한 나머지 사람한테 보냄
+					sendData=Util.packetGenerator(
+							Protocol.QUIT_ROOM_REPORT,
+							new KeyValue("UserID",user.getID())
+							);
+					
+					//자신의 유저와 같은방에있는 애들에게 보냄//킥 당한 사람제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(targetUser)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+					
+					//lobby에 있는 유저에게 방인원변경을 통지한다.
+					int currentUserNum=room.list.size();
+					sendData=Util.packetGenerator(
+							Protocol.UPDATE_ROOM_CURRENT_USER_NUM,
+							new KeyValue("RoomID",room.id),
+							new KeyValue("UserNum",currentUserNum)
+							);
+					
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 					});
 				}break;
 				
