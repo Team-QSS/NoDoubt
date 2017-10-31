@@ -10,6 +10,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import qss.nodoubt.graphics.FontManager;
+
 /*LoadingLevel 에서 출력될 방 목록들이 이 클래스의 객체들이다.*/
 
 public class TextBox extends GameObject{
@@ -22,23 +24,26 @@ public class TextBox extends GameObject{
 	private boolean m_IsStar = false;
 	private boolean m_IsBold = false;
 	private boolean m_IsActived = false;
+	private boolean m_IsCenter = false;
 	private String m_Label;
 	private Vector3f m_Color;
 	
 	private boolean m_isShiftPressed = false;
 	
 	
-	public TextBox(float depth, float x, float y, float width, float startX, float startY, boolean isStar, boolean isBold, String label, Vector3f color) {
+	public TextBox(float depth, float x, float y, float startX, float startY, 
+			boolean isStar, boolean isBold, boolean isCenter, String label, Vector3f color) {
+		
 		super("Blank", depth);
 		// TODO Auto-generated constructor stub
 		setPosition(x,y);
-		m_Width = width;
 		
 		m_Location = new Vector2f();
 		m_Location.x = startX;
 		m_Location.y = startY;
 		m_IsStar = isStar;
 		m_IsBold = isBold;
+		m_IsCenter = isCenter;
 		m_Label = label;
 		m_Color = color;
 		
@@ -108,8 +113,18 @@ public class TextBox extends GameObject{
 	}
 
 	@Override
+	/**
+	 * 볼드체 여부와 내용 가림 여부에 따라 출력되는 내용이 달라짐
+	 */
 	public void update(float deltaTime) {
+		
+		if(m_IsCenter) {
+			m_Location.x -= m_Width/2;		//가운데정렬이라면 문자열의 절반 길이만큼 당겨씀
+		}
+		
 		if(m_IsBold) {
+			m_Width = FontManager.getInstance().getFont("fontB11").getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
+			
 			if(m_Label != null){
 				if(m_Text.length() == 0){
 					drawTextCall("fontB11", m_Label, m_Location, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
@@ -134,6 +149,8 @@ public class TextBox extends GameObject{
 			}
 		}
 		else if(!m_IsBold) {
+			m_Width = FontManager.getInstance().getFont("fontR11").getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
+			
 			if(m_Label != null){
 				if(m_Text.length() == 0){
 					drawTextCall("fontR11", m_Label, m_Location, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
@@ -158,6 +175,10 @@ public class TextBox extends GameObject{
 			}
 		}
 	}
+	public void setCenter() {
+		
+	}
+	
 	public void setActive(){
 		m_IsActived = true;
 	}

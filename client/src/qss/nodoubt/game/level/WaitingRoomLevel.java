@@ -1,8 +1,6 @@
 package qss.nodoubt.game.level;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,10 +23,6 @@ import util.Util;
 
 public class WaitingRoomLevel extends GameLevel{
 
-//	private String m_GameName;
-//	private String m_Owner;
-//	private int m_Players;
-	
 	private float mouseX;
 	private float mouseY;
 	

@@ -2,7 +2,6 @@ package qss.nodoubt.game.level;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
@@ -37,9 +36,9 @@ public class SignUpLevel extends GameLevel{
 	private int m_ActiveBuffer = 0;
 	
 	public SignUpLevel() {
-		m_ID 		= new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, 15.0f, false, false, "ID", new Vector3f(0, 0, 0));
-		m_PW 		= new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -116.0f, true, false, "PW", new Vector3f(0, 0, 0));
-		m_PWRepeat 	= new TextBox(0, 0.0f, -3.0f, 680.0f, -313.0f, -240.0f, true, false,"Retype", new Vector3f(0, 0, 0));
+		m_ID 		= new TextBox(0, 0.0f, -3.0f, -313.0f,   15.0f, false, false, false, "ID", new Vector3f(0, 0, 0));
+		m_PW 		= new TextBox(0, 0.0f, -3.0f, -313.0f, -116.0f,  true, false, false, "PW", new Vector3f(0, 0, 0));
+		m_PWRepeat 	= new TextBox(0, 0.0f, -3.0f, -313.0f, -240.0f,  true, false, false, "Retype", new Vector3f(0, 0, 0));
 		
 		m_SignUpBG = new Background("SignupBG");
 		m_Signup = new Button("SignupButton", null, 0, -395);

@@ -1,7 +1,6 @@
 package qss.nodoubt.game.level;
 
 import static org.lwjgl.glfw.GLFW.*;
-import java.util.LinkedList;
 
 import org.json.simple.JSONObject;
 
@@ -36,7 +35,6 @@ public class LoadingLevel extends GameLevel{
 	
 	private float mouseX;
 	private float mouseY;
-	private float time;
 	
 	private RoomManager rm;
 	
@@ -110,7 +108,6 @@ public class LoadingLevel extends GameLevel{
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
-		time += deltaTime;
 		
 		updateObjects(deltaTime);
 		

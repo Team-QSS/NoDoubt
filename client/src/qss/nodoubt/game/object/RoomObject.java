@@ -31,9 +31,9 @@ public class RoomObject extends GameObject {
 	public RoomObject(float depth, String gamename, String owner, int players, double id) {
 		super("Blank", depth);
 		
-		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, 714, GAMENAMETEXT, TEXTY - 110 * index, false, true, null, COLOR);
-		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, 714, OWNERTEXT,    TEXTY - 110 * index, false, true, null, COLOR);
-		m_Players  = new TextBox(0, PLAYERSX,  Y - 110 * index, 321, PLAYERSTEXT,  TEXTY - 110 * index, false, true, null, COLOR);
+		m_GameName = new TextBox(0, GAMENAMEX, Y - 110 * index, GAMENAMETEXT, TEXTY - 110 * index, false, true, false, null, COLOR);
+		m_Owner    = new TextBox(0, OWNERX,    Y - 110 * index, OWNERTEXT,    TEXTY - 110 * index, false, true, false, null, COLOR);
+		m_Players  = new TextBox(0, PLAYERSX,  Y - 110 * index, PLAYERSTEXT,  TEXTY - 110 * index, false, true, false, null, COLOR);
 	
 		m_ID = id;
 		
