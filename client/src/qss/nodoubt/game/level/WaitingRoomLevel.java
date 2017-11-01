@@ -3,7 +3,6 @@ package qss.nodoubt.game.level;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import org.json.simple.JSONObject;
 
@@ -12,11 +11,9 @@ import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
 import qss.nodoubt.game.object.Player;
-import qss.nodoubt.game.object.RoomObject;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
 import room.Room;
-import room.RoomManager;
 import room.User;
 import util.KeyValue;
 import util.Util;
@@ -147,6 +144,10 @@ public class WaitingRoomLevel extends GameLevel{
 			String quitUserID=(String)data.get("UserID");
 			room.removeUser(quitUserID);
 			//
+		}break;
+		
+		case Protocol.KICK_ROOM_REPORT:{
+			Game.getInstance().setNextLevel(new LoadingLevel());
 		}break;
 		
 		default:{
