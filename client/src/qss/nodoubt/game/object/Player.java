@@ -43,18 +43,18 @@ public class Player extends GameObject{
 	 * index에 따라 오토바이의 색깔과 위치 좌표가 달라짐
 	 * @param index
 	 */
-	public Player(String m_Name, int index) {
+	public Player(String name, int index) {
 		super("Blank", 0);
 		setPosition(m_LOCS[index]);
 		
-		this.m_Name = new TextBox(0, m_LOCS[index].x, m_LOCS[index].y + 63, m_LOCS[index].x, m_LOCS[index].y - 63, false, true, true, null, new Vector3f(0.0f, 0.0f, 0.0f));
-		this.m_Name.m_Text.append(m_Name);
-		this.m_MotorCycle = new Icon(m_TEXTURES[index], m_LOCS[index].x, m_LOCS[index].y);
+		this.m_Name = new TextBox(0, m_LOCS[index].x, m_LOCS[index].y + 63, m_LOCS[index].x, m_LOCS[index].y - 63, false, true, true, null, new Vector3f(1.0f, 1.0f, 1.0f));
+		this.m_Name.m_Text.append(name);
+		this.m_MotorCycle = new Icon(m_TEXTURES[index], m_LOCS[index].x, m_LOCS[index].y - 25);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
-		
+		m_Name.update(deltaTime);
 	}
 }

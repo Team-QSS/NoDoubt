@@ -48,6 +48,7 @@ public class TextBox extends GameObject{
 		m_Color = color;
 		
 		m_Text = new StringBuffer();
+		
 		if(isStar){
 			m_Star = new StringBuffer();
 		}
@@ -118,65 +119,115 @@ public class TextBox extends GameObject{
 	 */
 	public void update(float deltaTime) {
 		
-		if(m_IsCenter) {
-			m_Location.x -= m_Width/2;		//가운데정렬이라면 문자열의 절반 길이만큼 당겨씀
-		}
-		
-		if(m_IsBold) {
-			m_Width = FontManager.getInstance().getFont("fontB11").getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
-			
-			if(m_Label != null){
-				if(m_Text.length() == 0){
-					drawTextCall("fontB11", m_Label, m_Location, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
-				}
-			}
-			
-			if(!m_IsStar){
-				drawTextCall("fontB11", m_Text.toString(), m_Location, m_Color);
-			}
-			else{
-				if(m_Star.length() > m_Text.length()){
-					for(int i = 0; i < m_Star.length() - m_Text.length(); i++){
-						m_Star.deleteCharAt(m_Star.length()-1);
+		if(!m_IsCenter) {
+			if(m_IsBold) {				
+				if(m_Label != null){
+					if(m_Text.length() == 0){
+						drawTextCall("fontB11", m_Label, m_Location, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
 					}
 				}
-				else if(m_Star.length() < m_Text.length()){
-					for(int i = 0; i < m_Text.length() - m_Star.length(); i++){
-						m_Star.append("*");
+				
+				if(!m_IsStar){
+					drawTextCall("fontB11", m_Text.toString(), m_Location, m_Color);
+				}
+				else{
+					if(m_Star.length() > m_Text.length()){
+						for(int i = 0; i < m_Star.length() - m_Text.length(); i++){
+							m_Star.deleteCharAt(m_Star.length()-1);
+						}
+					}
+					else if(m_Star.length() < m_Text.length()){
+						for(int i = 0; i < m_Text.length() - m_Star.length(); i++){
+							m_Star.append("*");
+						}
+					}
+					drawTextCall("fontB11", m_Star.toString(), m_Location, m_Color);
+				}
+			}
+			else if(!m_IsBold) {
+				if(m_Label != null){
+					if(m_Text.length() == 0){
+						drawTextCall("fontR11", m_Label, m_Location, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
 					}
 				}
-				drawTextCall("fontB11", m_Star.toString(), m_Location, m_Color);
-			}
-		}
-		else if(!m_IsBold) {
-			m_Width = FontManager.getInstance().getFont("fontR11").getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
-			
-			if(m_Label != null){
-				if(m_Text.length() == 0){
-					drawTextCall("fontR11", m_Label, m_Location, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+				
+				if(!m_IsStar){
+					drawTextCall("fontR11", m_Text.toString(), m_Location, m_Color);
 				}
-			}
-			
-			if(!m_IsStar){
-				drawTextCall("fontR11", m_Text.toString(), m_Location, m_Color);
-			}
-			else{
-				if(m_Star.length() > m_Text.length()){
-					for(int i = 0; i < m_Star.length() - m_Text.length(); i++){
-						m_Star.deleteCharAt(m_Star.length()-1);
+				else{
+					if(m_Star.length() > m_Text.length()){
+						for(int i = 0; i < m_Star.length() - m_Text.length(); i++){
+							m_Star.deleteCharAt(m_Star.length()-1);
+						}
 					}
-				}
-				else if(m_Star.length() < m_Text.length()){
-					for(int i = 0; i < m_Text.length() - m_Star.length(); i++){
-						m_Star.append("*");
+					else if(m_Star.length() < m_Text.length()){
+						for(int i = 0; i < m_Text.length() - m_Star.length(); i++){
+							m_Star.append("*");
+						}
 					}
+					drawTextCall("fontR11", m_Star.toString(), m_Location, m_Color);
 				}
-				drawTextCall("fontR11", m_Star.toString(), m_Location, m_Color);
 			}
 		}
-	}
-	public void setCenter() {
-		
+		else {
+			if(m_IsBold) {
+				m_Width = FontManager.getInstance().getFont("fontB11").getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
+				System.out.println("너비 : " + m_Width);
+				Vector2f m_tempLoc = new Vector2f(m_Location.x - m_Width * 2, m_Location.y);
+				
+				if(m_Label != null){
+					if(m_Text.length() == 0){
+						drawTextCall("fontB11", m_Label, m_tempLoc, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+					}
+				}
+				
+				if(!m_IsStar){
+					drawTextCall("fontB11", m_Text.toString(), m_tempLoc, m_Color);
+				}
+				else{
+					if(m_Star.length() > m_Text.length()){
+						for(int i = 0; i < m_Star.length() - m_Text.length(); i++){
+							m_Star.deleteCharAt(m_Star.length()-1);
+						}
+					}
+					else if(m_Star.length() < m_Text.length()){
+						for(int i = 0; i < m_Text.length() - m_Star.length(); i++){
+							m_Star.append("*");
+						}
+					}
+					drawTextCall("fontB11", m_Star.toString(), m_tempLoc, m_Color);
+				}
+			}
+			else if(!m_IsBold) {
+				m_Width = FontManager.getInstance().getFont("fontR11").getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
+				float temp = m_Location.x;
+				temp -= m_Width / 2;
+				Vector2f m_tempLoc = new Vector2f(temp, m_Location.y);
+				
+				if(m_Label != null){
+					if(m_Text.length() == 0){
+						drawTextCall("fontR11", m_Label, m_tempLoc, new Vector3f(0x82/255f, 0x82/255f, 0x82/255f));
+					}
+				}
+				
+				if(!m_IsStar){
+					drawTextCall("fontR11", m_Text.toString(), m_tempLoc, m_Color);
+				}
+				else{
+					if(m_Star.length() > m_Text.length()){
+						for(int i = 0; i < m_Star.length() - m_Text.length(); i++){
+							m_Star.deleteCharAt(m_Star.length()-1);
+						}
+					}
+					else if(m_Star.length() < m_Text.length()){
+						for(int i = 0; i < m_Text.length() - m_Star.length(); i++){
+							m_Star.append("*");
+						}
+					}
+					drawTextCall("fontR11", m_Star.toString(), m_tempLoc, m_Color);
+				}
+			}
+		}
 	}
 	
 	public void setActive(){
