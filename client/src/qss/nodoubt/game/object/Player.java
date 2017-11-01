@@ -11,8 +11,8 @@ import org.joml.Vector3f;
  *
  */
 public class Player extends GameObject{
-	private TextBox m_Name;
-	private Icon m_MotorCycle;
+	public TextBox m_Name;
+	public Icon m_MotorCycle;
 	
 	/**
 	 * 각 Player 슬롯의 중점의 위치. 상수
@@ -43,16 +43,14 @@ public class Player extends GameObject{
 	 * index에 따라 오토바이의 색깔과 위치 좌표가 달라짐
 	 * @param index
 	 */
-	public Player(String m_Name, int index, String name) {
+	public Player(String m_Name, int index) {
 		super("Blank", 0);
 		setPosition(m_LOCS[index]);
 		
 		this.m_Name = new TextBox(0, m_LOCS[index].x, m_LOCS[index].y + 63, m_LOCS[index].x, m_LOCS[index].y - 63, false, true, true, null, new Vector3f(0.0f, 0.0f, 0.0f));
 		this.m_Name.m_Text.append(m_Name);
-		
-		this.m_MotorCycle.setTexture(m_TEXTURES[index]);
+		this.m_MotorCycle = new Icon(m_TEXTURES[index], m_LOCS[index].x, m_LOCS[index].y);
 	}
-
 
 	@Override
 	public void update(float deltaTime) {

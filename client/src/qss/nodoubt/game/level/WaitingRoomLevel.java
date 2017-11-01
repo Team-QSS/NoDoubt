@@ -24,7 +24,7 @@ public class WaitingRoomLevel extends GameLevel{
 	private float mouseY;
 	
 	//각 플레이어의 UI를 출력할 때 사용하는 리스트
-	private ArrayList<Player> m_PlayerList;
+	private Player[] m_PlayerList = new Player[6];
 	
 	private Button m_StartButton;
 	private Button m_BackButton;
@@ -132,18 +132,47 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		case Protocol.GET_ROOM_DATA:{
 			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			int index = 0;
+			for(String key:room.list.keySet()) {				
+				User user=room.list.get(key);
+				m_PlayerList[index] = new Player(user.getID(), index);
+				addObject(m_PlayerList[index]);
+				addObject(m_PlayerList[index].m_Name);
+				addObject(m_PlayerList[index].m_MotorCycle);
+				index++;
+			}
 		}break;
 		
 		case Protocol.JOIN_ROOM_RESULT:{
 			User joinUser=Network.gson.fromJson((String)data.get("User"), User.class);
 			room.enterUser(joinUser);
 			//ui처리
+			for(int i = 0; i < 6; i++) {
+				if(m_PlayerList[i] == null) {
+					m_PlayerList[i] = new Player(joinUser.getID(), i);
+					addObject(m_PlayerList[i]);
+					addObject(m_PlayerList[i].m_Name);
+					addObject(m_PlayerList[i].m_MotorCycle);
+					break;
+				}
+			}
 		}break;
 		
 		case Protocol.QUIT_ROOM_REPORT:{
 			String quitUserID=(String)data.get("UserID");
+			//ui처리
+			for(int i = 0; i < 6; i++) {
+				if(m_PlayerList[i].m_Name.toString().equals(quitUserID)) {
+					removeObject(m_PlayerList[i].m_MotorCycle);
+					removeObject(m_PlayerList[i].m_Name);
+					removeObject(m_PlayerList[i]);
+					m_PlayerList[i].m_MotorCycle = null;
+					m_PlayerList[i].m_Name = null;
+					m_PlayerList[i] = null;
+					break;
+				}
+			}
 			room.removeUser(quitUserID);
-			//
 		}break;
 		
 		case Protocol.KICK_ROOM_REPORT:{
