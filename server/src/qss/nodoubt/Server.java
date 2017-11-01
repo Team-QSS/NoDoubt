@@ -341,11 +341,16 @@ public class Server extends JFrame{
 					//만약 나간 사람이 방장이면
 					if(user.getID()==room.getMaster().getID()){
 						
-						//방의 모든 인원을 lobby로 이동 
-						for(String key:room.list.keySet()){			
-							User quitUser=room.list.get(key);
-							roomManager.getRoom(RoomManager.LOBBY).enterUser(quitUser);
-						}
+						sendData=Util.packetGenerator(
+								Protocol.REMOVE_ROOM,
+								new KeyValue("RoomID",roomID)
+								);
+						
+						//로비의 모든 유저에게 전달
+						send(sendData,c->{
+							User u=c.getCurrentUser();
+							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+						});
 						
 						sendData=Util.packetGenerator(
 								Protocol.KICK_ROOM_REPORT
@@ -357,19 +362,14 @@ public class Server extends JFrame{
 							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
 						});
 						
+						//방의 모든 인원을 lobby로 이동 
+						for(String key:room.list.keySet()){			
+							User quitUser=room.list.get(key);
+							roomManager.getRoom(RoomManager.LOBBY).enterUser(quitUser);
+						}
+						
 						//방을 제거
 						roomManager.removeRoom(roomID);
-						
-						sendData=Util.packetGenerator(
-								Protocol.REMOVE_ROOM,
-								new KeyValue("RoomID",roomID)
-								);
-						
-						//로비의 모든 유저에게 전달
-						send(sendData,c->{
-							User u=c.getCurrentUser();
-							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
-						});
 						
 						return;
 					}
@@ -382,7 +382,7 @@ public class Server extends JFrame{
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
 					});
 					
 					//lobby에 있는 유저에게 방인원변경을 통지한다.

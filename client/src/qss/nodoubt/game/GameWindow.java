@@ -113,4 +113,8 @@ public class GameWindow {
 	public Vector2i getSize() {
 		return new Vector2i(m_Width, m_Height);
 	}
+	
+	public void setWindowTitle(String title) {
+		glfwSetWindowTitle(m_Window, title);
+	}
 }
