@@ -162,7 +162,8 @@ public class WaitingRoomLevel extends GameLevel{
 			String quitUserID=(String)data.get("UserID");
 			//ui처리
 			for(int i = 0; i < 6; i++) {
-				if(m_PlayerList[i].m_Name.toString().equals(quitUserID)) {
+				
+				if(m_PlayerList[i].m_Name.m_Text.toString().equals(quitUserID)) {
 					removeObject(m_PlayerList[i].m_MotorCycle);
 					removeObject(m_PlayerList[i].m_Name);
 					removeObject(m_PlayerList[i]);
