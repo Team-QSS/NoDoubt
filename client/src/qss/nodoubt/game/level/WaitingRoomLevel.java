@@ -115,6 +115,10 @@ public class WaitingRoomLevel extends GameLevel{
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
 		
+		for(int i = 0; i < m_PlayerList.length; i++) {
+			if(m_PlayerList[i] != null)
+				m_PlayerList[i].update(deltaTime);
+		}
 		
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
@@ -151,6 +155,7 @@ public class WaitingRoomLevel extends GameLevel{
 			for(int i = 0; i < 6; i++) {
 				if(m_PlayerList[i] == null) {
 					m_PlayerList[i] = new Player(joinUser.getID(), i);
+					System.out.println(m_PlayerList[i].m_Name.m_Text.toString());
 					addObject(m_PlayerList[i]);
 					addObject(m_PlayerList[i].m_Name);
 					addObject(m_PlayerList[i].m_MotorCycle);
@@ -163,14 +168,16 @@ public class WaitingRoomLevel extends GameLevel{
 			String quitUserID=(String)data.get("UserID");
 			//ui처리
 			for(int i = 0; i < 6; i++) {
-				if(m_PlayerList[i].m_Name.toString().equals(quitUserID)) {
-					removeObject(m_PlayerList[i].m_MotorCycle);
-					removeObject(m_PlayerList[i].m_Name);
-					removeObject(m_PlayerList[i]);
-					m_PlayerList[i].m_MotorCycle = null;
-					m_PlayerList[i].m_Name = null;
-					m_PlayerList[i] = null;
-					break;
+				if(m_PlayerList[i] != null) {
+					if(m_PlayerList[i].m_Name.m_Text.toString().equals(quitUserID)) {
+						removeObject(m_PlayerList[i].m_MotorCycle);
+						removeObject(m_PlayerList[i].m_Name);
+						removeObject(m_PlayerList[i]);
+						m_PlayerList[i].m_MotorCycle = null;
+						m_PlayerList[i].m_Name = null;
+						m_PlayerList[i] = null;
+						break;
+					}
 				}
 			}
 			room.removeUser(quitUserID);

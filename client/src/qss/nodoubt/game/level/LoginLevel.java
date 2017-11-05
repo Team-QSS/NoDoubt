@@ -14,9 +14,11 @@ import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
+import qss.nodoubt.game.GameWindow;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
 import qss.nodoubt.network.Network;
+import room.User;
 import util.KeyValue;
 import util.Util;
 
@@ -160,9 +162,11 @@ public class LoginLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		case Protocol.LOGIN_RESULT:{
 			if((boolean)data.get("Value")){
+				User user=Network.gson.fromJson((String)data.get("User"), User.class);
 				Game.getInstance().setNextLevel(new LobbyLevel());
 				System.out.println("로그인 성공");
 				System.out.println(Util.printJSONLookSimple(data.get("User").toString()));
+				GameWindow.getInstance().setWindowTitle("No Doubt ( "+user.getID()+" )");
 			}else{
 				System.out.println("실패");
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());
