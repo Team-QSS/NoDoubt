@@ -57,6 +57,7 @@ public class WaitingRoomLevel extends GameLevel{
 							}
 							if(action == GLFW_RELEASE){
 							//	Game.getInstance().setNextLevel(new InGameLevel(null));
+								m_PlayerList[0].m_Name.m_Text.toString();
 							}
 						}
 						else{

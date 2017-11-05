@@ -60,7 +60,6 @@ public class InGameLevel extends GameLevel{
 	private Room room;
 	
 	/**
-	 * 
 	 * @param roomID 방 식별번호
 	 */
 	public InGameLevel(double roomID) {
