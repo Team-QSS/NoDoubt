@@ -16,6 +16,9 @@ public class User {
 	transient private Room currentRoom=null;
 	transient private Client currentClient=null;
 	
+	//방에 들어갔을시 자신의 자리인덱스//초기값은 -1;
+	private int roomIndex=-1;
+	
 	public User(String id,String password){
 		this.ID=id;
 		this.password=password;
@@ -78,5 +81,15 @@ public class User {
 	public void setCurrentClient(Client currentClient) {
 		this.currentClient = currentClient;
 	}
+
+	public int getRoomIndex() {
+		return roomIndex;
+	}
+
+	public void setRoomIndex(int roomIndex) {
+		this.roomIndex = roomIndex;
+	}
+	
+	
 	
 }
