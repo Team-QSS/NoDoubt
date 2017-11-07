@@ -43,4 +43,23 @@ public interface Protocol {
 	String BAN_ROOM_REPORT="BanRoomReport";
 	
 	String GET_ROOM_DATA="GetRoomData";
+	
+	//인게임
+	String DECLARE_REQUEST="DeclareRequest";
+	String DECLARE_REPORT="DeclareReport";
+	
+	String DOUBT_REQUEST="DoubtRequest";
+	String DOUBT_CHECK="DoubtCheck";
+	String DOUBT_RESULT="DoubtResult";
+	String DOUBT_REPORT="DoubtReport";
+	
+	String MOVE_REPORT="MoveReport";
+	
+	String STEP_REQUEST="StepRequest";
+	String STEP_REPORT="StepReport";
+	
+	String PUSH_REQUEST="PushRequest";
+	String PUSH_REPORT="PushReport";
+	
+	String GAME_END_REPORT="GameEndReport";
 }

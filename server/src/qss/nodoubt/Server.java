@@ -251,6 +251,8 @@ public class Server extends JFrame{
 						
 						newRoom.enterUser(user);
 						newRoom.setMaster(user);
+						//처음 입장하므로 룸인덱스를 0으로 설정한다.
+						user.setRoomIndex(0);
 						
 						sendData.put("Protocol", Protocol.CREATE_ROOM_RESULT);
 						sendData.put("Value", true);
@@ -281,6 +283,22 @@ public class Server extends JFrame{
 				case Protocol.JOIN_ROOM_REQUEST:{
 					User user=client.getCurrentUser();
 					double roomID=(double)data.get("RoomID");
+					
+					//현재들어온 유저의 룸인덱스를 정하는 과정
+					int minRoomIndex=100;
+					boolean arr[]=new boolean[6];
+					for(String key:roomManager.getRoom(roomID).list.keySet()){
+						User u=roomManager.getRoom(roomID).list.get(key);
+						arr[u.getRoomIndex()]=true;
+					}
+					int i=0;
+					for(i=0;i<6;i++){
+						if(!arr[i])
+							break;
+					}
+					user.setRoomIndex(i);
+					//
+					
 					roomManager.getRoom(roomID).enterUser(user);
 					
 					sendData=Util.packetGenerator(
@@ -307,10 +325,12 @@ public class Server extends JFrame{
 						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 					});
 				}break;
-				
+
 				case Protocol.QUIT_ROOM_REQUEST:{
 					User user=client.getCurrentUser();
 					double roomID=(double)data.get("RoomID");
+					//user의 룸인덱스를 초기화
+					user.setRoomIndex(-1);
 					
 					//방고유 아이디에 해당하는 방을찾아 유저를 제거한후
 					Room room=roomManager.getRoom(roomID);
@@ -484,6 +504,9 @@ public class Server extends JFrame{
 						return u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
 				}break;
+				
+				//여기부터 inGameProtocol이다.
+				case 
 				
 				default:{
 					Util.printLog(mainTextArea, "알지못하는 프로토콜입니다.");

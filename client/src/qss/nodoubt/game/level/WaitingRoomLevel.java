@@ -136,14 +136,14 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		case Protocol.GET_ROOM_DATA:{
 			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
-			int index = 0;
+			int index = -1;
 			for(String key:room.list.keySet()) {				
 				User user=room.list.get(key);
+				index=user.getRoomIndex();
 				m_PlayerList[index] = new Player(user.getID(), index);
 				addObject(m_PlayerList[index]);
 				addObject(m_PlayerList[index].m_Name);
 				addObject(m_PlayerList[index].m_MotorCycle);
-				index++;
 			}
 		}break;
 		
@@ -151,15 +151,16 @@ public class WaitingRoomLevel extends GameLevel{
 			User joinUser=Network.gson.fromJson((String)data.get("User"), User.class);
 			room.enterUser(joinUser);
 			//ui처리
-			for(int i = 0; i < 6; i++) {
-				if(m_PlayerList[i] == null) {
-					m_PlayerList[i] = new Player(joinUser.getID(), i);
-					System.out.println(m_PlayerList[i].m_Name.m_Text.toString());
-					addObject(m_PlayerList[i]);
-					addObject(m_PlayerList[i].m_Name);
-					addObject(m_PlayerList[i].m_MotorCycle);
-					break;
-				}
+			int i=joinUser.getRoomIndex();
+			if(m_PlayerList[joinUser.getRoomIndex()] == null) {
+				m_PlayerList[i] = new Player(joinUser.getID(), i);
+				System.out.println(m_PlayerList[i].m_Name.m_Text.toString());
+				addObject(m_PlayerList[i]);
+				addObject(m_PlayerList[i].m_Name);
+				addObject(m_PlayerList[i].m_MotorCycle);
+				break;
+			}else{
+				System.err.println("조인룸 오류");
 			}
 		}break;
 		
