@@ -43,4 +43,12 @@ public interface Protocol {
 	String BAN_ROOM_REPORT="BanRoomReport";
 	
 	String GET_ROOM_DATA="GetRoomData";
+	
+	String DECLARE_REQUEST="DeclareRequest";
+	String DECLARE_REPORT="DeclareReport";
+	
+	String DOUBT_REQUEST="DoubtRequest";
+	String DOUBT_CHECK="DoubtCheck";
+	String DOUBT_RESULT="DoubtResult";
+	String DOUBT_REPORT="DoubtReport";
 }

@@ -57,7 +57,7 @@ public class InGameLevel extends GameLevel{
 	private IButton m_StepButton = null;
 	private IButton m_PushButton = null;
 	
-	private Room room;
+	private Room m_Room;
 	
 	/**
 	 * @param roomID 방 식별번호
@@ -121,12 +121,7 @@ public class InGameLevel extends GameLevel{
 	public void update(float deltaTime) {
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
-			String protocol = (String) msg.get("Protocol");
-			if(protocol.equals("DeclareReport")) {
-				recieveDeclare((Integer) msg.get("Value"));
-			}else if(protocol.equals("DoubtCheck")) {
-				recieveDoubtCheck();
-			}
+			
 			protocolProcess(msg);
 		}
 		
@@ -155,10 +150,19 @@ public class InGameLevel extends GameLevel{
 	
 	private void protocolProcess(JSONObject data){
 		System.out.println(data);
+		
 		switch((String)data.get("Protocol")){
 		
 		case Protocol.GET_ROOM_DATA:{
-			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+		}break;
+		
+		case Protocol.DECLARE_REPORT:{
+			recieveDeclare((Integer) data.get("Value"));
+		}break;
+		
+		case Protocol.DOUBT_CHECK:{
+			recieveDoubtCheck();
 		}break;
 		
 		default:{
