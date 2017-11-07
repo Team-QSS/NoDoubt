@@ -31,6 +31,7 @@ public class InGameLevel extends GameLevel{
 	{
 		public String name;
 		public char color;
+		public User user;
 	}
 	
 	private GameBoard m_Board;
@@ -58,6 +59,8 @@ public class InGameLevel extends GameLevel{
 	private IButton m_PushButton = null;
 	
 	private Room m_Room;
+	
+	private boolean m_IsInitialized;
 	
 	/**
 	 * @param roomID 방 식별번호
@@ -108,6 +111,8 @@ public class InGameLevel extends GameLevel{
 				"Test1", "Test2", "Test3", "Test4", "Test5", "Test6"
 		}, 6);
 		
+		m_IsInitialized = false;
+		
 		networkInit();
 	}
 	
@@ -155,6 +160,7 @@ public class InGameLevel extends GameLevel{
 		
 		case Protocol.GET_ROOM_DATA:{
 			m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			m_IsInitialized = true;
 		}break;
 		
 		case Protocol.DECLARE_REPORT:{
@@ -270,5 +276,20 @@ public class InGameLevel extends GameLevel{
 		m_StepButton = null;
 		
 		JSONObject msg = new JSONObject();
+	}
+	
+	private void setRoomData() {
+		m_TurnInfo = new TurnInfo[6];
+		
+		for(int i = 0; i < 6; i++)
+		{
+			m_TurnInfo[i] = null;
+		}
+		
+		for(String name : m_Room.list.keySet())
+		{
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].user = m_Room.list.get(name);
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].name = name;
+		}
 	}
 }
