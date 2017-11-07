@@ -172,7 +172,7 @@ public class TextBox extends GameObject{
 		else {
 			if(m_IsBold) {
 				m_Width = FontManager.getInstance().getFont("fontB11").getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
-				System.out.println("너비 : " + m_Width);
+
 				Vector2f m_tempLoc = new Vector2f(m_Location.x - m_Width * 2, m_Location.y);
 				
 				if(m_Label != null){
