@@ -216,8 +216,8 @@ public class InGameLevel extends GameLevel{
 			
 			msg.put("Protocol", "DeclareRequest");
 			msg.put("Value", n);
-			msg.put("Player", GameState.getInstance().m_Me.getID());
-			msg.put("RoomID", m_RoomID);
+//			msg.put("Player", GameState.getInstance().m_Me.getID());
+//			msg.put("RoomID", m_RoomID);
 			
 			System.out.println(msg.toJSONString());
 			
