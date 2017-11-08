@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
+import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
 import qss.nodoubt.game.object.Player;
@@ -47,27 +48,6 @@ public class WaitingRoomLevel extends GameLevel{
 	 */
 	public WaitingRoomLevel(double roomid){
 		
-		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
-		m_StartButton.setListener(null,
-				(action, button) -> {
-					if(button == GLFW_MOUSE_BUTTON_LEFT){
-						if(m_StartButton.onButton(mouseX, mouseY)){
-							if(action == GLFW_PRESS){
-								m_StartButton.focus();
-							}
-							if(action == GLFW_RELEASE){
-							//	Game.getInstance().setNextLevel(new InGameLevel(null));
-							}
-						}
-						else{
-							if(action == GLFW_RELEASE){
-								m_StartButton.unfocus();
-							}
-						}
-						
-					}
-				});
-		
 		m_BackButton = new Button("BackButton1", "BackButton2", 667, 414);
 		m_BackButton.setListener(null,
 				(action, button) -> {
@@ -95,7 +75,7 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		m_Roomid = roomid;
 		
-		addObject(m_StartButton);
+		
 		addObject(m_BackButton);
 		addObject(m_WaitingRoomBG);
 		
@@ -144,6 +124,31 @@ public class WaitingRoomLevel extends GameLevel{
 				addObject(m_PlayerList[index].m_Name);
 				addObject(m_PlayerList[index].m_MotorCycle);
 				index++;
+			}
+			
+			if(m_PlayerList[0].m_Name.m_Text.toString().equals(GameState.getInstance().m_Me)) {
+				m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
+				m_StartButton.setListener(null,
+						(action, button) -> {
+							if(button == GLFW_MOUSE_BUTTON_LEFT){
+								if(m_StartButton.onButton(mouseX, mouseY)){
+									if(action == GLFW_PRESS){
+										m_StartButton.focus();
+									}
+									if(action == GLFW_RELEASE){
+										Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
+									}
+								}
+								else{
+									if(action == GLFW_RELEASE){
+										m_StartButton.unfocus();
+									}
+								}
+								
+							}
+						});
+				addObject(m_StartButton);
+				
 			}
 		}break;
 		

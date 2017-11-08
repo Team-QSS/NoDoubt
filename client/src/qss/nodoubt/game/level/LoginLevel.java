@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
+import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.GameWindow;
 import qss.nodoubt.game.object.*;
 import qss.nodoubt.input.Input;
@@ -167,6 +168,7 @@ public class LoginLevel extends GameLevel{
 				System.out.println("로그인 성공");
 				System.out.println(Util.printJSONLookSimple(data.get("User").toString()));
 				GameWindow.getInstance().setWindowTitle("No Doubt ( "+user.getID()+" )");
+				GameState.getInstance().m_Me = user.getID();
 			}else{
 				System.out.println("실패");
 				m_ID.m_Text.delete(0, m_ID.m_Text.length());
