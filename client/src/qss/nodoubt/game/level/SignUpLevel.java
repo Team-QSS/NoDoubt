@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
+import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.Button;
 import qss.nodoubt.game.object.TextBox;
@@ -130,6 +131,9 @@ public class SignUpLevel extends GameLevel{
 								m_PW.setInActive();
 								m_PWRepeat.setActive();
 							}
+						}
+						if(key == GLFW_KEY_ESCAPE) {
+							Game.getInstance().setNextLevel(new LoginLevel());
 						}
 					}
 				},

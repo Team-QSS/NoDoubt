@@ -48,6 +48,31 @@ public class WaitingRoomLevel extends GameLevel{
 	 */
 	public WaitingRoomLevel(double roomid){
 		
+		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
+		m_StartButton.setListener(null,
+				(action, button) -> {
+					if(button == GLFW_MOUSE_BUTTON_LEFT){
+						if(m_StartButton.onButton(mouseX, mouseY)){
+							if(action == GLFW_PRESS){
+								System.out.println("press");
+								m_StartButton.focus();
+							}
+							if(action == GLFW_RELEASE){
+								System.out.println("release");
+								JSONObject msg=Util.packetGenerator(Protocol.START_GAME_REQUEST);
+								Network.getInstance().pushMessage(msg);
+//								Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
+							}
+						}
+						else{
+							if(action == GLFW_RELEASE){
+								m_StartButton.unfocus();
+							}
+						}
+						
+					}
+				});
+		
 		m_BackButton = new Button("BackButton1", "BackButton2", 667, 414);
 		m_BackButton.setListener(null,
 				(action, button) -> {
@@ -75,7 +100,7 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		m_Roomid = roomid;
 		
-		
+//		addObject(m_StartButton);
 		addObject(m_BackButton);
 		addObject(m_WaitingRoomBG);
 		
@@ -127,32 +152,7 @@ public class WaitingRoomLevel extends GameLevel{
 			}
 			
 			if(m_PlayerList[0].m_Name.m_Text.toString().equals(GameState.getInstance().m_Me)) {
-				m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
-				m_StartButton.setListener(null,
-						(action, button) -> {
-							if(button == GLFW_MOUSE_BUTTON_LEFT){
-								if(m_StartButton.onButton(mouseX, mouseY)){
-									if(action == GLFW_PRESS){
-										System.out.println("press");
-										m_StartButton.focus();
-									}
-									if(action == GLFW_RELEASE){
-										System.out.println("release");
-										JSONObject msg=Util.packetGenerator(Protocol.START_GAME_REQUEST);
-										Network.getInstance().pushMessage(msg);
-//										Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
-									}
-								}
-								else{
-									if(action == GLFW_RELEASE){
-										m_StartButton.unfocus();
-									}
-								}
-								
-							}
-						});
-				addObject(m_StartButton);
-				
+				addObject(m_StartButton);		//StartButton 에서 Listener가 작동하지 않는 오류 발생
 			}
 		}break;
 		
