@@ -62,6 +62,8 @@ public class InGameLevel extends GameLevel{
 	
 	private boolean m_IsInitialized;
 	
+	private int m_PlayerCount = 0;
+	
 	/**
 	 * @param roomID 방 식별번호
 	 */
@@ -288,8 +290,42 @@ public class InGameLevel extends GameLevel{
 		
 		for(String name : m_Room.list.keySet())
 		{
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()] = new TurnInfo();
 			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].user = m_Room.list.get(name);
 			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].name = name;
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].color = getColorCharacter(m_Room.list.get(name).getRoomIndex());
 		}
+		
+		m_PlayerCount = m_Room.list.size();
+		
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_TurnInfo[i] != null) 
+			{
+				System.out.println(m_TurnInfo[i].name + " : " + m_TurnInfo[i].color + "Color");
+			}
+		}
+	}
+	
+	private void goNextTurn() {
+		do {
+			m_Turn += 1;
+			m_Turn %= 6;
+		}while (m_TurnInfo[m_Turn] == null);
+	}
+	
+	private char getColorCharacter(int color)
+	{
+		switch(color)
+		{
+		case 0: return 'R';
+		case 1: return 'B';
+		case 2: return 'G';
+		case 3: return 'Y';
+		case 4: return 'W';
+		case 5: return 'P';
+		}
+		System.out.println("0~5이외의 숫자로 오류 판정 시도");
+		return 'F';
 	}
 }
