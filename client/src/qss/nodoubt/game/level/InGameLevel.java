@@ -31,6 +31,7 @@ public class InGameLevel extends GameLevel{
 	{
 		public String name;
 		public char color;
+		public User user;
 	}
 	
 	private GameBoard m_Board;
@@ -57,10 +58,13 @@ public class InGameLevel extends GameLevel{
 	private IButton m_StepButton = null;
 	private IButton m_PushButton = null;
 	
-	private Room room;
+	private Room m_Room;
+	
+	private boolean m_IsInitialized;
+	
+	private int m_PlayerCount = 0;
 	
 	/**
-	 * 
 	 * @param roomID 방 식별번호
 	 */
 	public InGameLevel(double roomID) {
@@ -109,6 +113,8 @@ public class InGameLevel extends GameLevel{
 				"Test1", "Test2", "Test3", "Test4", "Test5", "Test6"
 		}, 6);
 		
+		m_IsInitialized = false;
+		
 		networkInit();
 	}
 	
@@ -122,12 +128,7 @@ public class InGameLevel extends GameLevel{
 	public void update(float deltaTime) {
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
-			String protocol = (String) msg.get("Protocol");
-			if(protocol.equals("DeclareReport")) {
-				recieveDeclare((Integer) msg.get("Value"));
-			}else if(protocol.equals("DoubtCheck")) {
-				recieveDoubtCheck();
-			}
+			
 			protocolProcess(msg);
 		}
 		
@@ -156,10 +157,20 @@ public class InGameLevel extends GameLevel{
 	
 	private void protocolProcess(JSONObject data){
 		System.out.println(data);
+		
 		switch((String)data.get("Protocol")){
 		
 		case Protocol.GET_ROOM_DATA:{
-			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			m_IsInitialized = true;
+		}break;
+		
+		case Protocol.DECLARE_REPORT:{
+			recieveDeclare((Integer) data.get("Value"));
+		}break;
+		
+		case Protocol.DOUBT_CHECK:{
+			recieveDoubtCheck();
 		}break;
 		
 		default:{
@@ -207,8 +218,8 @@ public class InGameLevel extends GameLevel{
 			
 			msg.put("Protocol", "DeclareRequest");
 			msg.put("Value", n);
-			msg.put("Player", GameState.getInstance().m_Me.getID());
-			msg.put("RoomID", m_RoomID);
+//			msg.put("Player", GameState.getInstance().m_Me.getID());
+//			msg.put("RoomID", m_RoomID);
 			
 			System.out.println(msg.toJSONString());
 			
@@ -267,5 +278,54 @@ public class InGameLevel extends GameLevel{
 		m_StepButton = null;
 		
 		JSONObject msg = new JSONObject();
+	}
+	
+	private void setRoomData() {
+		m_TurnInfo = new TurnInfo[6];
+		
+		for(int i = 0; i < 6; i++)
+		{
+			m_TurnInfo[i] = null;
+		}
+		
+		for(String name : m_Room.list.keySet())
+		{
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()] = new TurnInfo();
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].user = m_Room.list.get(name);
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].name = name;
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].color = getColorCharacter(m_Room.list.get(name).getRoomIndex());
+		}
+		
+		m_PlayerCount = m_Room.list.size();
+		
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_TurnInfo[i] != null) 
+			{
+				System.out.println(m_TurnInfo[i].name + " : " + m_TurnInfo[i].color + "Color");
+			}
+		}
+	}
+	
+	private void goNextTurn() {
+		do {
+			m_Turn += 1;
+			m_Turn %= 6;
+		}while (m_TurnInfo[m_Turn] == null);
+	}
+	
+	private char getColorCharacter(int color)
+	{
+		switch(color)
+		{
+		case 0: return 'R';
+		case 1: return 'B';
+		case 2: return 'G';
+		case 3: return 'Y';
+		case 4: return 'W';
+		case 5: return 'P';
+		}
+		System.out.println("0~5이외의 숫자로 오류 판정 시도");
+		return 'F';
 	}
 }
