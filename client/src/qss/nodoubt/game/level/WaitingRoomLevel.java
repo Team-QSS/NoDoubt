@@ -47,29 +47,6 @@ public class WaitingRoomLevel extends GameLevel{
 	 * 현재 입장한 방의 아이디를 나타내는 임시 변수
 	 */
 	public WaitingRoomLevel(double roomid){
-		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
-		m_StartButton.setListener(null,
-				(action, button) -> {
-					if(button == GLFW_MOUSE_BUTTON_LEFT){
-						if(m_StartButton.onButton(mouseX, mouseY)){
-							if(action == GLFW_PRESS){
-								m_StartButton.focus();
-							}
-							if(action == GLFW_RELEASE){
-							//	Game.getInstance().setNextLevel(new InGameLevel(null));
-								JSONObject msg=Util.packetGenerator(Protocol.START_GAME_REQUEST);
-								Network.getInstance().pushMessage(msg);
-								m_PlayerList[0].m_Name.m_Text.toString();
-							}
-						}
-						else{
-							if(action == GLFW_RELEASE){
-								m_StartButton.unfocus();
-							}
-						}
-						
-					}
-				});
 		
 		m_BackButton = new Button("BackButton1", "BackButton2", 667, 414);
 		m_BackButton.setListener(null,
@@ -156,10 +133,14 @@ public class WaitingRoomLevel extends GameLevel{
 							if(button == GLFW_MOUSE_BUTTON_LEFT){
 								if(m_StartButton.onButton(mouseX, mouseY)){
 									if(action == GLFW_PRESS){
+										System.out.println("press");
 										m_StartButton.focus();
 									}
 									if(action == GLFW_RELEASE){
-										Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
+										System.out.println("release");
+										JSONObject msg=Util.packetGenerator(Protocol.START_GAME_REQUEST);
+										Network.getInstance().pushMessage(msg);
+//										Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
 									}
 								}
 								else{
