@@ -133,6 +133,7 @@ public class WaitingRoomLevel extends GameLevel{
 		 * 서버에서 정보를 받아 갱신해야 함 
 		 * m_Users (User들을 담는 연결리스트)		 
 		 */
+		updateObjects(deltaTime);
 	}
 	
 	private void protocolProcess(JSONObject data){
