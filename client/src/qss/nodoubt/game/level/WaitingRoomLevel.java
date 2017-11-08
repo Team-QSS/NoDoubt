@@ -57,6 +57,8 @@ public class WaitingRoomLevel extends GameLevel{
 							}
 							if(action == GLFW_RELEASE){
 							//	Game.getInstance().setNextLevel(new InGameLevel(null));
+								JSONObject msg=Util.packetGenerator(Protocol.START_GAME_REQUEST);
+								Network.getInstance().pushMessage(msg);
 								m_PlayerList[0].m_Name.m_Text.toString();
 							}
 						}
@@ -186,6 +188,10 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		case Protocol.KICK_ROOM_REPORT:{
 			Game.getInstance().setNextLevel(new LoadingLevel());
+		}break;
+		
+		case Protocol.START_GAME_REPORT:{
+			Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
 		}break;
 		
 		default:{

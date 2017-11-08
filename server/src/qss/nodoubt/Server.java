@@ -491,6 +491,18 @@ public class Server extends JFrame{
 					client.send(sendData);
 				}break;
 				
+				case Protocol.START_GAME_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(Protocol.START_GAME_REPORT);
+					
+					//자신의 유저와 같은방에있는 애들에게 보냄
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}break;
+				
 				//방안에서 사용하는 메서드
 				
 				case "Chat":{// 클라이언트는 자신의 user정보와 채팅정보를 보냄 그러면 서버에서는 user가 속한방의 유저에게 채팅정보를 전달함
@@ -519,6 +531,10 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
+				}
+				
+				case Protocol.DOUBT_REQUEST:{
+					
 				}
 				
 				
