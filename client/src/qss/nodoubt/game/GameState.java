@@ -4,7 +4,10 @@ import room.User;
 
 public class GameState {
 	private static GameState s_Instance = null;
-	public User m_Me = null;
+	/**
+	 * 자기 자신의 ID
+	 */
+	public String m_Me = null;
 	public boolean m_IsGameGoing = true;
 	
 	public static GameState getInstance() {
