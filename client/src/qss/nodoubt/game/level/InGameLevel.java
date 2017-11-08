@@ -145,7 +145,7 @@ public class InGameLevel extends GameLevel{
 		
 		if(m_Board.getState().isConflict) {
 			m_State = State.STEPPUSH;
-			if(m_StepButton != null) {
+			if(m_StepButton != null && isMyTurn()) {
 				addObject(m_StepButton = new IButton("Step", () -> step()));
 				addObject(m_PushButton = new IButton("Push", () -> push()));
 			}
@@ -218,8 +218,6 @@ public class InGameLevel extends GameLevel{
 			
 			msg.put("Protocol", "DeclareRequest");
 			msg.put("Value", n);
-//			msg.put("Player", GameState.getInstance().m_Me.getID());
-//			msg.put("RoomID", m_RoomID);
 			
 			System.out.println(msg.toJSONString());
 			
@@ -236,15 +234,13 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private boolean isMyTurn() {
-		return m_TurnInfo[m_Turn].name.equals(GameState.getInstance().m_Me.getID());
+		return m_TurnInfo[m_Turn].name.equals(GameState.getInstance().m_Me);
 	}
 	
 	private void doubt() {
 		if(m_State.equals(State.DOUBT) && isMyTurn() && !m_IsTabPushed) {
 			JSONObject msg = new JSONObject();
 			msg.put("Protocol", "DoubtRequest");
-			msg.put("Player", GameState.getInstance().m_Me.getID());
-			msg.put("RoomID", m_RoomID);
 			Network.getInstance().pushMessage(msg);
 		}
 	}
@@ -252,8 +248,6 @@ public class InGameLevel extends GameLevel{
 	private void recieveDoubtCheck() {
 		JSONObject msg = new JSONObject();
 		msg.put("Protocol", "DoubtResult");
-		msg.put("Player", GameState.getInstance().m_Me.getID());
-		msg.put("RoomID", m_RoomID);
 		if(m_DiceResult == m_DeclareNum) {
 			msg.put("Result", false);
 		}else {
