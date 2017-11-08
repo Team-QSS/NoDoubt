@@ -481,7 +481,6 @@ public class Server extends JFrame{
 				}break;
 				
 				case Protocol.GET_ROOM_DATA:{
-					User user=client.getCurrentUser();
 					
 					sendData=Util.packetGenerator(
 							Protocol.GET_ROOM_DATA,
@@ -506,7 +505,23 @@ public class Server extends JFrame{
 				}break;
 				
 				//여기부터 inGameProtocol이다.
-				case 
+				case Protocol.DECLARE_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(
+							Protocol.DECLARE_REPORT,
+							new KeyValue("Player",user.getID()),
+							new KeyValue("Value",data.get("Value"))
+							);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}
+				
+				case Protocol.DOUBT_REQUEST
 				
 				default:{
 					Util.printLog(mainTextArea, "알지못하는 프로토콜입니다.");
