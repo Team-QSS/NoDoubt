@@ -521,7 +521,6 @@ public class Server extends JFrame{
 					});
 				}
 				
-				case Protocol.DOUBT_REQUEST
 				
 				default:{
 					Util.printLog(mainTextArea, "알지못하는 프로토콜입니다.");
