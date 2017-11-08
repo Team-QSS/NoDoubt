@@ -59,8 +59,8 @@ public class Client {
 			writer.close();
 			
 			for(Client client:clients){
-				//roomID가 같으면
-				if(client.getCurrentUser().getCurrentRoomId()==getCurrentUser().getCurrentRoomId()){
+				//로비에 있지않고//roomID가 같으면
+				if(getCurrentUser().getCurrentRoomId()!=RoomManager.LOBBY&&client.getCurrentUser().getCurrentRoomId()==getCurrentUser().getCurrentRoomId()){
 					JSONObject msg=Util.packetGenerator(Protocol.QUIT_ROOM_REPORT, new KeyValue("UserID",getCurrentUser().getID()));
 					client.send(msg);
 				}
