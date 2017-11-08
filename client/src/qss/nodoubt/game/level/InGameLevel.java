@@ -297,6 +297,14 @@ public class InGameLevel extends GameLevel{
 		}
 		
 		m_PlayerCount = m_Room.list.size();
+		
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_TurnInfo[i] != null) 
+			{
+				System.out.println(m_TurnInfo[i].name + " : " + m_TurnInfo[i].color + "Color");
+			}
+		}
 	}
 	
 	private void goNextTurn() {
@@ -317,6 +325,7 @@ public class InGameLevel extends GameLevel{
 		case 4: return 'W';
 		case 5: return 'P';
 		}
+		System.out.println("0~5이외의 숫자로 오류 판정 시도");
 		return 'F';
 	}
 }
