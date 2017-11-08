@@ -6,12 +6,13 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import com.google.gson.Gson;
+import org.json.simple.JSONObject;
 
-import qss.nodoubt.database.Database;
 import qss.nodoubt.database.UserService;
 import qss.nodoubt.room.RoomManager;
 import qss.nodoubt.room.User;
+import qss.nodoubt.util.KeyValue;
+import qss.nodoubt.util.Protocol;
 import qss.nodoubt.util.Util;
 
 //Client클래스는 실제 연결된 소켓에 관한 정보를 담는 클래스이다.
@@ -56,11 +57,20 @@ public class Client {
 			clients.remove(this);
 			socket.close();
 			writer.close();
+			
+			for(Client client:clients){
+				//roomID가 같으면
+				if(client.getCurrentUser().getCurrentRoomId()==getCurrentUser().getCurrentRoomId()){
+					JSONObject msg=Util.packetGenerator(Protocol.QUIT_ROOM_REPORT, new KeyValue("UserID",getCurrentUser().getID()));
+					client.send(msg);
+				}
+			}
+			
 			//유저를 roomManager상의 방에서 제거한다.
 			RoomManager.getInstance().getUser((u)->{
-				return u.getID()==this.getCurrentUser().getID();
-			}).getCurrentRoom().removeUser(this.getCurrentUser().getID());
-			UserService.getInstance().setIsOnline(this.currentUser, false);
+				return u.getID().equals(getCurrentUser().getID());
+			}).getCurrentRoom().removeUser(getCurrentUser().getID());
+			UserService.getInstance().setIsOnline(currentUser, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
