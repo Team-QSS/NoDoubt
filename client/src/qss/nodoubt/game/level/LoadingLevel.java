@@ -167,6 +167,12 @@ public class LoadingLevel extends GameLevel{
 		
 		case Protocol.ADD_ROOM:{
 			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			if(rm == null) {
+				System.out.println("RoomManager가 Null : LoadingLevel");
+			}
+			if(room == null) {
+				System.out.println("Room이 Null : LoadingLevel");
+			}
 			rm.addRoom(room);
 			
 			int i = roomList.getListSize();
