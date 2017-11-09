@@ -47,12 +47,12 @@ public class Font {
 			Map<String, Integer> tags = m_Chars[c];
 			
 			int width = tags.get("width");
-			int xoffset = tags.get("xoffset");
+			int xadvance = tags.get("xadvance");
 			
 			if(i == str.length() - 1) {
 				length += width;
 			}else {
-				length += xoffset;
+				length += xadvance;
 			}
 			
 			if(i != 0) {
