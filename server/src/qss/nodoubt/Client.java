@@ -119,7 +119,7 @@ public class Client {
 			}
 			
 			//만약 나간 사람이 방장이면
-			if(user.getID()==room.getMaster().getID()){
+			if(room.getMaster() != null && user.getID()==room.getMaster().getID()){
 				
 				sendData=Util.packetGenerator(
 						Protocol.REMOVE_ROOM,
@@ -183,7 +183,7 @@ public class Client {
 			roomManager.getRoom(RoomManager.LOBBY).removeUser(user.getID());
 			UserService.getInstance().setIsOnline(user, false);
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
