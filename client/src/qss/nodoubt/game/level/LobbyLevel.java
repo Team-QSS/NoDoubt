@@ -41,7 +41,7 @@ public class LobbyLevel extends GameLevel{
 		
 		for(int i = 0; i < m_Buttons.length; i++){
 //			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -760 + 380*i,-360);
-			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -760 + 760 * i, -360);
+			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -480 + 480 * i, -360);
 		}
 		m_Buttons[0].setListener(
 				(action, key) ->{

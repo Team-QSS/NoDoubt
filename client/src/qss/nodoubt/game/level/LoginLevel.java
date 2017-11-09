@@ -40,8 +40,8 @@ public class LoginLevel extends GameLevel{
 	public LoginLevel() {
 		m_Signin = new Button ("SigninButton",   null, 0, -329, 680, 101);
 		m_Signup = new Button ("RegisterButton", null, 0, -455, 117, 32);
-		m_ID = new TextBox(0.0f, 0.0f,  -21.5f, -313.0f,    3.0f, false, false, false, "ID", new Vector3f(0,0,0));
-		m_PW = new TextBox(0.0f, 0.0f, -172.5f, -313.0f, -148.0f,  true, false, false, "PW", new Vector3f(0,0,0));
+		m_ID = new TextBox("fontR11", 0.0f, 0.0f,  -21.5f, -313.0f,    3.0f, false, false, "ID", new Vector3f(0,0,0));
+		m_PW = new TextBox("fontR11", 0.0f, 0.0f, -172.5f, -313.0f, -148.0f,  true, false, "PW", new Vector3f(0,0,0));
 		
 		m_Signin.setListener(
 				/*
