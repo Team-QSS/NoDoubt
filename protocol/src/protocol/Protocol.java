@@ -64,5 +64,7 @@ public interface Protocol {
 	String PUSH_REQUEST="PushRequest";
 	String PUSH_REPORT="PushReport";
 	
+	String TURN_END_REQUEST="TurnEndRequest";
+	
 	String GAME_END_REPORT="GameEndReport";
 }

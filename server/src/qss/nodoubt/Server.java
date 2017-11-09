@@ -540,6 +540,60 @@ public class Server extends JFrame{
 				
 				case Protocol.DOUBT_REQUEST:{
 					
+					String Target=(String)data.get("Target");
+					
+					sendData=Util.packetGenerator(Protocol.DOUBT_CHECK);
+
+					//의심을 선언당한 타겟에게 패킷을 전송
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return u.getID().equals(Target)&&u.isOnline();
+					});
+				}
+				
+				case Protocol.DOUBT_RESULT:{
+					User user=client.getCurrentUser();
+					
+					boolean result=(boolean)data.get("Result");
+					
+					sendData=Util.packetGenerator(Protocol.DOUBT_REPORT,
+							new KeyValue("Player",user.getID()),
+							new KeyValue("Result",result)
+							);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}
+				
+				case Protocol.STEP_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(Protocol.STEP_REPORT,
+							new KeyValue("Player",user.getID())
+							);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신 제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}
+				
+				case Protocol.PUSH_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(Protocol.PUSH_REPORT,
+							new KeyValue("Player",user.getID())
+							);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신 제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
 				}
 				
 				
