@@ -113,14 +113,18 @@ public class InGameLevel extends GameLevel{
 				"Test1", "Test2", "Test3", "Test4", "Test5", "Test6"
 		}, 6);
 		
+		m_RoomID=roomID;
+		
 		m_IsInitialized = false;
 		
 		networkInit();
 	}
 	
 	private void networkInit(){
+		JSONObject msg=Util.packetGenerator(Protocol.DUMMY_PACKET);
+		Network.getInstance().pushMessage(msg);
 		//초기화
-		JSONObject msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_RoomID));
+		msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_RoomID));
 		Network.getInstance().pushMessage(msg);
 	}
 	
@@ -128,7 +132,6 @@ public class InGameLevel extends GameLevel{
 	public void update(float deltaTime) {
 		JSONObject msg = Network.getInstance().pollMessage();
 		if(msg != null) {
-			
 			protocolProcess(msg);
 		}
 		
@@ -160,28 +163,26 @@ public class InGameLevel extends GameLevel{
 		
 		switch((String)data.get("Protocol")){
 		
-		case Protocol.GET_ROOM_DATA:{
-			if(((String)data.get("Room")).equals("null")) {
-				JSONObject msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_RoomID));
-				Network.getInstance().pushMessage(msg);
-			}else {
+			case Protocol.DUMMY_PACKET:{
+			}break;
+			
+			case Protocol.GET_ROOM_DATA:{
 				m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 				m_IsInitialized = true;
-			}
-		}break;
-		
-		case Protocol.DECLARE_REPORT:{
-			recieveDeclare((Integer) data.get("Value"));
-		}break;
-		
-		case Protocol.DOUBT_CHECK:{
-			recieveDoubtCheck();
-		}break;
-		
-		default:{
-			System.out.println("unknownProtocol");
-			System.out.println(data);
-		}break;
+			}break;
+			
+			case Protocol.DECLARE_REPORT:{
+				recieveDeclare((Integer) data.get("Value"));
+			}break;
+			
+			case Protocol.DOUBT_CHECK:{
+				recieveDoubtCheck();
+			}break;
+			
+			default:{
+				System.out.println("unknownProtocol");
+				System.out.println(data);
+			}break;
 		
 		}
 	}
