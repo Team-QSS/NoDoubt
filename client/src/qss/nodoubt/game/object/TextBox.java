@@ -144,7 +144,6 @@ public class TextBox extends GameObject{
 		}
 		else {
 			m_Width = FontManager.getInstance().getFont(m_Font).getStringWidth(m_Text.toString()); //현재 TextBox의 문쟈열의 길이를 구함
-			System.out.println("글자의 너비는 : " + m_Width);
 			Vector2f m_tempLoc = new Vector2f(m_Location.x - m_Width / 2, m_Location.y); //현재 getStringWidht 함수에 문제가 있어 m_Width의 값이 틀림
 			
 			if(m_Label != null){
