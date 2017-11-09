@@ -32,7 +32,7 @@ public class CreateRoomLevel extends GameLevel{
 	
 	public CreateRoomLevel(){
 		m_CreateRoomBG = new Background("CreateBG");
-		m_GameName = new TextBox(0.0f, 0.0f, 2.0f, -313.0f, 26.0f, false, false, false, "Room Name", new Vector3f(0, 0, 0));
+		m_GameName = new TextBox("fontR11", 0.0f, 0.0f, 2.0f, -313.0f, 26.0f, false, false, "Room Name", new Vector3f(0, 0, 0));
 		m_CreateRoom = new Button("RoomCreateButton", null, 0, -144, 680, 101);
 		m_Back = new Button ("BackButton1", "BackButton2", 677, 414);
 		

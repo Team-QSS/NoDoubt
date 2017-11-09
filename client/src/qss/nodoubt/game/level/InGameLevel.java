@@ -20,7 +20,7 @@ import util.KeyValue;
 import util.Util;
 
 public class InGameLevel extends GameLevel{
-	private static final Vector3f UI_COLOR = new Vector3f(0x9a / 255f, 0x6f / 255f, 0x52 / 255f);
+	private static final Vector3f UI_COLOR = new Vector3f(0x80/255f, 0x43/255f, 0x1b/255f);
 	private static final Random RANDOM = new Random();
 	private static final Vector3f[] m_Colors = new Vector3f[]{
 			new Vector3f(0xff / 255f, 0x39 / 255f, 0x39 / 255f), 
