@@ -5,7 +5,7 @@ import qss.nodoubt.game.object.GameObject;
 public class TabPanel extends GameObject{
 
 	public TabPanel() {
-		super("TabPanel", 9);
+		super("TabPanel", 1);
 		setPosition(-690, -270);
 	}
 
