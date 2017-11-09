@@ -114,7 +114,7 @@ public class CreateRoomLevel extends GameLevel{
 				Game.getInstance().setNextLevel(new WaitingRoomLevel(createdRoom.id));
 			} else {
 				// 서버에 방을 성공적으로 등록하지 못할 시 실행
-				m_GameName.m_Text.delete(0, m_GameName.m_Text.length())
+				m_GameName.m_Text.delete(0, m_GameName.m_Text.length());
 				System.out.println("방생성 오류");
 			}
 		}break;
