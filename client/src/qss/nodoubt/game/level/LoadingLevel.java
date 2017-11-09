@@ -146,7 +146,7 @@ public class LoadingLevel extends GameLevel{
 	}
 	
 	private void protocolProcess(JSONObject data){
-		System.out.println(data);
+		System.out.println(data + "LoadingLevel");
 		switch((String)data.get("Protocol")){
 		case Protocol.GET_ROOMMANAGER:{
 			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
@@ -200,7 +200,7 @@ public class LoadingLevel extends GameLevel{
 		
 		default:{
 			System.out.println("unknownProtocol");
-			System.out.println(data);
+			System.out.println(data + "LoadingLevel");
 		}break;
 		
 		}

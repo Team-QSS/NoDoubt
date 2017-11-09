@@ -187,6 +187,11 @@ public class Server extends JFrame{
 			JSONObject sendData = new JSONObject();
 			switch((String)data.get("Protocol")){
 			
+				case Protocol.DUMMY_PACKET:{
+					sendData=Util.packetGenerator(Protocol.DUMMY_PACKET);
+					client.send(sendData);
+				}break;
+			
 				case Protocol.REGISTER_REQUEST:{
 					User user=new User((String) data.get("ID"),(String) data.get("Password"));
 					

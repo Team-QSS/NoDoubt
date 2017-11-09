@@ -33,8 +33,6 @@ public class WaitingRoomLevel extends GameLevel{
 //	private Button[] m_PlusButtons; 초대버튼
 	private Background m_WaitingRoomBG;
 	
-	private Network m_Network;
-	
 	private Room room;
 
 	private double m_Roomid;
@@ -108,8 +106,10 @@ public class WaitingRoomLevel extends GameLevel{
 	}
 	
 	private void networkInit(){
+		JSONObject msg=Util.packetGenerator(Protocol.DUMMY_PACKET);
+		Network.getInstance().pushMessage(msg);
 		//초기화
-		JSONObject msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_Roomid));
+		msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_Roomid));
 		Network.getInstance().pushMessage(msg);
 	}
 	
@@ -137,8 +137,12 @@ public class WaitingRoomLevel extends GameLevel{
 	}
 	
 	private void protocolProcess(JSONObject data){
-		System.out.println(data);
+		System.out.println(room + "WaitingRoomLevel");
+		System.out.println(data + "WaitingRoomLevel");
 		switch((String)data.get("Protocol")){
+		
+		case Protocol.DUMMY_PACKET:{
+		}break;
 		
 		case Protocol.GET_ROOM_DATA:{
 			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
@@ -203,7 +207,7 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		default:{
 			System.out.println("unknownProtocol");
-			System.out.println(data);
+			System.out.println(data + "WaitingRoomLevel");
 		}break;
 		
 		}
