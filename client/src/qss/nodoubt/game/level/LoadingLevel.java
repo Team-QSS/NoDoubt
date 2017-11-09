@@ -104,6 +104,9 @@ public class LoadingLevel extends GameLevel{
 	}
 	
 	private void initAction(){
+		JSONObject msg=Util.packetGenerator(Protocol.DUMMY_PACKET);
+		Network.getInstance().pushMessage(msg);
+		
 		JSONObject getRoomManager=Util.packetGenerator(Protocol.GET_ROOMMANAGER);
 		Network.getInstance().pushMessage(getRoomManager);
 	}
@@ -151,10 +154,12 @@ public class LoadingLevel extends GameLevel{
 	private void protocolProcess(JSONObject data){
 		System.out.println(data + "LoadingLevel");
 		switch((String)data.get("Protocol")){
+		
+		case Protocol.DUMMY_PACKET:{
+		}break;
+		
 		case Protocol.GET_ROOMMANAGER:{
-			while(rm == null) {
-				rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
-			}
+			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
 			int i = 0;
 			
 			for(double id:rm.list.keySet()){
