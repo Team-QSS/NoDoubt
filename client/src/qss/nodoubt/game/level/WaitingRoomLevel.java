@@ -97,6 +97,7 @@ public class WaitingRoomLevel extends GameLevel{
 		m_WaitingRoomBG = new Background("WaitingBG");
 		
 		m_Roomid = roomid;
+		room = null;
 		
 //		addObject(m_StartButton);
 		addObject(m_BackButton);
@@ -145,7 +146,9 @@ public class WaitingRoomLevel extends GameLevel{
 		}break;
 		
 		case Protocol.GET_ROOM_DATA:{
-			room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			while(room == null) {
+				room = Network.gson.fromJson((String)data.get("Room"), Room.class);
+			}
 			int index = -1;
 			for(String key:room.list.keySet()) {				
 				User user=room.list.get(key);
@@ -162,7 +165,19 @@ public class WaitingRoomLevel extends GameLevel{
 		}break;
 		
 		case Protocol.JOIN_ROOM_RESULT:{
-			User joinUser=Network.gson.fromJson((String)data.get("User"), User.class);
+			User joinUser = null;
+			
+			if(joinUser == null) {
+				joinUser = Network.gson.fromJson((String)data.get("User"), User.class);
+			}
+		
+			if(room == null) {
+				System.out.println("Room이 Null");
+			}
+			if(joinUser == null) {
+				System.out.println("User가 Null");
+			}
+			
 			room.enterUser(joinUser);
 			//ui처리
 			int i=joinUser.getRoomIndex();

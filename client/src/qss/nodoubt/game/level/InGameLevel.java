@@ -161,8 +161,13 @@ public class InGameLevel extends GameLevel{
 		switch((String)data.get("Protocol")){
 		
 		case Protocol.GET_ROOM_DATA:{
-			m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
-			m_IsInitialized = true;
+			if(((String)data.get("Room")).equals("null")) {
+				JSONObject msg=Util.packetGenerator(Protocol.GET_ROOM_DATA, new KeyValue("RoomID",m_RoomID));
+				Network.getInstance().pushMessage(msg);
+			}else {
+				m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+				m_IsInitialized = true;
+			}
 		}break;
 		
 		case Protocol.DECLARE_REPORT:{
