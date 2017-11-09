@@ -47,7 +47,7 @@ public class Player extends GameObject{
 		super("Blank", 0);
 		setPosition(m_LOCS[index]);
 		
-		this.m_Name = new TextBox(0, m_LOCS[index].x, m_LOCS[index].y + 63, m_LOCS[index].x, m_LOCS[index].y - 63, false, true, true, null, new Vector3f(1.0f, 1.0f, 1.0f));
+		this.m_Name = new TextBox("fontB8", 0, m_LOCS[index].x, m_LOCS[index].y + 63, m_LOCS[index].x, m_LOCS[index].y + 63, false, true, null, new Vector3f(1.0f, 1.0f, 1.0f));
 		this.m_Name.m_Text.append(name);
 		this.m_MotorCycle = new Icon(m_TEXTURES[index], m_LOCS[index].x, m_LOCS[index].y - 25);
 	}

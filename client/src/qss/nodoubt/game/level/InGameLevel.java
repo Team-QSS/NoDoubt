@@ -20,8 +20,16 @@ import util.KeyValue;
 import util.Util;
 
 public class InGameLevel extends GameLevel{
-	private static final Vector3f UI_COLOR = new Vector3f(0x9a / 255f, 0x6f / 255f, 0x52 / 255f);
+	private static final Vector3f UI_COLOR = new Vector3f(0x80/255f, 0x43/255f, 0x1b/255f);
 	private static final Random RANDOM = new Random();
+	private static final Vector3f[] m_Colors = new Vector3f[]{
+			new Vector3f(0xff / 255f, 0x39 / 255f, 0x39 / 255f), 
+			new Vector3f(0x23 / 255f, 0x75 / 255f, 0xeb / 255f), 
+			new Vector3f(0x36 / 255f, 0x8c / 255f, 0x49 / 255f), 
+			new Vector3f(0xff / 255f, 0xf4 / 255f, 0x1f / 255f), 
+			new Vector3f(0xff / 255f, 0xff / 255f, 0xff / 255f), 
+			new Vector3f(0xa9 / 255f, 0x24 / 255f, 0xff / 255f)
+	};
 	
 	private enum State {
 		DICEROLL, DECLARE, DOUBT, STEPPUSH
@@ -37,7 +45,6 @@ public class InGameLevel extends GameLevel{
 	private GameBoard m_Board;
 	private DiceResultPanel m_DiceResultPanel;
 	private Bike[] m_Bikes = new Bike[6];
-	private TurnLabel m_TurnLabel;
 	
 	private float m_AcSeconds = 0.0f;
 	private int m_AcMinites = 0;
@@ -52,6 +59,7 @@ public class InGameLevel extends GameLevel{
 	
 	private boolean m_IsTabPushed = false;
 	private TabPanel m_TabPanel;
+	private TabLabel m_TabLabels[] = new TabLabel[6];
 	
 	private double m_RoomID;
 	
@@ -72,6 +80,7 @@ public class InGameLevel extends GameLevel{
 		for(int i = 1; i <= 6; i++) {
 			final int t = i;
 			addObject(new IButton(i, () -> declare(t)));
+			m_TabLabels[i - 1] = null;
 		}
 		addObject(new IButton("Doubt", () -> doubt()));
 		addObject(new IButton("Roll", () -> rollDice()));
@@ -97,25 +106,30 @@ public class InGameLevel extends GameLevel{
 				if(key == GLFW_KEY_TAB) {
 					m_IsTabPushed = true;
 					addObject(m_TabPanel = new TabPanel());
+					for(int i = 0; i < 6; i++)
+					{
+						if(m_TurnInfo[i] != null) addObject(m_TabLabels[i] = new TabLabel(m_TurnInfo[i].name, m_TurnInfo[i].color));
+					}
 				}
 				
 			}else if(action == GLFW_RELEASE) {
 				if(key == GLFW_KEY_TAB) {
 					m_IsTabPushed = false;
 					removeObject(m_TabPanel);
+					for(int i = 0; i < 6; i++)
+					{
+						if(m_TabLabels[i] != null) removeObject(m_TabLabels[i]);
+						m_TabLabels[i] = null;
+					}
 				}
 			}
 		}, null);
 		
 		m_DiceResultPanel.setResult(5);
 		
-		m_TurnLabel = new TurnLabel(new String[] {
-				"Test1", "Test2", "Test3", "Test4", "Test5", "Test6"
-		}, 6);
-		
-		m_RoomID=roomID;
-		
 		m_IsInitialized = false;
+		m_RoomID=roomID;
+		m_Turn = 0;
 		
 		networkInit();
 	}
@@ -154,7 +168,9 @@ public class InGameLevel extends GameLevel{
 			}
 		}
 		
-		drawTextCall("fontB11", m_TurnLabel.getID(), new Vector2f(465, 347), m_TurnLabel.getColor());
+		if(m_IsInitialized) {
+			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), m_Colors[m_TurnInfo[m_Turn].user.getRoomIndex()]);
+		}
 		
 	}
 	
@@ -169,6 +185,7 @@ public class InGameLevel extends GameLevel{
 			case Protocol.GET_ROOM_DATA:{
 				m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
 				m_IsInitialized = true;
+				setRoomData();
 			}break;
 			
 			case Protocol.DECLARE_REPORT:{
@@ -303,6 +320,9 @@ public class InGameLevel extends GameLevel{
 			if(m_TurnInfo[i] != null) 
 			{
 				System.out.println(m_TurnInfo[i].name + " : " + m_TurnInfo[i].color + "Color");
+			}else
+			{
+				removeObject(m_Bikes[i]);
 			}
 		}
 	}

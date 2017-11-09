@@ -62,14 +62,20 @@ public class LoadingLevel extends GameLevel{
 						if(m_Create.onButton(mouseX, mouseY)){
 							if(action == GLFW_PRESS){
 								m_Create.focus();
+								m_Create.setPressedin(true);
 							}
-							if(action == GLFW_RELEASE){
-								Game.getInstance().setNextLevel(new CreateRoomLevel());
+							if(action == GLFW_RELEASE && m_Create.getPressedin()){
+								if(m_Create.getPressedin()) {
+									Game.getInstance().setNextLevel(new CreateRoomLevel());
+									m_Create.unfocus();
+									m_Create.setPressedin(false);
+								}
 							}
 						}
 						else{
 							if(action == GLFW_RELEASE){
 								m_Create.unfocus();
+								m_Create.setPressedin(false);
 							}
 						}
 						
@@ -81,14 +87,18 @@ public class LoadingLevel extends GameLevel{
 						if(m_Back.onButton(mouseX, mouseY)){
 							if(action == GLFW_PRESS){
 								m_Back.focus();
+								m_Back.setPressedin(true);
 							}
-							if(action == GLFW_RELEASE){
+							if(action == GLFW_RELEASE && m_Back.getPressedin()){
 								Game.getInstance().setNextLevel(new LobbyLevel());
+								m_Back.unfocus();
+								m_Back.setPressedin(false);
 							}
 						}
 						else{
 							if(action == GLFW_RELEASE){
 								m_Back.unfocus();
+								m_Back.setPressedin(false);
 							}
 						}
 					}
@@ -166,6 +176,7 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
+				
 				roomList.addRoomObject(i, new RoomObject(0, room.getName(), room.getMaster().getID(), room.list.size(), room.id));
 				roomList.getIndex(i).setIndex(i);
 				

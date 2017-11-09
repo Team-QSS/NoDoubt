@@ -19,7 +19,7 @@ public class IButton extends GameObject{
 	private boolean m_IsFocused = false;
 
 	public IButton(int n, ClickListener listener) {
-		super("IButton" + n, 1);
+		super("IButton" + n, 2);
 		m_Listener = listener;
 		m_TextureName = "IButton" + n;
 		

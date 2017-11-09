@@ -17,9 +17,10 @@ public class TabLabel extends GameObject{
 	
 	private String m_Name;
 	private int m_Color;
+	private Vector2f m_TextPosition;
 
 	public TabLabel(String name, char color) {
-		super("TabDot" + color, 8);
+		super("TabDot" + color, 0);
 		
 		switch(color)
 		{
@@ -30,11 +31,14 @@ public class TabLabel extends GameObject{
 		case 'W': setPosition(new Vector2f(-888, -408)); m_Color = 4; break;
 		case 'P': setPosition(new Vector2f(-888, -494)); m_Color = 5; break;
 		}
+		
+		m_TextPosition = new Vector2f(getPosition()).add(new Vector2f(77, 16));
+		m_Name = name;
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		drawTextCall("FontR7", m_Name, new Vector2f(getPosition()).add(new Vector2f(77, 16)), m_Colors[m_Color]);
+		drawTextCall("fontR10", m_Name, m_TextPosition, m_Colors[m_Color]);
 	}
 
 }
