@@ -94,6 +94,9 @@ public class LoadingLevel extends GameLevel{
 					}
 				});
 		m_LoadingBG = new Background("LoadBG");
+		
+		rm = null;
+		
 		addObject(m_Create);
 		addObject(m_Back);
 		addObject(m_LoadingBG);
@@ -149,9 +152,11 @@ public class LoadingLevel extends GameLevel{
 		System.out.println(data);
 		switch((String)data.get("Protocol")){
 		case Protocol.GET_ROOMMANAGER:{
-			rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
+			while(rm == null) {
+				rm=Network.gson.fromJson((String)data.get("RoomManager"), RoomManager.class);
+			}
 			int i = 0;
-
+			
 			for(double id:rm.list.keySet()){
 				if(id==RoomManager.LOBBY)
 					continue;
@@ -166,7 +171,13 @@ public class LoadingLevel extends GameLevel{
 		}break;
 		
 		case Protocol.ADD_ROOM:{
-			Room room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+			Room room = Network.gson.fromJson((String)data.get("Room"), Room.class);
+			if(rm == null) {
+				System.out.println("RoomManager가 Null : LoadingLevel");
+			}
+			if(room == null) {
+				System.out.println("Room이 Null : LoadingLevel");
+			}
 			rm.addRoom(room);
 			
 			int i = roomList.getListSize();
