@@ -25,7 +25,13 @@ public class DicePanel extends GameObject{
 	}
 	
 	public void setDiceResult(int n) {
-		setTexture("" + n);
-		m_DiceNum = n;
+		if(1 <= n && n <= 6) {
+			setTexture("Dice" + n);
+			m_DiceNum = n;
+		}else {
+			setTexture("DiceD");
+			m_DiceNum = -1;
+		}
+		
 	}
 }
