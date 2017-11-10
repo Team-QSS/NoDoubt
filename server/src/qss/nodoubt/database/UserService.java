@@ -69,12 +69,11 @@ public class UserService {
     	return login(user.getID(), user.getPassword());
     }
     
-    public int setIsOnline(String id, boolean isOnline) {
-    	return database.executeAndUpdate("UPDATE users SET is_online = ? WHERE id = ?", isOnline, id);
+    public int setIsOnline(String id, Boolean isOnline) {
+    	return database.executeAndUpdate("UPDATE users SET is_online = ? WHERE id = ?", isOnline.compareTo(false), id);
     }
     
-    public int setIsOnline(User user, boolean isOnline) {
-    	return database.executeAndUpdate("UPDATE users SET is_online = ? WHERE id = ?", isOnline, user.getID());
+    public int setIsOnline(User user, Boolean isOnline) {
+    	return setIsOnline(user.getID(), isOnline);
     }
-    
 }
