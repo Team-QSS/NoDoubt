@@ -87,7 +87,6 @@ public class InGameLevel extends GameLevel{
 		addObject(new IButton("Doubt", () -> doubt()));
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DiceResultPanel = new DeclarePanel());
-		addObject(new Stump());
 		addObject(m_Bikes[0] = new Bike('R'));
 		addObject(m_Bikes[1] = new Bike('B'));
 		addObject(m_Bikes[2] = new Bike('G'));
