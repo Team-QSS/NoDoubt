@@ -536,7 +536,7 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
-				}
+				}break;
 				
 				case Protocol.DOUBT_REQUEST:{
 					
@@ -549,7 +549,7 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return u.getID().equals(Target)&&u.isOnline();
 					});
-				}
+				}break;
 				
 				case Protocol.DOUBT_RESULT:{
 					User user=client.getCurrentUser();
@@ -566,7 +566,7 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
-				}
+				}break;
 				
 				case Protocol.STEP_REQUEST:{
 					User user=client.getCurrentUser();
@@ -580,7 +580,7 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
-				}
+				}break;
 				
 				case Protocol.PUSH_REQUEST:{
 					User user=client.getCurrentUser();
@@ -594,8 +594,16 @@ public class Server extends JFrame{
 						User u=c.getCurrentUser();
 						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
-				}
+				}break;
 				
+				case Protocol.TURN_END_REQUEST:{
+					
+				}break;
+				
+				case Protocol.GAME_END_REPORT:{
+					double roomID=(double)data.get("RoomID");
+					String player=(String)data.get("Player");
+				}break;
 				
 				default:{
 					Util.printLog(mainTextArea, "알지못하는 프로토콜입니다.");
