@@ -43,13 +43,13 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private GameBoard m_Board;
-	private DiceResultPanel m_DiceResultPanel;
+	private DeclarePanel m_DiceResultPanel;
 	private Bike[] m_Bikes = new Bike[6];
 	
 	private float m_AcSeconds = 0.0f;
 	private int m_AcMinites = 0;
 	
-	private State m_State = State.DICEROLL;
+	private State m_State;
 	private int m_Turn;
 	private TurnInfo m_TurnInfo[];
 	private boolean m_IsAnimating = false;
@@ -72,6 +72,8 @@ public class InGameLevel extends GameLevel{
 	
 	private int m_PlayerCount = 0;
 	
+	private boolean m_IsDiceRolled;
+	
 	/**
 	 * @param roomID 방 식별번호
 	 */
@@ -84,7 +86,7 @@ public class InGameLevel extends GameLevel{
 		}
 		addObject(new IButton("Doubt", () -> doubt()));
 		addObject(new IButton("Roll", () -> rollDice()));
-		addObject(m_DiceResultPanel = new DiceResultPanel());
+		addObject(m_DiceResultPanel = new DeclarePanel());
 		addObject(new Stump());
 		addObject(m_Bikes[0] = new Bike('R'));
 		addObject(m_Bikes[1] = new Bike('B'));
@@ -97,12 +99,6 @@ public class InGameLevel extends GameLevel{
 		
 		setEventListener((action, key) -> {
 			if(action == GLFW_PRESS) {
-				if(key == GLFW_KEY_R) m_Board.moveBike(0, 1);
-				if(key == GLFW_KEY_B) m_Board.moveBike(1, 1);
-				if(key == GLFW_KEY_G) m_Board.moveBike(2, 1);
-				if(key == GLFW_KEY_Y) m_Board.moveBike(3, 1);
-				if(key == GLFW_KEY_W) m_Board.moveBike(4, 1);
-				if(key == GLFW_KEY_P) m_Board.moveBike(5, 1);
 				if(key == GLFW_KEY_TAB) {
 					m_IsTabPushed = true;
 					addObject(m_TabPanel = new TabPanel());
@@ -129,7 +125,7 @@ public class InGameLevel extends GameLevel{
 		
 		m_IsInitialized = false;
 		m_RoomID=roomID;
-		m_Turn = 0;
+
 		
 		networkInit();
 	}
@@ -220,11 +216,12 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void rollDice() {
-		if(m_State.equals(State.DICEROLL) && !m_IsTabPushed){
+		if(m_State.equals(State.DICEROLL) && !m_IsTabPushed && !m_IsDiceRolled){
 			Random r = RANDOM;
 			int n = r.nextInt(6) + 1;
 			m_DiceResultPanel.setResult(n);
 			m_DiceResult = n;
+			m_IsDiceRolled = true;
 		}
 	}
 	
@@ -236,7 +233,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void declare(int n) {
-		if(m_State.equals(State.DECLARE) && isMyTurn() && !m_IsTabPushed) {
+		if(m_State.equals(State.DECLARE) && isMyTurn() && !m_IsTabPushed && m_IsDiceRolled) {
 			JSONObject msg = new JSONObject();
 			
 			msg.put("Protocol", "DeclareRequest");
@@ -325,6 +322,10 @@ public class InGameLevel extends GameLevel{
 				removeObject(m_Bikes[i]);
 			}
 		}
+		
+		m_Turn = 0;
+		m_State = State.DICEROLL;
+		m_IsDiceRolled = false;
 	}
 	
 	private void goNextTurn() {
@@ -332,6 +333,8 @@ public class InGameLevel extends GameLevel{
 			m_Turn += 1;
 			m_Turn %= 6;
 		}while (m_TurnInfo[m_Turn] == null);
+		
+		m_IsDiceRolled = false;
 	}
 	
 	private char getColorCharacter(int color)
