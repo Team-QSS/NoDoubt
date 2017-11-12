@@ -19,6 +19,21 @@ public class DicePanel extends GameObject{
 	@Override
 	public void update(float deltaTime) {
 		m_AcTime += deltaTime;
+		if(m_IsAnimating && m_AcTime > 1.0/15)
+		{
+			m_AnimateFrame += 1;
+			if(m_AnimateFrame == 15)
+			{
+				m_IsAnimating = false;
+			}
+			if(m_DiceNum > 0)
+			{
+				setTexture("Dice" + m_DiceNum + "" + m_AnimateFrame);
+			}else
+			{
+				setTexture("DiceX" + m_AnimateFrame);
+			}
+		}
 	}
 
 	public int getDiceNum() {
@@ -36,8 +51,10 @@ public class DicePanel extends GameObject{
 			m_DiceNum = n;
 		}else {
 			setTexture("DiceX1");
+			m_DiceNum = -1;
 		}
 		m_IsAnimating = true;
-		m_AnimateFrame = 0;
+		m_AcTime = 0;
+		m_AnimateFrame = 1;
 	}
 }
