@@ -55,6 +55,7 @@ public class InGameLevel extends GameLevel{
 	private boolean m_IsAnimating = false;
 	
 	private int m_DiceResult = 0;
+	private DicePanel m_DicePanel = new DicePanel();
 	private int m_DeclareNum = 0;
 	
 	private boolean m_IsTabPushed = false;
@@ -218,7 +219,7 @@ public class InGameLevel extends GameLevel{
 		if(m_State.equals(State.DICEROLL) && !m_IsTabPushed && !m_IsDiceRolled){
 			Random r = RANDOM;
 			int n = r.nextInt(6) + 1;
-			m_DiceResultPanel.setResult(n);
+			m_DicePanel.setDiceResult(n);
 			m_DiceResult = n;
 			m_IsDiceRolled = true;
 		}
