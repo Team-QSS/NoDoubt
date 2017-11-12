@@ -22,6 +22,7 @@ public class DicePanel extends GameObject{
 		if(m_IsAnimating && m_AcTime > 1.0/15)
 		{
 			m_AnimateFrame += 1;
+			m_AcTime -= 1.0f / 15;
 			if(m_AnimateFrame == 15)
 			{
 				m_IsAnimating = false;

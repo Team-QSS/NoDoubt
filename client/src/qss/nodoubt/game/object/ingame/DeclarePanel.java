@@ -5,7 +5,7 @@ import qss.nodoubt.game.object.GameObject;
 public class DeclarePanel extends GameObject{
 
 	public DeclarePanel() {
-		super("Result1", 1);
+		super("Blank", 1);
 		setPosition(714, -431);
 	}
 
@@ -17,6 +17,10 @@ public class DeclarePanel extends GameObject{
 	
 	public void setResult(int n) {
 		setTexture("Result" + n);
+	}
+	
+	public void setBlank() {
+		setTexture("Blank");
 	}
 
 }

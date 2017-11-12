@@ -43,7 +43,6 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private GameBoard m_Board;
-	private DeclarePanel m_DiceResultPanel;
 	private Bike[] m_Bikes = new Bike[6];
 	
 	private float m_AcSeconds = 0.0f;
@@ -55,8 +54,9 @@ public class InGameLevel extends GameLevel{
 	private boolean m_IsAnimating = false;
 	
 	private int m_DiceResult = 0;
-	private DicePanel m_DicePanel = new DicePanel();
+	private DicePanel m_DicePanel;
 	private int m_DeclareNum = 0;
+	private DeclarePanel m_DeclarePanel;
 	
 	private boolean m_IsTabPushed = false;
 	private TabPanel m_TabPanel;
@@ -87,7 +87,8 @@ public class InGameLevel extends GameLevel{
 		}
 		addObject(new IButton("Doubt", () -> doubt()));
 		addObject(new IButton("Roll", () -> rollDice()));
-		addObject(m_DiceResultPanel = new DeclarePanel());
+		addObject(m_DeclarePanel = new DeclarePanel());
+		addObject(m_DicePanel = new DicePanel());
 		addObject(m_Bikes[0] = new Bike('R'));
 		addObject(m_Bikes[1] = new Bike('B'));
 		addObject(m_Bikes[2] = new Bike('G'));
@@ -120,8 +121,6 @@ public class InGameLevel extends GameLevel{
 				}
 			}
 		}, null);
-		
-		m_DiceResultPanel.setResult(5);
 		
 		m_IsInitialized = false;
 		m_RoomID=roomID;
@@ -185,7 +184,7 @@ public class InGameLevel extends GameLevel{
 			}break;
 			
 			case Protocol.DECLARE_REPORT:{
-				recieveDeclare((Integer) data.get("Value"));
+				recieveDeclare(Math.toIntExact((Long) data.get("Value")));
 			}break;
 			
 			case Protocol.DOUBT_CHECK:{
@@ -216,12 +215,13 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void rollDice() {
-		if(m_State.equals(State.DICEROLL) && !m_IsTabPushed && !m_IsDiceRolled){
+		if(m_State.equals(State.DICEROLL) && !m_IsTabPushed && isMyTurn()){
 			Random r = RANDOM;
-			int n = r.nextInt(6) + 1;
+			int n = r.nextInt(7);
 			m_DicePanel.setDiceResult(n);
 			m_DiceResult = n;
 			m_IsDiceRolled = true;
+			m_State = State.DECLARE;
 		}
 	}
 	
@@ -236,21 +236,25 @@ public class InGameLevel extends GameLevel{
 		if(m_State.equals(State.DECLARE) && isMyTurn() && !m_IsTabPushed && m_IsDiceRolled) {
 			JSONObject msg = new JSONObject();
 			
-			msg.put("Protocol", "DeclareRequest");
+			msg.put("Protocol", Protocol.DECLARE_REQUEST);
 			msg.put("Value", n);
 			
 			System.out.println(msg.toJSONString());
 			
 			Network.getInstance().pushMessage(msg);
 			m_DeclareNum = n;
+			m_DeclarePanel.setResult(n);
 			m_State = State.DOUBT;
 		}
 	}
 	
 	private void recieveDeclare(int n) {
-		m_State = State.DOUBT;
-		m_DeclareNum = n;
-		m_DiceResultPanel.setResult(n);
+		if(!isMyTurn() && (m_State.equals(State.DECLARE) || m_State.equals(State.DICEROLL))) {
+			m_State = State.DOUBT;
+			m_DeclareNum = n;
+			m_DeclarePanel.setResult(n);
+		}
+		
 	}
 	
 	private boolean isMyTurn() {
@@ -326,6 +330,8 @@ public class InGameLevel extends GameLevel{
 		m_Turn = 0;
 		m_State = State.DICEROLL;
 		m_IsDiceRolled = false;
+		m_DeclareNum = 0;
+		m_DiceResult = 0;
 	}
 	
 	private void goNextTurn() {
@@ -335,6 +341,10 @@ public class InGameLevel extends GameLevel{
 		}while (m_TurnInfo[m_Turn] == null);
 		
 		m_IsDiceRolled = false;
+		m_DiceResult = 0;
+		m_DeclareNum = 0;
+		m_DicePanel.setBlank();
+		m_DeclarePanel.setBlank();
 	}
 	
 	private char getColorCharacter(int color)
