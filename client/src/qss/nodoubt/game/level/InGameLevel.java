@@ -67,6 +67,8 @@ public class InGameLevel extends GameLevel{
 	private IButton m_StepButton = null;
 	private IButton m_PushButton = null;
 	
+	private CountDownPanel m_CountPanel;
+	
 	private Room m_Room;
 	
 	private boolean m_IsInitialized;
@@ -89,6 +91,7 @@ public class InGameLevel extends GameLevel{
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DeclarePanel = new DeclarePanel());
 		addObject(m_DicePanel = new DicePanel());
+		addObject(m_CountPanel = new CountDownPanel(() -> {}));
 		addObject(m_Bikes[0] = new Bike('R'));
 		addObject(m_Bikes[1] = new Bike('B'));
 		addObject(m_Bikes[2] = new Bike('G'));
@@ -249,6 +252,7 @@ public class InGameLevel extends GameLevel{
 			m_DeclareNum = n;
 			m_DeclarePanel.setResult(n);
 			m_State = State.DOUBT;
+			m_CountPanel.setCountDown(5);
 		}
 	}
 	
@@ -257,6 +261,7 @@ public class InGameLevel extends GameLevel{
 			m_State = State.DOUBT;
 			m_DeclareNum = n;
 			m_DeclarePanel.setResult(n);
+			m_CountPanel.setCountDown(5);
 		}
 		
 	}
