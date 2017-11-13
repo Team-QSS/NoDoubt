@@ -175,7 +175,7 @@ public class Server extends JFrame{
 			}finally{
 				try {
 					reader.close();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				client.exit(clients);

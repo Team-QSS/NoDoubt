@@ -114,13 +114,8 @@ public class Client {
 					User u=c.getCurrentUser();
 					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 				});
-				
-				return;
-			}
-			
-			//만약 나간 사람이 방장이면
-			if(room.getMaster() != null && user.getID()==room.getMaster().getID()){
-				
+			} else if(room.getMaster() != null && user.getID()==room.getMaster().getID()){
+				//만약 나간 사람이 방장이면
 				sendData=Util.packetGenerator(
 						Protocol.REMOVE_ROOM,
 						new KeyValue("RoomID",roomID)
@@ -150,33 +145,31 @@ public class Client {
 				
 				//방을 제거
 				roomManager.removeRoom(roomID);
-				
-				return;
-			}
-			
-			sendData=Util.packetGenerator(
-					Protocol.QUIT_ROOM_REPORT,
-					new KeyValue("UserID",user.getID())
-					);
+			} else {
+				sendData=Util.packetGenerator(
+						Protocol.QUIT_ROOM_REPORT,
+						new KeyValue("UserID",user.getID())
+						);
 
-			//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
-			send(clients,sendData,c->{
-				User u=c.getCurrentUser();
-				return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
-			});
-			
-			//lobby에 있는 유저에게 방인원변경을 통지한다.
-			int currentUserNum=roomManager.getRoom(roomID).list.size();
-			sendData=Util.packetGenerator(
-					Protocol.UPDATE_ROOM_CURRENT_USER_NUM,
-					new KeyValue("RoomID",roomID),
-					new KeyValue("UserNum",currentUserNum)
-					);
-			
-			send(clients,sendData,c->{
-				User u=c.getCurrentUser();
-				return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
-			});
+				//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
+				send(clients,sendData,c->{
+					User u=c.getCurrentUser();
+					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
+				});
+				
+				//lobby에 있는 유저에게 방인원변경을 통지한다.
+				int currentUserNum=roomManager.getRoom(roomID).list.size();
+				sendData=Util.packetGenerator(
+						Protocol.UPDATE_ROOM_CURRENT_USER_NUM,
+						new KeyValue("RoomID",roomID),
+						new KeyValue("UserNum",currentUserNum)
+						);
+				
+				send(clients,sendData,c->{
+					User u=c.getCurrentUser();
+					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+				});
+			}
 			
 			//유저를 roomManager상의 방에서 제거한다.
 			user.setOnline(false);

@@ -73,17 +73,14 @@ public class Network {
 					try {
 						if(m_InputStream.ready())
 							m_InputQueue.offer((JSONObject) new JSONParser().parse(m_InputStream.readLine()));
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ParseException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				try {
 					m_InputStream.close();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -99,14 +96,14 @@ public class Network {
 							m_OutputStream.write(s);
 							m_OutputStream.newLine();
 							m_OutputStream.flush();
-						} catch (IOException e) {
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
 				}
 				try {
 					m_OutputStream.close();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
