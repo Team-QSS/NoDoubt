@@ -273,7 +273,7 @@ public class Server extends JFrame{
 						//lobby에 있는 모든유저에게 전송
 						send(sendData,c->{
 							User u=c.getCurrentUser();
-							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+							return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 						});
 						
 					} else {
@@ -314,7 +314,7 @@ public class Server extends JFrame{
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
 					
 					//lobby에 있는 유저에게 방인원변경을 통지한다.
@@ -327,7 +327,7 @@ public class Server extends JFrame{
 					
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 					});
 				}break;
 
@@ -357,7 +357,7 @@ public class Server extends JFrame{
 						//로비의 모든 유저에게 전달
 						send(sendData,c->{
 							User u=c.getCurrentUser();
-							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+							return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 						});
 						
 						return;
@@ -374,7 +374,7 @@ public class Server extends JFrame{
 						//로비의 모든 유저에게 전달
 						send(sendData,c->{
 							User u=c.getCurrentUser();
-							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+							return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 						});
 						
 						sendData=Util.packetGenerator(
@@ -384,7 +384,7 @@ public class Server extends JFrame{
 						//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 						send(sendData,c->{
 							User u=c.getCurrentUser();
-							return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
+							return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
 						});
 						
 						//방의 모든 인원을 lobby로 이동 
@@ -407,7 +407,7 @@ public class Server extends JFrame{
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
 					});
 					
 					//lobby에 있는 유저에게 방인원변경을 통지한다.
@@ -420,7 +420,7 @@ public class Server extends JFrame{
 					
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 					});
 					
 				}break;
@@ -436,7 +436,7 @@ public class Server extends JFrame{
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
 				}break;
 				
@@ -481,7 +481,7 @@ public class Server extends JFrame{
 					
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 					});
 				}break;
 				
@@ -534,7 +534,7 @@ public class Server extends JFrame{
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
 				}break;
 				
@@ -578,7 +578,7 @@ public class Server extends JFrame{
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신 제외
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
 				}break;
 				
@@ -592,7 +592,7 @@ public class Server extends JFrame{
 					//자신의 유저와 같은방에있는 애들에게 보냄//자신 제외
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
 				}break;
 				

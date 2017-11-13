@@ -112,7 +112,7 @@ public class Client {
 				//로비의 모든 유저에게 전달
 				send(clients,sendData,c->{
 					User u=c.getCurrentUser();
-					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+					return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 				});
 			} else if(room.getMaster() != null && user.getID()==room.getMaster().getID()){
 				//만약 나간 사람이 방장이면
@@ -124,7 +124,7 @@ public class Client {
 				//로비의 모든 유저에게 전달
 				send(clients,sendData,c->{
 					User u=c.getCurrentUser();
-					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+					return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 				});
 				
 				sendData=Util.packetGenerator(
@@ -134,7 +134,7 @@ public class Client {
 				//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 				send(clients,sendData,c->{
 					User u=c.getCurrentUser();
-					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
+					return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
 				});
 				
 				//방의 모든 인원을 lobby로 이동 
@@ -154,7 +154,7 @@ public class Client {
 				//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 				send(clients,sendData,c->{
 					User u=c.getCurrentUser();
-					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
+					return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==roomID;
 				});
 				
 				//lobby에 있는 유저에게 방인원변경을 통지한다.
@@ -167,7 +167,7 @@ public class Client {
 				
 				send(clients,sendData,c->{
 					User u=c.getCurrentUser();
-					return !u.equals(user)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+					return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
 				});
 			}
 			
