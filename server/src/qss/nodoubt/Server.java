@@ -568,6 +568,18 @@ public class Server extends JFrame{
 					});
 				}break;
 				
+				case Protocol.MOVE_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(Protocol.MOVE_REPORT);
+
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신 제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
+				}break;
+				
 				case Protocol.STEP_REQUEST:{
 					User user=client.getCurrentUser();
 					
@@ -596,13 +608,21 @@ public class Server extends JFrame{
 					});
 				}break;
 				
+				//일단 안쓰는듯
 				case Protocol.TURN_END_REQUEST:{
 					
 				}break;
 				
-				case Protocol.GAME_END_REPORT:{
-					double roomID=(double)data.get("RoomID");
-					String player=(String)data.get("Player");
+				case Protocol.GAME_END_REQUEST:{
+					User user=client.getCurrentUser();
+					
+					sendData=Util.packetGenerator(Protocol.GAME_END_REPORT);
+					
+					//자신의 유저와 같은방에있는 애들에게 보냄//자신 제외
+					send(sendData,c->{
+						User u=c.getCurrentUser();
+						return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+					});
 				}break;
 				
 				default:{

@@ -56,6 +56,7 @@ public interface Protocol {
 	String DOUBT_RESULT="DoubtResult";
 	String DOUBT_REPORT="DoubtReport";
 	
+	String MOVE_REQUEST="MoveRequest";
 	String MOVE_REPORT="MoveReport";
 	
 	String STEP_REQUEST="StepRequest";
@@ -66,5 +67,6 @@ public interface Protocol {
 	
 	String TURN_END_REQUEST="TurnEndRequest";
 	
+	String GAME_END_REQUEST="GameEndRequest";
 	String GAME_END_REPORT="GameEndReport";
 }
