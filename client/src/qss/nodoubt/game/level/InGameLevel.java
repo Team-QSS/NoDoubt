@@ -169,31 +169,35 @@ public class InGameLevel extends GameLevel{
 		
 	}
 	
-	private void protocolProcess(JSONObject data){
-		System.out.println(data);
+	private void protocolProcess(JSONObject msg){
+		System.out.println(msg);
 		
-		switch((String)data.get("Protocol")){
+		switch((String)msg.get("Protocol")){
 		
 			case Protocol.DUMMY_PACKET:{
 			}break;
 			
 			case Protocol.GET_ROOM_DATA:{
-				m_Room=Network.gson.fromJson((String)data.get("Room"), Room.class);
+				m_Room=Network.gson.fromJson((String)msg.get("Room"), Room.class);
 				m_IsInitialized = true;
 				setRoomData();
 			}break;
 			
 			case Protocol.DECLARE_REPORT:{
-				recieveDeclare(Math.toIntExact((Long) data.get("Value")));
+				recieveDeclare(Math.toIntExact((Long) msg.get("Value")));
 			}break;
 			
 			case Protocol.DOUBT_CHECK:{
 				recieveDoubtCheck();
 			}break;
 			
+			case Protocol.DOUBT_REPORT:{
+				recieveDoubtReport(msg);
+			}break;
+			
 			default:{
 				System.out.println("unknownProtocol");
-				System.out.println(data);
+				System.out.println(msg);
 			}break;
 		
 		}
@@ -262,22 +266,38 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void doubt() {
-		if(m_State.equals(State.DOUBT) && isMyTurn() && !m_IsTabPushed) {
+		if(m_State.equals(State.DOUBT) && !isMyTurn() && !m_IsTabPushed) {
 			JSONObject msg = new JSONObject();
 			msg.put("Protocol", "DoubtRequest");
+			msg.put("Target", m_TurnInfo[m_Turn].name);
 			Network.getInstance().pushMessage(msg);
 		}
 	}
 	
 	private void recieveDoubtCheck() {
-		JSONObject msg = new JSONObject();
-		msg.put("Protocol", "DoubtResult");
-		if(m_DiceResult == m_DeclareNum) {
-			msg.put("Result", false);
-		}else {
-			msg.put("Result", true);
+		if(m_State.equals(State.DOUBT) && isMyTurn())
+		{
+			JSONObject msg = new JSONObject();
+			msg.put("Protocol", "DoubtResult");
+			if(m_DiceResult == m_DeclareNum) {
+				msg.put("Result", false);
+			}else {
+				msg.put("Result", true);
+			}
+			Network.getInstance().pushMessage(msg);
 		}
-		Network.getInstance().pushMessage(msg);
+	}
+	
+	private void recieveDoubtReport(JSONObject msg) {
+		String str = (String) msg.get("Player");
+		boolean result = (Boolean) msg.get("Result");
+		
+		if(result) {
+			m_Board.push(m_Turn);
+			goNextTurn();
+		}else {
+			//의심 시도 실패시 내용
+		}
 	}
 	
 	private void step() {
@@ -340,11 +360,18 @@ public class InGameLevel extends GameLevel{
 			m_Turn %= 6;
 		}while (m_TurnInfo[m_Turn] == null);
 		
+		if(isMyTurn()) {
+			JSONObject msg = new JSONObject();
+			msg.put("Protocol", "TurnEndReport");
+			Network.getInstance().pushMessage(msg);
+		}
+		
 		m_IsDiceRolled = false;
 		m_DiceResult = 0;
 		m_DeclareNum = 0;
 		m_DicePanel.setBlank();
 		m_DeclarePanel.setBlank();
+		m_State = State.DICEROLL;
 	}
 	
 	private char getColorCharacter(int color)
