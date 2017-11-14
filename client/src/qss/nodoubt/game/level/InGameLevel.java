@@ -188,7 +188,8 @@ public class InGameLevel extends GameLevel{
 			}break;
 			
 			case Protocol.DOUBT_CHECK:{
-				recieveDoubtCheck();
+				String player=(String)msg.get("Player");
+				recieveDoubtCheck(player);
 			}break;
 			
 			case Protocol.DOUBT_REPORT:{
@@ -274,11 +275,12 @@ public class InGameLevel extends GameLevel{
 		}
 	}
 	
-	private void recieveDoubtCheck() {
+	private void recieveDoubtCheck(String player) {
 		if(m_State.equals(State.DOUBT) && isMyTurn())
 		{
 			JSONObject msg = new JSONObject();
 			msg.put("Protocol", "DoubtResult");
+			msg.put("Player", player);
 			if(m_DiceResult == m_DeclareNum) {
 				msg.put("Result", false);
 			}else {
