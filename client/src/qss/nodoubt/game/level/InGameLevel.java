@@ -156,15 +156,18 @@ public class InGameLevel extends GameLevel{
 		
 		if(m_IsAnimating && m_Board.isIdle()) {
 			m_IsAnimating = false;
-		}
-		
-		if(m_Board.getState().isConflict) {
-			m_State = State.STEPPUSH;
-			if(m_StepButton != null && isMyTurn()) {
-				addObject(m_StepButton = new IButton("Step", () -> step()));
-				addObject(m_PushButton = new IButton("Push", () -> push()));
+			if(m_Board.getState().isConflict) {
+				m_State = State.STEPPUSH;
+				if(m_StepButton != null && isMyTurn()) {
+					addObject(m_StepButton = new IButton("Step", () -> step()));
+					addObject(m_PushButton = new IButton("Push", () -> push()));
+				}
+			}else {
+				goNextTurn();
 			}
 		}
+		
+		
 		
 		if(m_IsInitialized) {
 			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), m_Colors[m_TurnInfo[m_Turn].user.getRoomIndex()]);
@@ -362,6 +365,8 @@ public class InGameLevel extends GameLevel{
 				removeObject(m_Bikes[i]);
 			}
 		}
+		
+		m_Board.setBike(0, 0);
 		
 		m_Turn = 0;
 		m_State = State.DICEROLL;

@@ -73,7 +73,7 @@ public class GameBoard {
 		}
 	}
 	
-	private void setBike(int n, int pos) {
+	public void setBike(int n, int pos) {
 		Bike bike = m_Bikes[n];
 		Cell c = m_Cells[s_RoadPos[pos].x][s_RoadPos[pos].y];
 		if(c.bikes[n] == null) {
