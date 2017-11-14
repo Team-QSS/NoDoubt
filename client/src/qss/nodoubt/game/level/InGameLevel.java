@@ -126,7 +126,12 @@ public class InGameLevel extends GameLevel{
 					}
 				}
 			}
-		}, null);
+		}, (action, button) -> {
+			if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT && m_State.equals(State.END))
+			{
+				Game.getInstance().setNextLevel(new LobbyLevel());
+			}
+		});
 		
 		m_IsInitialized = false;
 		m_RoomID=roomID;
@@ -179,12 +184,7 @@ public class InGameLevel extends GameLevel{
 		}
 		
 		
-		setEventListener(null, (action, button) -> {
-			if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT && m_State.equals(State.END))
-			{
-				Game.getInstance().setNextLevel(new LobbyLevel());
-			}
-		});
+		
 		
 	}
 	
@@ -461,7 +461,10 @@ public class InGameLevel extends GameLevel{
 		m_DeclareNum = 0;
 		m_DicePanel.setBlank();
 		m_DeclarePanel.setBlank();
-		m_State = State.DICEROLL;
+		if(!m_State.equals(State.END)) {
+			m_State = State.DICEROLL;
+		}
+		
 	}
 	
 	private char getColorCharacter(int color)

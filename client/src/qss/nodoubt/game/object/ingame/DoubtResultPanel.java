@@ -22,6 +22,7 @@ public class DoubtResultPanel extends GameObject{
 	
 	public DoubtResultPanel(String name, int c, boolean isSucces) {
 		super("VictoryPanel", 0);
+		
 		if(isSucces) setTexture("SuccessPanel");
 		else setTexture("FailurePanel");
 		m_AcTime = 0;
