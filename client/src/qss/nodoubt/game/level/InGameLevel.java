@@ -233,7 +233,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void moveBike(int n, int movingDistance) {
-		if(m_State.equals(State.DICEROLL) && !m_IsAnimating) {
+		if(m_State.equals(State.MOVE) && !m_IsAnimating) {
 			m_Board.moveBike(n, movingDistance);
 			m_IsAnimating = true;
 		}
@@ -309,11 +309,11 @@ public class InGameLevel extends GameLevel{
 	
 	private void move() {
 		if(m_State.equals(State.DOUBT)) {
+			m_State = State.MOVE;
 			moveBike(m_Turn, m_DeclareNum);
 			if(isMyTurn()) {
 				
 			}
-			m_State = State.MOVE;
 		}
 	}
 	private void step() {

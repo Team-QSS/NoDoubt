@@ -3,6 +3,7 @@ package qss.nodoubt.game.object.ingame;
 import qss.nodoubt.game.object.GameObject;
 
 public class CountDownPanel extends GameObject{
+	
 	public interface CountDownListener {
 		void onZero();
 	}
@@ -23,7 +24,10 @@ public class CountDownPanel extends GameObject{
 		if(m_IsCountDowning) {
 			m_RTime -= deltaTime;
 			
-			setTexture("CountPanel" + (Math.round(m_RTime + 0.5f)));
+			if(m_RTime > 0) {
+				setTexture("CountPanel" + (Math.round(m_RTime + 0.5f)));
+			}
+			
 			
 			if(m_RTime < 0) {
 				m_RTime = 0;
