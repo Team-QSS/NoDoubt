@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
 import protocol.Protocol;
+import qss.nodoubt.game.Game;
 import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.ingame.*;
@@ -177,6 +178,14 @@ public class InGameLevel extends GameLevel{
 			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), m_Colors[m_TurnInfo[m_Turn].user.getRoomIndex()]);
 		}
 		
+		
+		setEventListener(null, (action, button) -> {
+			if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT && m_State.equals(State.END))
+			{
+				Game.getInstance().setNextLevel(new LobbyLevel());
+			}
+		});
+		
 	}
 	
 	private void protocolProcess(JSONObject msg){
@@ -318,10 +327,12 @@ public class InGameLevel extends GameLevel{
 			m_Board.push(m_Turn);
 			m_CountPanel.countDownStop();
 			goNextTurn();
+			addObject(new DoubtResultPanel(str, m_Room.list.get(str).getRoomIndex(), true));
 		}else {
 			m_CountPanel.countDownStop();
 			m_Board.push(m_Room.list.get(str).getRoomIndex());
 			move();
+			addObject(new DoubtResultPanel(str, m_Room.list.get(str).getRoomIndex(), false));
 		}
 	}
 	
@@ -470,5 +481,11 @@ public class InGameLevel extends GameLevel{
 	
 	private void game_End(int n) {
 		m_State = State.END;
+		addObject(new GameEndPanel(m_TurnInfo[n].name, n));
+		if(isMyTurn()){
+			JSONObject msg = new JSONObject();
+			msg.put("Protocol", Protocol.GAME_END_REPORT);
+			Network.getInstance().pushMessage(msg);
+		}
 	}
 }
