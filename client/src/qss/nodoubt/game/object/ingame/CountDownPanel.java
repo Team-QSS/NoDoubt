@@ -23,14 +23,22 @@ public class CountDownPanel extends GameObject{
 		if(m_IsCountDowning) {
 			m_RTime -= deltaTime;
 			
+			setTexture("CountPanel" + (Math.round(m_RTime + 0.5f)));
+			
 			if(m_RTime < 0) {
 				m_RTime = 0;
 				m_IsCountDowning = false;
 				m_Listener.onZero();
-				
+				setTexture("Blank");
 			}
-			setTexture("CountPanel" + (Math.round(m_RTime + 0.5f)));
+			
 		}
+	}
+	
+	public void countDownStop() {
+		m_RTime = 0;
+		m_IsCountDowning = false;
+		setTexture("Blank");
 	}
 	
 	public void setCountDown(float seconds) {

@@ -32,7 +32,7 @@ public class InGameLevel extends GameLevel{
 	};
 	
 	private enum State {
-		DICEROLL, DECLARE, DOUBT, STEPPUSH
+		DICEROLL, DECLARE, DOUBT, MOVE, STEPPUSH
 	}
 	
 	public class TurnInfo
@@ -91,7 +91,7 @@ public class InGameLevel extends GameLevel{
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DeclarePanel = new DeclarePanel());
 		addObject(m_DicePanel = new DicePanel());
-		addObject(m_CountPanel = new CountDownPanel(() -> {}));
+		addObject(m_CountPanel = new CountDownPanel(() -> move()));
 		addObject(m_Bikes[0] = new Bike('R'));
 		addObject(m_Bikes[1] = new Bike('B'));
 		addObject(m_Bikes[2] = new Bike('G'));
@@ -299,12 +299,23 @@ public class InGameLevel extends GameLevel{
 		
 		if(result) {
 			m_Board.push(m_Turn);
+			m_CountPanel.countDownStop();
 			goNextTurn();
 		}else {
-			//의심 시도 실패시 내용
+			m_CountPanel.countDownStop();
+			move();
 		}
 	}
 	
+	private void move() {
+		if(m_State.equals(State.DOUBT)) {
+			moveBike(m_Turn, m_DeclareNum);
+			if(isMyTurn()) {
+				
+			}
+			m_State = State.MOVE;
+		}
+	}
 	private void step() {
 		removeObject(m_PushButton);
 		removeObject(m_StepButton);
