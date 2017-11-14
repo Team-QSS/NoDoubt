@@ -77,6 +77,11 @@ TabDotG:../res/image/Button&Obj/Game-Tab3.png
 TabDotY:../res/image/Button&Obj/Game-Tab4.png
 TabDotW:../res/image/Button&Obj/Game-Tab5.png
 TabDotP:../res/image/Button&Obj/Game-Tab6.png
+CountPanel1:../res/image/Button&Obj/Game-Count1.png
+CountPanel2:../res/image/Button&Obj/Game-Count2.png
+CountPanel3:../res/image/Button&Obj/Game-Count3.png
+CountPanel4:../res/image/Button&Obj/Game-Count4.png
+CountPanel5:../res/image/Button&Obj/Game-Count5.png
 
 //주사위
 Dice11:../res/image/Dice/Dice101.png

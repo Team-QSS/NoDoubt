@@ -32,7 +32,7 @@ public class InGameLevel extends GameLevel{
 	};
 	
 	private enum State {
-		DICEROLL, DECLARE, DOUBT, STEPPUSH
+		DICEROLL, DECLARE, DOUBT, MOVE, STEPPUSH
 	}
 	
 	public class TurnInfo
@@ -67,6 +67,8 @@ public class InGameLevel extends GameLevel{
 	private IButton m_StepButton = null;
 	private IButton m_PushButton = null;
 	
+	private CountDownPanel m_CountPanel;
+	
 	private Room m_Room;
 	
 	private boolean m_IsInitialized;
@@ -89,6 +91,7 @@ public class InGameLevel extends GameLevel{
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DeclarePanel = new DeclarePanel());
 		addObject(m_DicePanel = new DicePanel());
+		addObject(m_CountPanel = new CountDownPanel(() -> move()));
 		addObject(m_Bikes[0] = new Bike('R'));
 		addObject(m_Bikes[1] = new Bike('B'));
 		addObject(m_Bikes[2] = new Bike('G'));
@@ -153,15 +156,18 @@ public class InGameLevel extends GameLevel{
 		
 		if(m_IsAnimating && m_Board.isIdle()) {
 			m_IsAnimating = false;
-		}
-		
-		if(m_Board.getState().isConflict) {
-			m_State = State.STEPPUSH;
-			if(m_StepButton != null && isMyTurn()) {
-				addObject(m_StepButton = new IButton("Step", () -> step()));
-				addObject(m_PushButton = new IButton("Push", () -> push()));
+			if(m_Board.getState().isConflict) {
+				m_State = State.STEPPUSH;
+				if(m_StepButton != null && isMyTurn()) {
+					addObject(m_StepButton = new IButton("Step", () -> step()));
+					addObject(m_PushButton = new IButton("Push", () -> push()));
+				}
+			}else {
+				goNextTurn();
 			}
 		}
+		
+		
 		
 		if(m_IsInitialized) {
 			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), m_Colors[m_TurnInfo[m_Turn].user.getRoomIndex()]);
@@ -231,7 +237,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void moveBike(int n, int movingDistance) {
-		if(m_State.equals(State.DICEROLL) && !m_IsAnimating) {
+		if(m_State.equals(State.MOVE) && !m_IsAnimating) {
 			m_Board.moveBike(n, movingDistance);
 			m_IsAnimating = true;
 		}
@@ -250,6 +256,7 @@ public class InGameLevel extends GameLevel{
 			m_DeclareNum = n;
 			m_DeclarePanel.setResult(n);
 			m_State = State.DOUBT;
+			m_CountPanel.setCountDown(5);
 		}
 	}
 	
@@ -258,6 +265,7 @@ public class InGameLevel extends GameLevel{
 			m_State = State.DOUBT;
 			m_DeclareNum = n;
 			m_DeclarePanel.setResult(n);
+			m_CountPanel.setCountDown(5);
 		}
 		
 	}
@@ -296,12 +304,23 @@ public class InGameLevel extends GameLevel{
 		
 		if(result) {
 			m_Board.push(m_Turn);
+			m_CountPanel.countDownStop();
 			goNextTurn();
 		}else {
-			//의심 시도 실패시 내용
+			m_CountPanel.countDownStop();
+			move();
 		}
 	}
 	
+	private void move() {
+		if(m_State.equals(State.DOUBT)) {
+			m_State = State.MOVE;
+			moveBike(m_Turn, m_DeclareNum);
+			if(isMyTurn()) {
+				
+			}
+		}
+	}
 	private void step() {
 		removeObject(m_PushButton);
 		removeObject(m_StepButton);
@@ -348,6 +367,8 @@ public class InGameLevel extends GameLevel{
 				removeObject(m_Bikes[i]);
 			}
 		}
+		
+		m_Board.setBike(0, 0);
 		
 		m_Turn = 0;
 		m_State = State.DICEROLL;
