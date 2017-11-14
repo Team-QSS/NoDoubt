@@ -77,6 +77,8 @@ public class InGameLevel extends GameLevel{
 	
 	private boolean m_IsDiceRolled;
 	
+	private GameBoard.State m_ConflictState;
+	
 	/**
 	 * @param roomID 방 식별번호
 	 */
@@ -156,9 +158,11 @@ public class InGameLevel extends GameLevel{
 		
 		if(m_IsAnimating && m_Board.isIdle()) {
 			m_IsAnimating = false;
-			if(m_Board.getState().isConflict) {
+			GameBoard.State bstate = m_Board.getState();
+			if(bstate.isConflict) {
 				m_State = State.STEPPUSH;
-				if(m_StepButton != null && isMyTurn()) {
+				m_ConflictState = bstate;
+				if(isMyTurn()) {
 					addObject(m_StepButton = new IButton("Step", () -> step()));
 					addObject(m_PushButton = new IButton("Push", () -> push()));
 				}
@@ -199,6 +203,14 @@ public class InGameLevel extends GameLevel{
 			
 			case Protocol.DOUBT_REPORT:{
 				recieveDoubtReport(msg);
+			}break;
+			
+			case Protocol.STEP_REPORT:{
+				recieveStepReport();
+			}break;
+			
+			case Protocol.PUSH_REPORT:{
+				recievePushReport();
 			}break;
 			
 			default:{
@@ -306,6 +318,7 @@ public class InGameLevel extends GameLevel{
 			goNextTurn();
 		}else {
 			m_CountPanel.countDownStop();
+			m_Board.push(m_Room.list.get(str).getRoomIndex());
 			move();
 		}
 	}
@@ -319,6 +332,7 @@ public class InGameLevel extends GameLevel{
 			}
 		}
 	}
+	
 	private void step() {
 		removeObject(m_PushButton);
 		removeObject(m_StepButton);
@@ -326,6 +340,15 @@ public class InGameLevel extends GameLevel{
 		m_StepButton = null;
 		
 		JSONObject msg = new JSONObject();
+		msg.put("Protocol", Protocol.STEP_REQUEST);
+		Network.getInstance().pushMessage(msg);
+		
+		m_IsDiceRolled = false;
+		m_DiceResult = 0;
+		m_DeclareNum = 0;
+		m_DicePanel.setBlank();
+		m_DeclarePanel.setBlank();
+		m_State = State.DICEROLL;
 	}
 	
 	private void push() {
@@ -335,6 +358,39 @@ public class InGameLevel extends GameLevel{
 		m_StepButton = null;
 		
 		JSONObject msg = new JSONObject();
+		msg.put("Protocol", Protocol.PUSH_REQUEST);
+		Network.getInstance().pushMessage(msg);
+		
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_ConflictState.conflictBikes[i])
+			{
+				m_Board.push(i);
+			}
+		}
+		
+		goNextTurn();
+	}
+	
+	private void recieveStepReport() {
+		m_IsDiceRolled = false;
+		m_DiceResult = 0;
+		m_DeclareNum = 0;
+		m_DicePanel.setBlank();
+		m_DeclarePanel.setBlank();
+		m_State = State.DICEROLL;
+	}
+	
+	private void recievePushReport() {
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_ConflictState.conflictBikes[i])
+			{
+				m_Board.push(i);
+			}
+		}
+		
+		goNextTurn();
 	}
 	
 	private void setRoomData() {

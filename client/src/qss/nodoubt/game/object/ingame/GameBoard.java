@@ -30,7 +30,13 @@ public class GameBoard {
 		public boolean isConflict = false;
 		public int conflictPos = 0;
 		public int conflictBike = 0;
-		public State setConflict(int pos, int bike) {isConflict = true; conflictPos = pos; conflictBike = bike; return this;}
+		public boolean conflictBikes[] = new boolean[6];
+		public State() {
+			for(int i = 0; i < 6; i++) {
+				conflictBikes[i] = false;
+			}
+		}
+		public State setConflict(int pos, int bike, boolean[] bikes) {isConflict = true; conflictPos = pos; conflictBike = bike; for(int i = 0; i < 6; i++) conflictBikes[i] = bikes[i];return this;}
 	}
 	
 	private int m_BikePoses[];
@@ -75,13 +81,22 @@ public class GameBoard {
 	
 	public void setBike(int n, int pos) {
 		Bike bike = m_Bikes[n];
+		if(bike == null) return;
 		Cell c = m_Cells[s_RoadPos[pos].x][s_RoadPos[pos].y];
 		if(c.bikes[n] == null) {
 			c.bikeCount += 1;
 			c.bikes[n] = bike;
 			
 			if(c.bikeCount > 1) {
-				m_State.setConflict(pos, n);
+				boolean bb[] = new boolean[6];
+				for(int i = 0; i < 6; i++) {
+					if(c.bikes[i] != null && i != n) {
+						bb[i] = true;
+					}else {
+						bb[i] = false;
+					}
+				}
+				m_State.setConflict(pos, n, bb);
 			}else {
 				m_State.isConflict = false;
 			}
@@ -119,6 +134,7 @@ public class GameBoard {
 		int curPos = m_BikePoses[n];
 		Cell c = m_Cells[s_RoadPos[curPos].x][s_RoadPos[curPos].y];
 		Bike b = c.bikes[n];
+		if(b == null) return;
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
 		m_MovingGoal = curPos + movingDistance;
@@ -145,7 +161,6 @@ public class GameBoard {
 	public void push(int n) {
 		int curPos = m_BikePoses[n];
 		Cell c = m_Cells[s_RoadPos[curPos].x][s_RoadPos[curPos].y];
-		Bike b = c.bikes[n];
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
 		setBike(n, c.recentCheckPoint);
@@ -171,7 +186,7 @@ public class GameBoard {
 	public State getState() {
 		if(m_State.isConflict) {
 			m_State.isConflict = false;
-			return new State().setConflict(m_State.conflictPos, m_State.conflictBike);
+			return new State().setConflict(m_State.conflictPos, m_State.conflictBike, m_State.conflictBikes);
 		}
 		return m_State;
 	}

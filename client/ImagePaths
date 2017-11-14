@@ -63,6 +63,10 @@ IButtonPF:../res/image/Button&Obj/Game-ButtonP2.png
 IButtonSF:../res/image/Button&Obj/Game-ButtonS2.png
 IButtonDoubtF:../res/image/Button&Obj/Game-ButtonD2.png
 IButtonRollF:../res/image/Button&Obj/Game-ButtonR2.png
+IButtonStep:../res/image/Button&Obj/Game-ButtonS1.png
+IButtonStepF:../res/image/Button&Obj/Game-ButtonS2.png
+IButtonPush:../res/image/Button&Obj/Game-ButtonP1.png
+IButtonPushF:../res/image/Button&Obj/Game-ButtonP2.png
 Result1:../res/image/Button&Obj/Game-1.png
 Result2:../res/image/Button&Obj/Game-2.png
 Result3:../res/image/Button&Obj/Game-3.png

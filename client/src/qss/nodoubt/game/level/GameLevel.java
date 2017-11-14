@@ -21,6 +21,7 @@ public abstract class GameLevel {
 	
 	private Queue<Text> m_TextDrawingQueue = new LinkedList<Text>();
 	private Set<GameObject> m_AddedObject = new HashSet<GameObject>();
+	private Set<GameObject> m_RemovedObject = new HashSet<GameObject>();
 	
 	private class Text
 	{
@@ -56,6 +57,13 @@ public abstract class GameLevel {
 			obj.act();
 		}
 		m_AddedObject.clear();
+		
+		for(GameObject obj : m_RemovedObject)
+		{
+			obj.destroyObject();
+			m_ObjectList.remove(obj);
+		}
+		m_RemovedObject.clear();
 	}
 	
 	protected final void drawObjects() {
@@ -88,8 +96,13 @@ public abstract class GameLevel {
 	 * @param obj 삭제할 오브젝트
 	 */
 	protected final void removeObject(GameObject obj) {
-		obj.destroyObject();
-		m_ObjectList.remove(obj);
+		if(m_IsActive) {
+			m_RemovedObject.add(obj);
+		}else {
+			obj.destroyObject();
+			m_ObjectList.remove(obj);
+		}
+		
 	}
 	
 	/**

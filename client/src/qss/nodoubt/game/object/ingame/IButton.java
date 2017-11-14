@@ -46,6 +46,10 @@ public class IButton extends GameObject{
 			setPosition(-777, -405);
 		}else if(type.equals("Roll")) {
 			setPosition(714, -204);
+		}else if(type.equals("Step")) {
+			setPosition(292, 0);
+		}else if(type.equals("Push")) {
+			setPosition(-261, 0);
 		}
 		
 		setEventListener(null, (action, button) -> {
