@@ -32,7 +32,7 @@ public class InGameLevel extends GameLevel{
 	};
 	
 	private enum State {
-		DICEROLL, DECLARE, DOUBT, MOVE, STEPPUSH
+		DICEROLL, DECLARE, DOUBT, MOVE, STEPPUSH, END
 	}
 	
 	public class TurnInfo
@@ -101,7 +101,7 @@ public class InGameLevel extends GameLevel{
 		addObject(m_Bikes[4] = new Bike('W'));
 		addObject(m_Bikes[5] = new Bike('P'));
 		
-		m_Board = new GameBoard(6, m_Bikes);
+		m_Board = new GameBoard(6, m_Bikes, (n) -> game_End(n));
 		
 		setEventListener((action, key) -> {
 			if(action == GLFW_PRESS) {
@@ -466,5 +466,9 @@ public class InGameLevel extends GameLevel{
 		}
 		System.out.println("0~5이외의 숫자로 오류 판정 시도");
 		return 'F';
+	}
+	
+	private void game_End(int n) {
+		m_State = State.END;
 	}
 }

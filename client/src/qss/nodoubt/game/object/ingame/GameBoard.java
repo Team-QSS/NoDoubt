@@ -26,6 +26,10 @@ public class GameBoard {
 		int currentPos;
 	}
 	
+	public interface GameEndListener {
+		void onGameEnd(int n);
+	}
+	
 	public class State {
 		public boolean isConflict = false;
 		public int conflictPos = 0;
@@ -53,7 +57,9 @@ public class GameBoard {
 	
 	private State m_State;
 	
-	public GameBoard(int playerNum, Bike bikes[]) {
+	private GameEndListener m_Listener;
+	
+	public GameBoard(int playerNum, Bike bikes[], GameEndListener listener) {
 		m_State = new State();
 		m_BikePoses = new int[playerNum];
 		m_Cells = new Cell[6][];
@@ -77,6 +83,8 @@ public class GameBoard {
 		for(int i = 0; i < playerNum; i++) {
 			setBike(i, 0);
 		}
+		
+		m_Listener = listener;
 	}
 	
 	public void setBike(int n, int pos) {
@@ -128,6 +136,8 @@ public class GameBoard {
 				a2 += 1;
 			}
 		}
+		
+		if(pos == 35) m_Listener.onGameEnd(n);
 	}
 	
 	public void moveBike(int n, int movingDistance) {
@@ -138,6 +148,7 @@ public class GameBoard {
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
 		m_MovingGoal = curPos + movingDistance;
+		if(m_MovingGoal > 35) m_MovingGoal = 35;
 		m_MovingDirection = movingDistance / movingDistance;
 		b.go(s_RoadPos[curPos + movingDistance / movingDistance]);
 		m_MovingBikeIndex = n;
