@@ -142,6 +142,13 @@ public class LoginLevel extends GameLevel{
 		addObject(m_LoginBG);
 		addObject(m_ID);
 		addObject(m_PW);
+		
+		try {
+			GameWindow.getInstance().setIcon("../res/image/Main/ND-Icon.png");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
