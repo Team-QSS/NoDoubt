@@ -5,5 +5,6 @@
 	<classpathentry exported="true" kind="lib" path="library/gson-2.8.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="library/json-simple-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="library/mysql-connector-java-5.1.41-bin.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/Projects/ide/eclipse/NoDoubt/server/library/nodoubt-protocol.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

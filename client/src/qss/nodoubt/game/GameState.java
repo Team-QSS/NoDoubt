@@ -1,7 +1,5 @@
 package qss.nodoubt.game;
 
-import room.User;
-
 public class GameState {
 	private static GameState s_Instance = null;
 	/**
