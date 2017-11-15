@@ -37,8 +37,8 @@ public class DoubtResultPanel extends GameObject{
 		if(m_AcTime > 2) {
 			setTexture("Blank");
 		}else {
-			int width = FontManager.getInstance().getFont("fontB11").getStringWidth(m_String);
-			drawTextCall("fontB11", m_String, new Vector2f(0 - width/2, 178), m_Colors[m_Color]);
+			int width = FontManager.getInstance().getFont("fontB21").getStringWidth(m_String);
+			drawTextCall("fontB21", m_String, new Vector2f(0 - width/2, 178), m_Colors[m_Color]);
 		}
 	}
 }

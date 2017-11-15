@@ -31,8 +31,8 @@ public class GameEndPanel extends GameObject{
 	public void update(float deltaTime) {
 		m_AcTime += deltaTime;
 		
-		int width = FontManager.getInstance().getFont("fontB11").getStringWidth(m_String);
-		drawTextCall("fontB11", m_String, new Vector2f(0 - width/2, 178), m_Colors[m_Color]);
+		int width = FontManager.getInstance().getFont("fontB21").getStringWidth(m_String);
+		drawTextCall("fontB21", m_String, new Vector2f(0 - width/2, 178), m_Colors[m_Color]);
 	}
 
 }
