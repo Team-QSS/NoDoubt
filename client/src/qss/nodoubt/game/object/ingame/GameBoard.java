@@ -26,11 +26,21 @@ public class GameBoard {
 		int currentPos;
 	}
 	
+	public interface GameEndListener {
+		void onGameEnd(int n);
+	}
+	
 	public class State {
 		public boolean isConflict = false;
 		public int conflictPos = 0;
 		public int conflictBike = 0;
-		public State setConflict(int pos, int bike) {isConflict = true; conflictPos = pos; conflictBike = bike; return this;}
+		public boolean conflictBikes[] = new boolean[6];
+		public State() {
+			for(int i = 0; i < 6; i++) {
+				conflictBikes[i] = false;
+			}
+		}
+		public State setConflict(int pos, int bike, boolean[] bikes) {isConflict = true; conflictPos = pos; conflictBike = bike; for(int i = 0; i < 6; i++) conflictBikes[i] = bikes[i];return this;}
 	}
 	
 	private int m_BikePoses[];
@@ -47,7 +57,9 @@ public class GameBoard {
 	
 	private State m_State;
 	
-	public GameBoard(int playerNum, Bike bikes[]) {
+	private GameEndListener m_Listener;
+	
+	public GameBoard(int playerNum, Bike bikes[], GameEndListener listener) {
 		m_State = new State();
 		m_BikePoses = new int[playerNum];
 		m_Cells = new Cell[6][];
@@ -71,17 +83,28 @@ public class GameBoard {
 		for(int i = 0; i < playerNum; i++) {
 			setBike(i, 0);
 		}
+		
+		m_Listener = listener;
 	}
 	
 	public void setBike(int n, int pos) {
 		Bike bike = m_Bikes[n];
+		if(bike == null) return;
 		Cell c = m_Cells[s_RoadPos[pos].x][s_RoadPos[pos].y];
 		if(c.bikes[n] == null) {
 			c.bikeCount += 1;
 			c.bikes[n] = bike;
 			
 			if(c.bikeCount > 1) {
-				m_State.setConflict(pos, n);
+				boolean bb[] = new boolean[6];
+				for(int i = 0; i < 6; i++) {
+					if(c.bikes[i] != null && i != n) {
+						bb[i] = true;
+					}else {
+						bb[i] = false;
+					}
+				}
+				m_State.setConflict(pos, n, bb);
 			}else {
 				m_State.isConflict = false;
 			}
@@ -113,15 +136,19 @@ public class GameBoard {
 				a2 += 1;
 			}
 		}
+		
+		if(pos == 35) m_Listener.onGameEnd(n);
 	}
 	
 	public void moveBike(int n, int movingDistance) {
 		int curPos = m_BikePoses[n];
 		Cell c = m_Cells[s_RoadPos[curPos].x][s_RoadPos[curPos].y];
 		Bike b = c.bikes[n];
+		if(b == null) return;
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
 		m_MovingGoal = curPos + movingDistance;
+		if(m_MovingGoal > 35) m_MovingGoal = 35;
 		m_MovingDirection = movingDistance / movingDistance;
 		b.go(s_RoadPos[curPos + movingDistance / movingDistance]);
 		m_MovingBikeIndex = n;
@@ -145,7 +172,6 @@ public class GameBoard {
 	public void push(int n) {
 		int curPos = m_BikePoses[n];
 		Cell c = m_Cells[s_RoadPos[curPos].x][s_RoadPos[curPos].y];
-		Bike b = c.bikes[n];
 		c.bikes[n] = null;
 		c.bikeCount -= 1;
 		setBike(n, c.recentCheckPoint);
@@ -171,7 +197,7 @@ public class GameBoard {
 	public State getState() {
 		if(m_State.isConflict) {
 			m_State.isConflict = false;
-			return new State().setConflict(m_State.conflictPos, m_State.conflictBike);
+			return new State().setConflict(m_State.conflictPos, m_State.conflictBike, m_State.conflictBikes);
 		}
 		return m_State;
 	}

@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 import org.json.simple.JSONObject;
 
 import protocol.Protocol;
+import qss.nodoubt.game.Game;
 import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.ingame.*;
@@ -32,7 +33,7 @@ public class InGameLevel extends GameLevel{
 	};
 	
 	private enum State {
-		DICEROLL, DECLARE, DOUBT, MOVE, STEPPUSH
+		DICEROLL, DECLARE, DOUBT, MOVE, STEPPUSH, END
 	}
 	
 	public class TurnInfo
@@ -77,6 +78,8 @@ public class InGameLevel extends GameLevel{
 	
 	private boolean m_IsDiceRolled;
 	
+	private GameBoard.State m_ConflictState;
+	
 	/**
 	 * @param roomID 방 식별번호
 	 */
@@ -99,7 +102,7 @@ public class InGameLevel extends GameLevel{
 		addObject(m_Bikes[4] = new Bike('W'));
 		addObject(m_Bikes[5] = new Bike('P'));
 		
-		m_Board = new GameBoard(6, m_Bikes);
+		m_Board = new GameBoard(6, m_Bikes, (n) -> game_End(n));
 		
 		setEventListener((action, key) -> {
 			if(action == GLFW_PRESS) {
@@ -123,7 +126,12 @@ public class InGameLevel extends GameLevel{
 					}
 				}
 			}
-		}, null);
+		}, (action, button) -> {
+			if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT && m_State.equals(State.END))
+			{
+				Game.getInstance().setNextLevel(new LobbyLevel());
+			}
+		});
 		
 		m_IsInitialized = false;
 		m_RoomID=roomID;
@@ -156,9 +164,11 @@ public class InGameLevel extends GameLevel{
 		
 		if(m_IsAnimating && m_Board.isIdle()) {
 			m_IsAnimating = false;
-			if(m_Board.getState().isConflict) {
+			GameBoard.State bstate = m_Board.getState();
+			if(bstate.isConflict) {
 				m_State = State.STEPPUSH;
-				if(m_StepButton != null && isMyTurn()) {
+				m_ConflictState = bstate;
+				if(isMyTurn()) {
 					addObject(m_StepButton = new IButton("Step", () -> step()));
 					addObject(m_PushButton = new IButton("Push", () -> push()));
 				}
@@ -172,6 +182,9 @@ public class InGameLevel extends GameLevel{
 		if(m_IsInitialized) {
 			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), m_Colors[m_TurnInfo[m_Turn].user.getRoomIndex()]);
 		}
+		
+		
+		
 		
 	}
 	
@@ -194,11 +207,20 @@ public class InGameLevel extends GameLevel{
 			}break;
 			
 			case Protocol.DOUBT_CHECK:{
-				recieveDoubtCheck();
+				String player=(String)msg.get("Player");
+				recieveDoubtCheck(player);
 			}break;
 			
 			case Protocol.DOUBT_REPORT:{
 				recieveDoubtReport(msg);
+			}break;
+			
+			case Protocol.STEP_REPORT:{
+				recieveStepReport();
+			}break;
+			
+			case Protocol.PUSH_REPORT:{
+				recievePushReport();
 			}break;
 			
 			default:{
@@ -282,11 +304,12 @@ public class InGameLevel extends GameLevel{
 		}
 	}
 	
-	private void recieveDoubtCheck() {
+	private void recieveDoubtCheck(String player) {
 		if(m_State.equals(State.DOUBT) && isMyTurn())
 		{
 			JSONObject msg = new JSONObject();
 			msg.put("Protocol", "DoubtResult");
+			msg.put("Player", player);
 			if(m_DiceResult == m_DeclareNum) {
 				msg.put("Result", false);
 			}else {
@@ -304,9 +327,12 @@ public class InGameLevel extends GameLevel{
 			m_Board.push(m_Turn);
 			m_CountPanel.countDownStop();
 			goNextTurn();
+			addObject(new DoubtResultPanel(str, m_Room.list.get(str).getRoomIndex(), true));
 		}else {
 			m_CountPanel.countDownStop();
+			m_Board.push(m_Room.list.get(str).getRoomIndex());
 			move();
+			addObject(new DoubtResultPanel(str, m_Room.list.get(str).getRoomIndex(), false));
 		}
 	}
 	
@@ -319,6 +345,7 @@ public class InGameLevel extends GameLevel{
 			}
 		}
 	}
+	
 	private void step() {
 		removeObject(m_PushButton);
 		removeObject(m_StepButton);
@@ -326,6 +353,15 @@ public class InGameLevel extends GameLevel{
 		m_StepButton = null;
 		
 		JSONObject msg = new JSONObject();
+		msg.put("Protocol", Protocol.STEP_REQUEST);
+		Network.getInstance().pushMessage(msg);
+		
+		m_IsDiceRolled = false;
+		m_DiceResult = 0;
+		m_DeclareNum = 0;
+		m_DicePanel.setBlank();
+		m_DeclarePanel.setBlank();
+		m_State = State.DICEROLL;
 	}
 	
 	private void push() {
@@ -335,6 +371,39 @@ public class InGameLevel extends GameLevel{
 		m_StepButton = null;
 		
 		JSONObject msg = new JSONObject();
+		msg.put("Protocol", Protocol.PUSH_REQUEST);
+		Network.getInstance().pushMessage(msg);
+		
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_ConflictState.conflictBikes[i])
+			{
+				m_Board.push(i);
+			}
+		}
+		
+		goNextTurn();
+	}
+	
+	private void recieveStepReport() {
+		m_IsDiceRolled = false;
+		m_DiceResult = 0;
+		m_DeclareNum = 0;
+		m_DicePanel.setBlank();
+		m_DeclarePanel.setBlank();
+		m_State = State.DICEROLL;
+	}
+	
+	private void recievePushReport() {
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_ConflictState.conflictBikes[i])
+			{
+				m_Board.push(i);
+			}
+		}
+		
+		goNextTurn();
 	}
 	
 	private void setRoomData() {
@@ -392,7 +461,10 @@ public class InGameLevel extends GameLevel{
 		m_DeclareNum = 0;
 		m_DicePanel.setBlank();
 		m_DeclarePanel.setBlank();
-		m_State = State.DICEROLL;
+		if(!m_State.equals(State.END)) {
+			m_State = State.DICEROLL;
+		}
+		
 	}
 	
 	private char getColorCharacter(int color)
@@ -408,5 +480,15 @@ public class InGameLevel extends GameLevel{
 		}
 		System.out.println("0~5이외의 숫자로 오류 판정 시도");
 		return 'F';
+	}
+	
+	private void game_End(int n) {
+		m_State = State.END;
+		addObject(new GameEndPanel(m_TurnInfo[n].name, n));
+		if(isMyTurn()){
+			JSONObject msg = new JSONObject();
+			msg.put("Protocol", Protocol.GAME_END_REPORT);
+			Network.getInstance().pushMessage(msg);
+		}
 	}
 }

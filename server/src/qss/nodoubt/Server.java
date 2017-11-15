@@ -539,10 +539,10 @@ public class Server extends JFrame{
 				}break;
 				
 				case Protocol.DOUBT_REQUEST:{
-					
+					User user=client.getCurrentUser();
 					String Target=(String)data.get("Target");
 					
-					sendData=Util.packetGenerator(Protocol.DOUBT_CHECK);
+					sendData=Util.packetGenerator(Protocol.DOUBT_CHECK,new KeyValue("Player",user.getID()));
 
 					//의심을 선언당한 타겟에게 패킷을 전송
 					send(sendData,c->{
@@ -554,10 +554,11 @@ public class Server extends JFrame{
 				case Protocol.DOUBT_RESULT:{
 					User user=client.getCurrentUser();
 					
+					String player=(String)data.get("Player");
 					boolean result=(boolean)data.get("Result");
 					
 					sendData=Util.packetGenerator(Protocol.DOUBT_REPORT,
-							new KeyValue("Player",user.getID()),
+							new KeyValue("Player",player),
 							new KeyValue("Result",result)
 							);
 
