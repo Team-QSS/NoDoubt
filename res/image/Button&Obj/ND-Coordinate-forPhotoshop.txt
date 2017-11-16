@@ -12,7 +12,6 @@ Game-Button6(183,810)
 Game-ButtonD(183,945)//의심 버튼
 Game-Stump(1678,496)//주사위 굴리는곳
 Game-ButtonR(1674,744)//주사위 던지기 버튼
-Game-1~Game-6(1674,971)//우측 하단 결과표시 숫자
 Time(1538,20)//우측 상단 시간, 21pt, #9a6f52, Bold
 *TurnOf(1425,139)//우측 상단 턴 안내, 11pt, 위와 같음
 *Nickname(1425,193)//우측 상단 턴 안내, 위와 같음, Red #ff3939, Blue #2375eb, Green #368c49, Yellow #fff41f, White #ffffff, Purple #a924ff
@@ -23,6 +22,9 @@ Game-Tab1~5(72,604)//우측 하단 탭 플레이어 색상, 이후부터는 X좌표 86px씩 띌 것
 *Game-TabName(149,588)//우측 하단 탭 플레이어 이름, 위와 같음, 7.2pt, #ffffff, Regular
 Push(699,540)//푸시 버튼
 Step(1252,540)//스텝 버튼
+Game-Item(1674,971)//우측 하단 아이템 표시
+*Game-Broadcast(960,275)//안내 글귀 표시, 12pt, Regular, 색상 맞춤
+*Game-TabScore(540,588)//탭 점수, 위와 같음, 가운데 정렬
 
 //로그인
 Login-Signin(960,869)//로그인 버튼
