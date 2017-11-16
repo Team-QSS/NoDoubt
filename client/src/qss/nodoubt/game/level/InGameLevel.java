@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 
 import protocol.Protocol;
 import qss.nodoubt.game.Game;
+import qss.nodoubt.game.GameConstants;
 import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.ingame.*;
@@ -23,14 +24,6 @@ import util.Util;
 public class InGameLevel extends GameLevel{
 	private static final Vector3f UI_COLOR = new Vector3f(0x80/255f, 0x43/255f, 0x1b/255f);
 	private static final Random RANDOM = new Random();
-	private static final Vector3f[] m_Colors = new Vector3f[]{
-			new Vector3f(0xff / 255f, 0x39 / 255f, 0x39 / 255f), 
-			new Vector3f(0x23 / 255f, 0x75 / 255f, 0xeb / 255f), 
-			new Vector3f(0x36 / 255f, 0x8c / 255f, 0x49 / 255f), 
-			new Vector3f(0xff / 255f, 0xf4 / 255f, 0x1f / 255f), 
-			new Vector3f(0xff / 255f, 0xff / 255f, 0xff / 255f), 
-			new Vector3f(0xa9 / 255f, 0x24 / 255f, 0xff / 255f)
-	};
 	
 	private enum State {
 		DICEROLL, DECLARE, DOUBT, MOVE, STEPPUSH, END
@@ -180,7 +173,7 @@ public class InGameLevel extends GameLevel{
 		
 		
 		if(m_IsInitialized) {
-			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), m_Colors[m_TurnInfo[m_Turn].user.getRoomIndex()]);
+			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), GameConstants.BIKE_COLORS[m_TurnInfo[m_Turn].user.getRoomIndex()]);
 		}
 		
 		
