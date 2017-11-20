@@ -116,26 +116,25 @@ public class LoadingLevel extends GameLevel{
 							}
 							if(action == GLFW_RELEASE && m_Up.getPressedin()) {
 								System.out.println("Up클릭0 " + curRoomIndex + " " + maxRoomIndex);
-								if(curRoomIndex < maxRoomIndex) {
-									for(int i = 0; i < 7; i++) {
-										deleteRoom(i + curRoomIndex*7);			//화살표 버튼을 누르면 이전 페이지를 지움
-										System.out.println("Up클릭1 " + curRoomIndex + " " + maxRoomIndex);
-									}
-									
-									curRoomIndex++;
+								if(curRoomIndex > 0) {
 									if(curRoomIndex == maxRoomIndex) {
 										for(int i = 0; i < roomList.getListSize()%7; i++) {
-											addRoomObject(i + curRoomIndex*7);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
-											System.out.println("Up클릭2 " + curRoomIndex + " " + maxRoomIndex);
+											deleteRoom(i + curRoomIndex*7);
+											System.out.println("Up클릭1 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									else {
 										for(int i = 0; i < 7; i++) {
-											addRoomObject(i + curRoomIndex*7);
-											System.out.println("Up클릭3 " + curRoomIndex + " " + maxRoomIndex);
+											deleteRoom(i + curRoomIndex*7);
+											System.out.println("Up클릭2 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
-								}								
+									curRoomIndex--;
+									for(int i = 0; i < 7; i++) {
+										addRoomObject(i + curRoomIndex*7);
+										System.out.println("Up클릭3 " + curRoomIndex + " " + maxRoomIndex);
+									}
+								}		
 								m_Up.setPressedin(false);
 							}
 						}
@@ -155,25 +154,26 @@ public class LoadingLevel extends GameLevel{
 							}
 							if(action == GLFW_RELEASE && m_Down.getPressedin()) {
 								System.out.println("Down클릭0 " + curRoomIndex + " " + maxRoomIndex);
-								if(curRoomIndex > 0) {
+								if(curRoomIndex < maxRoomIndex) {
+									for(int i = 0; i < 7; i++) {
+										deleteRoom(i + curRoomIndex*7);			//화살표 버튼을 누르면 이전 페이지를 지움
+										System.out.println("Down클릭1 " + curRoomIndex + " " + maxRoomIndex);
+									}
+									
+									curRoomIndex++;
 									if(curRoomIndex == maxRoomIndex) {
 										for(int i = 0; i < roomList.getListSize()%7; i++) {
-											deleteRoom(i + curRoomIndex*7);
-											System.out.println("Down클릭1 " + curRoomIndex + " " + maxRoomIndex);
+											addRoomObject(i + curRoomIndex*7);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
+											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									else {
 										for(int i = 0; i < 7; i++) {
-											deleteRoom(i + curRoomIndex*7);
-											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex);
+											addRoomObject(i + curRoomIndex*7);
+											System.out.println("Down클릭3 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
-									curRoomIndex--;
-									for(int i = 0; i < 7; i++) {
-										addRoomObject(i + curRoomIndex*7);
-										System.out.println("Down클릭3 " + curRoomIndex + " " + maxRoomIndex);
-									}
-								}
+								}	
 								m_Down.setPressedin(false);
 							}
 						}

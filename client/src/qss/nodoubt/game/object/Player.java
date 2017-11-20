@@ -55,6 +55,6 @@ public class Player extends GameObject{
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
-		m_Name.update(deltaTime);
+//		m_Name.update(deltaTime);
 	}
 }

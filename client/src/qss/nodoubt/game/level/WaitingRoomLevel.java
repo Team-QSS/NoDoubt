@@ -195,6 +195,10 @@ public class WaitingRoomLevel extends GameLevel{
 		
 		case Protocol.QUIT_ROOM_REPORT:{
 			String quitUserID=(String)data.get("UserID");
+			if(room.getUser(quitUserID) != null) {
+				room.removeUser(quitUserID);
+			}
+			
 			//ui처리
 			for(int i = 0; i < 6; i++) {
 				if(m_PlayerList[i] != null) {
@@ -208,8 +212,7 @@ public class WaitingRoomLevel extends GameLevel{
 						break;
 					}
 				}
-			}
-			room.removeUser(quitUserID);
+			}			
 		}break;
 		
 		case Protocol.KICK_ROOM_REPORT:{
