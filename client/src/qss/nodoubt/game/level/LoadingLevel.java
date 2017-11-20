@@ -48,8 +48,8 @@ public class LoadingLevel extends GameLevel{
 	public LoadingLevel(){
 		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
 		m_Back = new Button("BackButton1", "BackButton2", 677, 414);
-		m_Up = new Button("UpButton", null, 0, 0);
-		m_Down = new Button("DownButton", null, 100, 100);
+		m_Up = new Button("UpButton", null, 840, 278, 30, 30);
+		m_Down = new Button("DownButton", null, 840, -411, 30, 30);
 		
 		setEventListener((action,  key) -> { 
 			if(action == GLFW_PRESS){ 
