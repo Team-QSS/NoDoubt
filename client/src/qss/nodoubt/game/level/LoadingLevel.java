@@ -157,7 +157,7 @@ public class LoadingLevel extends GameLevel{
 								System.out.println("Down클릭0 " + curRoomIndex + " " + maxRoomIndex);
 								if(curRoomIndex > 0) {
 									if(curRoomIndex == maxRoomIndex) {
-										for(int i = 0; i < roomList.getListSize(); i++) {
+										for(int i = 0; i < roomList.getListSize()%7; i++) {
 											deleteRoom(i + curRoomIndex*7);
 											System.out.println("Down클릭1 " + curRoomIndex + " " + maxRoomIndex);
 										}
