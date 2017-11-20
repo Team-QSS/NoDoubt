@@ -30,6 +30,10 @@ RoomCreateButton:../res/image/Button&Obj/Create-Create.png
 BackButton1:../res/image/Button&Obj/Lobby-Back1.png
 BackButton2:../res/image/Button&Obj/Lobby-Back2.png
 Blank:../res/image/Button&Obj/Blank.png
+//LoadingLevel
+UpButton:../res/image/Button&Obj/Loading-ScrollButton.png
+DownButton:../res/image/Button&Obj/Loading-ScrollButton2.png
+
 
 //배경
 LoginBG:../res/image/Background/ND-Login-Background.png

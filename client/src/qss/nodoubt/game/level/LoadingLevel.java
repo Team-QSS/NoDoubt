@@ -30,11 +30,16 @@ public class LoadingLevel extends GameLevel{
 	
 	private Button m_Create = null;
 	private Button m_Back = null;
+	private Button m_Up = null;
+	private Button m_Down = null;
 	
 	//getCursor로 마우스의 좌표를 구함
 	
 	private float mouseX;
 	private float mouseY;
+	
+	private int maxRoomIndex = 0;
+	private int curRoomIndex = 0;
 	
 	private RoomManager rm;
 	
@@ -43,14 +48,13 @@ public class LoadingLevel extends GameLevel{
 	public LoadingLevel(){
 		m_Create = new Button("CreateButton1", "CreateButton2", 326, 414);
 		m_Back = new Button("BackButton1", "BackButton2", 677, 414);
+		m_Up = new Button("UpButton", null, 0, 0);
+		m_Down = new Button("DownButton", null, 100, 100);
 		
 		setEventListener((action,  key) -> { 
 			if(action == GLFW_PRESS){ 
 				if(key == GLFW_KEY_BACKSPACE) {
 					Game.getInstance().setNextLevel(new LobbyLevel());
-				}
-				if(key == GLFW_KEY_ENTER){
-//					Game.getInstance().setNextLevel(new WaitingRoomLevel("Test"));
 				}
 			}
 		}, 
@@ -103,12 +107,92 @@ public class LoadingLevel extends GameLevel{
 						}
 					}
 				});
+		m_Up.setListener(null,
+				(action, button) -> {
+					if(button == GLFW_MOUSE_BUTTON_LEFT) {
+						if(m_Up.onButton(mouseX, mouseY)) {
+							if(action == GLFW_PRESS) {
+								m_Up.setPressedin(true);
+							}
+							if(action == GLFW_RELEASE && m_Up.getPressedin()) {
+								System.out.println("Up클릭0 " + curRoomIndex + " " + maxRoomIndex);
+								if(curRoomIndex < maxRoomIndex) {
+									for(int i = 0; i < 7; i++) {
+										deleteRoom(i + curRoomIndex*7);			//화살표 버튼을 누르면 이전 페이지를 지움
+										System.out.println("Up클릭1 " + curRoomIndex + " " + maxRoomIndex);
+									}
+									
+									curRoomIndex++;
+									if(curRoomIndex == maxRoomIndex) {
+										for(int i = 0; i < roomList.getListSize()%7; i++) {
+											addRoomObject(i + curRoomIndex*7);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
+											System.out.println("Up클릭2 " + curRoomIndex + " " + maxRoomIndex);
+										}
+									}
+									else {
+										for(int i = 0; i < 7; i++) {
+											addRoomObject(i + curRoomIndex*7);
+											System.out.println("Up클릭3 " + curRoomIndex + " " + maxRoomIndex);
+										}
+									}
+								}								
+								m_Up.setPressedin(false);
+							}
+						}
+						else {
+							if(action == GLFW_RELEASE) {
+								m_Up.setPressedin(false);
+							}
+						}
+					}
+				});
+		m_Down.setListener(null,
+				(action, button) -> {
+					if(button == GLFW_MOUSE_BUTTON_LEFT) {
+						if(m_Down.onButton(mouseX, mouseY)) {
+							if(action == GLFW_PRESS) {
+								m_Down.setPressedin(true);
+							}
+							if(action == GLFW_RELEASE && m_Down.getPressedin()) {
+								System.out.println("Down클릭0 " + curRoomIndex + " " + maxRoomIndex);
+								if(curRoomIndex > 0) {
+									if(curRoomIndex == maxRoomIndex) {
+										for(int i = 0; i < roomList.getListSize(); i++) {
+											deleteRoom(i + curRoomIndex*7);
+											System.out.println("Down클릭1 " + curRoomIndex + " " + maxRoomIndex);
+										}
+									}
+									else {
+										for(int i = 0; i < 7; i++) {
+											deleteRoom(i + curRoomIndex*7);
+											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex);
+										}
+									}
+									curRoomIndex--;
+									for(int i = 0; i < 7; i++) {
+										addRoomObject(i + curRoomIndex*7);
+										System.out.println("Down클릭3 " + curRoomIndex + " " + maxRoomIndex);
+									}
+								}
+								m_Down.setPressedin(false);
+							}
+						}
+						else {
+							if(action == GLFW_RELEASE) {
+								m_Down.setPressedin(false);
+							}
+						}
+					}
+				});
+		
 		m_LoadingBG = new Background("LoadBG");
 		
 		rm = null;
 		
 		addObject(m_Create);
 		addObject(m_Back);
+		addObject(m_Up);
+		addObject(m_Down);
 		addObject(m_LoadingBG);
 		initAction();
 	}
@@ -134,7 +218,7 @@ public class LoadingLevel extends GameLevel{
 		
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
-		
+		maxRoomIndex = (roomList.getListSize()-1)/7;
 		
 		roomList.update(deltaTime);
 		
@@ -181,7 +265,9 @@ public class LoadingLevel extends GameLevel{
 				roomList.getIndex(i).setIndex(i);
 				
 				//RoomObject를 렌더링 대상으로 추가함
-				addRoomObject(i);
+				if(curRoomIndex*7 <= i && (curRoomIndex + 1)*7 > i) {
+					addRoomObject(i);		//curRoomIndex의 초기값은 0이므로 0~6의 RoomObject들이 그려진다.
+				}
 				i++;
 			}
 		}break;
@@ -199,7 +285,6 @@ public class LoadingLevel extends GameLevel{
 			int i = roomList.getListSize();
 			roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.id));
 			roomList.getIndex(i).setIndex(i);
-			addRoomObject(i);
 		}break;
 		
 		case Protocol.REMOVE_ROOM:{
@@ -210,7 +295,13 @@ public class LoadingLevel extends GameLevel{
 			for(i=0;i<roomList.roomList.size();i++){
 				if(roomList.roomList.get(i).getID()==roomID){
 					System.out.println("deleteRoom"+i);
-					deleteRoom(i);
+					if(curRoomIndex*7 <= i && (curRoomIndex+1)*7 > i) {
+						deleteRoom(i);
+						roomList.removeRoomObject(i);
+					}
+					else {
+						roomList.removeRoomObject(i);
+					}
 				}
 			}
 		}break;
@@ -238,7 +329,7 @@ public class LoadingLevel extends GameLevel{
 		removeObject(roomList.getIndex(index).m_Owner);
 		removeObject(roomList.getIndex(index).m_Players);
 		removeObject(roomList.getIndex(index));
-		roomList.removeRoomObject(index);
+	//	roomList.removeRoomObject(index);
 	}
 
 }
