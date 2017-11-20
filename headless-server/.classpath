@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/NoDoubtProtocol"/>
+	<classpathentry exported="true" kind="lib" path="E:/Projects/ide/eclipse/NoDoubt/headless-server/library/gson-2.8.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/Projects/ide/eclipse/NoDoubt/headless-server/library/json-simple-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/Projects/ide/eclipse/NoDoubt/headless-server/library/mysql-connector-java-5.1.41-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

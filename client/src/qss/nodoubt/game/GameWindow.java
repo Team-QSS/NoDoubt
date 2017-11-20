@@ -1,9 +1,13 @@
 package qss.nodoubt.game;
 
 import org.lwjgl.glfw.*;
+import org.lwjgl.glfw.GLFWImage.*;
+import org.lwjgl.stb.STBImage;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
+import static org.lwjgl.system.MemoryUtil.*;
+
+import java.nio.*;
 
 import org.joml.Vector2i;
 
@@ -24,6 +28,30 @@ public class GameWindow {
 			s_Instance = new GameWindow();
 		}
 		return s_Instance;
+	}
+	
+	public void setIcon(String path) throws Exception{
+		IntBuffer w = memAllocInt(1);
+	    IntBuffer h = memAllocInt(1);
+	    IntBuffer comp = memAllocInt(1);
+
+	    // Icons
+	    try ( GLFWImage.Buffer icons = GLFWImage.malloc(1) ) {
+	    	ByteBuffer pixels16 = STBImage.stbi_load(path, w, h, comp, 4);
+	    	icons
+	     	.position(0)
+	     	.width(w.get(0))
+	     	.height(h.get(0))
+	     	.pixels(pixels16);
+	    	
+	    	icons.position(0);
+	     	glfwSetWindowIcon(m_Window, icons);
+
+	      	STBImage.stbi_image_free(pixels16);
+	            memFree(comp);
+	            memFree(h);
+	            memFree(w);
+		}
 	}
 	
 	/**
