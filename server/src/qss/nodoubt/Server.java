@@ -45,8 +45,8 @@ public class Server extends JFrame{
 	private JSONParser parser=Network.jsonParser;
 	
 	private RoomManager roomManager;
-	//현재 최대 동시접속 인원수는 4명으로 제한
-	private final int MAX_THREAD_NUM=4;
+	//현재 최대 동시접속 인원수는 50명으로 제한
+	private final int MAX_THREAD_NUM=50;
 	ExecutorService threadPool=Executors.newFixedThreadPool(MAX_THREAD_NUM);
 	
 	//현재 접속된클라이언트의 정보를 담는다
