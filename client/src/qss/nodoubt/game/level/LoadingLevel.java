@@ -40,6 +40,7 @@ public class LoadingLevel extends GameLevel{
 	
 	private int maxRoomIndex = 0;
 	private int curRoomIndex = 0;
+	private int updateRoomFlag = -1;
 	
 	private RoomManager rm;
 	
@@ -228,12 +229,15 @@ public class LoadingLevel extends GameLevel{
 		mouseY = Input.getInstance().getCursorPosition().y;
 		maxRoomIndex = (roomList.getListSize()-1)/6;
 		
-		int max = roomList.getListSize();
-		if(max > 6) {
-			max = 6;
-		}
-		for(int i = curRoomIndex*6; i < max; i++) {
-			addRoomObject(i);
+		int max = roomList.getListSize() % 6;
+		if(roomList.getListSize() != 0 && updateRoomFlag != curRoomIndex) {
+			if(max == 0) {
+				max = 6;
+			}
+			for(int i = curRoomIndex*6; i < max; i++) {
+				addRoomObject(i);
+				updateRoomFlag = curRoomIndex;
+			}
 		}
 		
 		roomList.update(deltaTime);
