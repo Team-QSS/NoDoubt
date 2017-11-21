@@ -118,20 +118,24 @@ public class LoadingLevel extends GameLevel{
 								System.out.println("Up클릭0 " + curRoomIndex + " " + maxRoomIndex);
 								if(curRoomIndex > 0) {
 									if(curRoomIndex == maxRoomIndex) {
-										for(int i = 0; i < roomList.getListSize()%7; i++) {
-											deleteRoom(i + curRoomIndex*7);
+										int max = roomList.getListSize();
+										if(max % 6 == 0) {
+											max = 6;
+										}
+										for(int i = 0; i < max; i++) {
+											deleteRoom(i + curRoomIndex*6);
 											System.out.println("Up클릭1 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									else {
-										for(int i = 0; i < 7; i++) {
-											deleteRoom(i + curRoomIndex*7);
+										for(int i = 0; i < 6; i++) {
+											deleteRoom(i + curRoomIndex*6);
 											System.out.println("Up클릭2 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									curRoomIndex--;
-									for(int i = 0; i < 7; i++) {
-										addRoomObject(i + curRoomIndex*7);
+									for(int i = 0; i < 6; i++) {
+										addRoomObject(i + curRoomIndex*6);
 										System.out.println("Up클릭3 " + curRoomIndex + " " + maxRoomIndex);
 									}
 								}		
@@ -155,21 +159,25 @@ public class LoadingLevel extends GameLevel{
 							if(action == GLFW_RELEASE && m_Down.getPressedin()) {
 								System.out.println("Down클릭0 " + curRoomIndex + " " + maxRoomIndex);
 								if(curRoomIndex < maxRoomIndex) {
-									for(int i = 0; i < 7; i++) {
-										deleteRoom(i + curRoomIndex*7);			//화살표 버튼을 누르면 이전 페이지를 지움
+									for(int i = 0; i < 6; i++) {
+										deleteRoom(i + curRoomIndex*6);			//화살표 버튼을 누르면 이전 페이지를 지움
 										System.out.println("Down클릭1 " + curRoomIndex + " " + maxRoomIndex);
 									}
 									
 									curRoomIndex++;
 									if(curRoomIndex == maxRoomIndex) {
-										for(int i = 0; i < roomList.getListSize()%7; i++) {
-											addRoomObject(i + curRoomIndex*7);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
+										int max = roomList.getListSize();
+										if(max % 6 == 0) {
+											max = 6;
+										}
+										for(int i = 0; i < max; i++) {
+											addRoomObject(i + curRoomIndex*6);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
 											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									else {
-										for(int i = 0; i < 7; i++) {
-											addRoomObject(i + curRoomIndex*7);
+										for(int i = 0; i < 6; i++) {
+											addRoomObject(i + curRoomIndex*6);
 											System.out.println("Down클릭3 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
@@ -218,7 +226,15 @@ public class LoadingLevel extends GameLevel{
 		
 		mouseX = Input.getInstance().getCursorPosition().x;
 		mouseY = Input.getInstance().getCursorPosition().y;
-		maxRoomIndex = (roomList.getListSize()-1)/7;
+		maxRoomIndex = (roomList.getListSize()-1)/6;
+		
+		int max = roomList.getListSize();
+		if(max > 6) {
+			max = 6;
+		}
+		for(int i = curRoomIndex*6; i < max; i++) {
+			addRoomObject(i);
+		}
 		
 		roomList.update(deltaTime);
 		
@@ -265,9 +281,9 @@ public class LoadingLevel extends GameLevel{
 				roomList.getIndex(i).setIndex(i);
 				
 				//RoomObject를 렌더링 대상으로 추가함
-				if(curRoomIndex*7 <= i && (curRoomIndex + 1)*7 > i) {
-					addRoomObject(i);		//curRoomIndex의 초기값은 0이므로 0~6의 RoomObject들이 그려진다.
-				}
+//				if(i >= curRoomIndex*6 && i < (curRoomIndex + 1)*6) {
+//					addRoomObject(i);		//curRoomIndex의 초기값은 0이므로 0~5의 RoomObject들이 그려진다.
+//				}
 				i++;
 			}
 		}break;
@@ -285,6 +301,10 @@ public class LoadingLevel extends GameLevel{
 			int i = roomList.getListSize();
 			roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.id));
 			roomList.getIndex(i).setIndex(i);
+			
+//			if(i >= curRoomIndex * 6 && i < (curRoomIndex + 1) * 6) {
+//				addRoomObject(i);
+//			}
 		}break;
 		
 		case Protocol.REMOVE_ROOM:{
@@ -295,7 +315,7 @@ public class LoadingLevel extends GameLevel{
 			for(i=0;i<roomList.roomList.size();i++){
 				if(roomList.roomList.get(i).getID()==roomID){
 					System.out.println("deleteRoom"+i);
-					if(curRoomIndex*7 <= i && (curRoomIndex+1)*7 > i) {
+					if(curRoomIndex*6 <= i && (curRoomIndex+1)*6 > i) {
 						deleteRoom(i);
 						roomList.removeRoomObject(i);
 					}

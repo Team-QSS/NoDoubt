@@ -31,9 +31,9 @@ public class RoomObject extends GameObject {
 	public RoomObject(float depth, String gamename, String owner, int players, double id) {
 		super("Blank", depth);
 		
-		m_GameName = new TextBox("fontB11", 0, GAMENAMEX, Y - 110 * index, GAMENAMETEXT, TEXTY - 110 * index, false, false, null, COLOR);
-		m_Owner    = new TextBox("fontB11", 0, OWNERX,    Y - 110 * index, OWNERTEXT,    TEXTY - 110 * index, false, false, null, COLOR);
-		m_Players  = new TextBox("fontB11", 0, PLAYERSX,  Y - 110 * index, PLAYERSTEXT,  TEXTY - 110 * index, false, false, null, COLOR);
+		m_GameName = new TextBox("fontB11", 0, GAMENAMEX, Y - 90 * index, GAMENAMETEXT, TEXTY - 90 * index, false, false, null, COLOR);
+		m_Owner    = new TextBox("fontB11", 0, OWNERX,    Y - 90 * index, OWNERTEXT,    TEXTY - 90 * index, false, false, null, COLOR);
+		m_Players  = new TextBox("fontB11", 0, PLAYERSX,  Y - 90 * index, PLAYERSTEXT,  TEXTY - 90 * index, false, false, null, COLOR);
 	
 		m_ID = id;
 		
@@ -44,12 +44,12 @@ public class RoomObject extends GameObject {
 	}
 	
 	public void setPosition() {
-		setPosition(-10, 130 - 110 * index);
+		setPosition(-10, 130 - 90 * index);
 	}
 	
 	public void setIndex(int index){
 		this.index=index;
-		index = index % 7;
+		index = index % 6;
 		m_GameName.setPosition(GAMENAMEX, Y - 110 * index);
 		m_GameName.setTextLocation(GAMENAMETEXT, TEXTY - 110 * index);
 		m_Owner.setPosition(OWNERX, Y - 110 * index);
