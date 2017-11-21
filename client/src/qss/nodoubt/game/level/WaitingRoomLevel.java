@@ -29,6 +29,7 @@ public class WaitingRoomLevel extends GameLevel{
 	
 	private Button m_StartButton;
 	private Button m_BackButton;
+	private boolean isInitialed = false;
 	
 //	private Button[] m_PlusButtons; 초대버튼
 	private Background m_WaitingRoomBG;
@@ -146,73 +147,80 @@ public class WaitingRoomLevel extends GameLevel{
 		}break;
 		
 		case Protocol.GET_ROOM_DATA:{
-			while(room == null) {
-				room = Network.gson.fromJson((String)data.get("Room"), Room.class);
-			}
-			int index = -1;
-			for(String key:room.list.keySet()) {				
-				User user=room.list.get(key);
-				index=user.getRoomIndex();
-				m_PlayerList[index] = new Player(user.getID(), index);
-				addObject(m_PlayerList[index]);
-				addObject(m_PlayerList[index].m_Name);
-				addObject(m_PlayerList[index].m_MotorCycle);
-			}
-			
-			if(m_PlayerList[0].m_Name.m_Text.toString().equals(GameState.getInstance().m_Me)) {
-				addObject(m_StartButton);		//StartButton 에서 Listener가 작동하지 않는 오류 발생
+			if(!isInitialed) {
+				while(room == null) {
+					room = Network.gson.fromJson((String)data.get("Room"), Room.class);
+				}
+				int index = -1;
+				for(String key:room.list.keySet()) {				
+					User user=room.list.get(key);
+					index=user.getRoomIndex();
+					m_PlayerList[index] = new Player(user.getID(), index);
+					addObject(m_PlayerList[index]);
+					addObject(m_PlayerList[index].m_Name);
+					addObject(m_PlayerList[index].m_MotorCycle);
+				}
+				
+				if(m_PlayerList[0].m_Name.m_Text.toString().equals(GameState.getInstance().m_Me)) {
+					addObject(m_StartButton);		//StartButton 에서 Listener가 작동하지 않는 오류 발생
+				}
+				isInitialed = true;
 			}
 		}break;
 		
 		case Protocol.JOIN_ROOM_RESULT:{
-			User joinUser = null;
+			if(isInitialed) {
+				User joinUser = null;
+				
+				if(joinUser == null) {
+					joinUser = Network.gson.fromJson((String)data.get("User"), User.class);
+				}
 			
-			if(joinUser == null) {
-				joinUser = Network.gson.fromJson((String)data.get("User"), User.class);
-			}
-		
-			if(room == null) {
-				System.out.println("Room이 Null");
-			}
-			if(joinUser == null) {
-				System.out.println("User가 Null");
-			}
-			
-			room.enterUser(joinUser);
-			//ui처리
-			int i=joinUser.getRoomIndex();
-			if(m_PlayerList[joinUser.getRoomIndex()] == null) {
-				m_PlayerList[i] = new Player(joinUser.getID(), i);
-				System.out.println(m_PlayerList[i].m_Name.m_Text.toString());
-				addObject(m_PlayerList[i]);
-				addObject(m_PlayerList[i].m_Name);
-				addObject(m_PlayerList[i].m_MotorCycle);
-				break;
-			}else{
-				System.err.println("조인룸 오류");
+				if(room == null) {
+					System.out.println("Room이 Null");
+				}
+				if(joinUser == null) {
+					System.out.println("User가 Null");
+				}
+				
+				room.enterUser(joinUser);
+				//ui처리
+				int i=joinUser.getRoomIndex();
+				if(m_PlayerList[joinUser.getRoomIndex()] == null) {
+					m_PlayerList[i] = new Player(joinUser.getID(), i);
+					System.out.println(m_PlayerList[i].m_Name.m_Text.toString());
+					addObject(m_PlayerList[i]);
+					addObject(m_PlayerList[i].m_Name);
+					addObject(m_PlayerList[i].m_MotorCycle);
+					break;
+				}else{
+					System.err.println("조인룸 오류");
+				}
 			}
 		}break;
 		
 		case Protocol.QUIT_ROOM_REPORT:{
-			String quitUserID=(String)data.get("UserID");
-			if(room.getUser(quitUserID) != null) {
-				room.removeUser(quitUserID);
-			}
-			
-			//ui처리
-			for(int i = 0; i < 6; i++) {
-				if(m_PlayerList[i] != null) {
-					if(m_PlayerList[i].m_Name.m_Text.toString().equals(quitUserID)) {
-						removeObject(m_PlayerList[i].m_MotorCycle);
-						removeObject(m_PlayerList[i].m_Name);
-						removeObject(m_PlayerList[i]);
-						m_PlayerList[i].m_MotorCycle = null;
-						m_PlayerList[i].m_Name = null;
-						m_PlayerList[i] = null;
-						break;
+			if(isInitialed) {
+				String quitUserID=(String)data.get("UserID");
+				if(room.getUser(quitUserID) != null) {
+					room.removeUser(quitUserID);
+				}
+				
+				//ui처리
+				for(int i = 0; i < 6; i++) {
+					if(m_PlayerList[i] != null) {
+						if(m_PlayerList[i].m_Name.m_Text.toString().equals(quitUserID)) {
+							removeObject(m_PlayerList[i].m_MotorCycle);
+							removeObject(m_PlayerList[i].m_Name);
+							removeObject(m_PlayerList[i]);
+							m_PlayerList[i].m_MotorCycle = null;
+							m_PlayerList[i].m_Name = null;
+							m_PlayerList[i] = null;
+							break;
+						}
 					}
 				}
-			}			
+			}
 		}break;
 		
 		case Protocol.KICK_ROOM_REPORT:{
