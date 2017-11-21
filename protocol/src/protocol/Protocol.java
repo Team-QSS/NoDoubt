@@ -48,6 +48,9 @@ public interface Protocol {
 	String START_GAME_REPORT="StartGameReport";
 	
 	//인게임
+	String INIT_REQUEST="InitializeRequest";
+	String INIT_REPORT="InitializeReport";
+	
 	String DECLARE_REQUEST="DeclareRequest";
 	String DECLARE_REPORT="DeclareReport";
 	

@@ -34,6 +34,7 @@ public class InGameLevel extends GameLevel{
 		public String name;
 		public char color;
 		public User user;
+		public int score;
 	}
 	
 	private GameBoard m_Board;
@@ -413,6 +414,7 @@ public class InGameLevel extends GameLevel{
 			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].user = m_Room.list.get(name);
 			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].name = name;
 			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].color = getColorCharacter(m_Room.list.get(name).getRoomIndex());
+			m_TurnInfo[m_Room.list.get(name).getRoomIndex()].score = 3;
 		}
 		
 		m_PlayerCount = m_Room.list.size();
