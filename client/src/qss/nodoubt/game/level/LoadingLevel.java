@@ -119,13 +119,14 @@ public class LoadingLevel extends GameLevel{
 								System.out.println("Up클릭0 " + curRoomIndex + " " + maxRoomIndex);
 								if(curRoomIndex > 0) {
 									if(curRoomIndex == maxRoomIndex) {
-										int max = roomList.getListSize();
-										if(max % 6 == 0) {
+										int max = roomList.getListSize() % 6;
+										if(max == 0 && roomList.getListSize()/6 != 0) {
 											max = 6;
 										}
 										for(int i = 0; i < max; i++) {
 											deleteRoom(i + curRoomIndex*6);
-											System.out.println("Up클릭1 " + curRoomIndex + " " + maxRoomIndex);
+											
+											System.out.println("Up클릭1 " + curRoomIndex + " " + maxRoomIndex + " " + max);
 										}
 									}
 									else {
@@ -167,15 +168,16 @@ public class LoadingLevel extends GameLevel{
 									}
 									
 									curRoomIndex++;
+									
 									if(curRoomIndex == maxRoomIndex) {
-										int max = roomList.getListSize();
-										if(max % 6 == 0) {
+										int max = roomList.getListSize() % 6;
+										if(max == 0 && roomList.getListSize()/6 >= 1) {
 											max = 6;
 										}
 										for(int i = 0; i < max; i++) {
+											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex + " " + max);
 											roomList.getIndex(i + curRoomIndex*6).setActive(true);
 											//	addRoomObject(i + curRoomIndex*6);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
-											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									else {
