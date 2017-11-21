@@ -124,7 +124,7 @@ public class LobbyLevel extends GameLevel{
 			(action, key) -> {
 				if(action == GLFW_PRESS && m_Buttons[m_ActiveIndex].isActived()){
 					if(key == GLFW_KEY_RIGHT){
-						if(m_ActiveIndex < 4){
+						if(m_ActiveIndex < 2){
 							m_Buttons[m_ActiveIndex].toggle();
 							m_Buttons[++m_ActiveIndex].toggle();
 							

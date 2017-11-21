@@ -136,7 +136,8 @@ public class LoadingLevel extends GameLevel{
 									}
 									curRoomIndex--;
 									for(int i = 0; i < 6; i++) {
-										addRoomObject(i + curRoomIndex*6);
+										roomList.getIndex(i).setActive(true);
+										//addRoomObject(i + curRoomIndex*6);
 										System.out.println("Up클릭3 " + curRoomIndex + " " + maxRoomIndex);
 									}
 								}		
@@ -172,13 +173,15 @@ public class LoadingLevel extends GameLevel{
 											max = 6;
 										}
 										for(int i = 0; i < max; i++) {
-											addRoomObject(i + curRoomIndex*6);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
+											roomList.getIndex(i).setActive(true);
+											//	addRoomObject(i + curRoomIndex*6);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
 											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									else {
 										for(int i = 0; i < 6; i++) {
-											addRoomObject(i + curRoomIndex*6);
+											roomList.getIndex(i).setActive(true);
+											//addRoomObject(i + curRoomIndex*6);
 											System.out.println("Down클릭3 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
@@ -230,7 +233,7 @@ public class LoadingLevel extends GameLevel{
 		maxRoomIndex = (roomList.getListSize()-1)/6;
 		
 		int max = roomList.getListSize() % 6;
-		if(roomList.getListSize() != 0 && updateRoomFlag != curRoomIndex) {
+		if(roomList.getListSize() != 0) {
 			if(max == 0) {
 				max = 6;
 			}
@@ -245,24 +248,27 @@ public class LoadingLevel extends GameLevel{
 	}
 
 	private void addRoomObject(int index){
-		roomList.getIndex(index).setListener(null,
-				(action, button) -> {
-					if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
-						if((roomList.getIndex(index)).onObject(mouseX, mouseY)) {
-							double roomID=roomList.getIndex(index).getID();
-							//RoomObject를 좌클릭했을 시 Protocol.JOIN_ROOM_REQUEST 프로토콜의 메시지를 보낸다.
-							JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomID));
-							Network.getInstance().pushMessage(msg);
-							System.out.println("리스트"+index+"클릭");
-							System.out.println(mouseX+" "+mouseY);
-							Game.getInstance().setNextLevel(new WaitingRoomLevel(roomID));
+		if(roomList.getIndex(index).getActive()) {
+			roomList.getIndex(index).setListener(null,
+					(action, button) -> {
+						if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
+							if((roomList.getIndex(index)).onObject(mouseX, mouseY)) {
+								double roomID=roomList.getIndex(index).getID();
+								//RoomObject를 좌클릭했을 시 Protocol.JOIN_ROOM_REQUEST 프로토콜의 메시지를 보낸다.
+								JSONObject msg = Util.packetGenerator(Protocol.JOIN_ROOM_REQUEST, new KeyValue("RoomID", roomID));
+								Network.getInstance().pushMessage(msg);
+								System.out.println("리스트"+index+"클릭");
+								System.out.println(mouseX+" "+mouseY);
+								Game.getInstance().setNextLevel(new WaitingRoomLevel(roomID));
+							}
 						}
-					}
-				});
-		addObject(roomList.getIndex(index));
-		addObject(roomList.getIndex(index).m_GameName);
-		addObject(roomList.getIndex(index).m_Owner);
-		addObject(roomList.getIndex(index).m_Players);
+					});
+			addObject(roomList.getIndex(index));
+			addObject(roomList.getIndex(index).m_GameName);
+			addObject(roomList.getIndex(index).m_Owner);
+			addObject(roomList.getIndex(index).m_Players);
+			roomList.getIndex(index).setActive(false);
+		}
 	}
 	
 	private void protocolProcess(JSONObject data){
@@ -284,6 +290,14 @@ public class LoadingLevel extends GameLevel{
 				roomList.addRoomObject(i, new RoomObject(0, room.getName(), room.getMaster().getID(), room.list.size(), room.id));
 				roomList.getIndex(i).setIndex(i);
 				
+				if(i >= curRoomIndex*6 && i < (curRoomIndex + 1) * 6) {
+					roomList.getIndex(i).setActive(true);
+				}
+				else {
+					roomList.getIndex(i).setActive(false);
+				}
+				
+//				roomList.getIndex(i).setActive(true);	
 				//RoomObject를 렌더링 대상으로 추가함
 //				if(i >= curRoomIndex*6 && i < (curRoomIndex + 1)*6) {
 //					addRoomObject(i);		//curRoomIndex의 초기값은 0이므로 0~5의 RoomObject들이 그려진다.
@@ -305,7 +319,15 @@ public class LoadingLevel extends GameLevel{
 			int i = roomList.getListSize();
 			roomList.addRoomObject(i, new RoomObject(0,room.getName(),room.getMaster().getID(),room.list.size(), room.id));
 			roomList.getIndex(i).setIndex(i);
+
+			if(i >= curRoomIndex*6 && i < (curRoomIndex + 1) * 6) {
+				roomList.getIndex(i).setActive(true);
+			}
+			else {
+				roomList.getIndex(i).setActive(false);
+			}
 			
+//			roomList.getIndex(i).setActive(true);
 //			if(i >= curRoomIndex * 6 && i < (curRoomIndex + 1) * 6) {
 //				addRoomObject(i);
 //			}

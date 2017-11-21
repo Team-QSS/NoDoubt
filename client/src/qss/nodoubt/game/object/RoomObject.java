@@ -27,6 +27,7 @@ public class RoomObject extends GameObject {
 	private static final Vector3f COLOR = new Vector3f(0x80/255f, 0x43/255f, 0x1b/255f);
 	
 	private int index=0;
+	private boolean isActived = false;
 	
 	public RoomObject(float depth, String gamename, String owner, int players, double id) {
 		super("Blank", depth);
@@ -48,14 +49,13 @@ public class RoomObject extends GameObject {
 	}
 	
 	public void setIndex(int index){
-		this.index=index;
-		index = index % 6;
-		m_GameName.setPosition(GAMENAMEX, Y - 110 * index);
-		m_GameName.setTextLocation(GAMENAMETEXT, TEXTY - 110 * index);
-		m_Owner.setPosition(OWNERX, Y - 110 * index);
-		m_Owner.setTextLocation(OWNERTEXT, TEXTY - 110 * index);
-		m_Players.setPosition(PLAYERSX, Y - 110 * index);
-		m_Players.setTextLocation(PLAYERSTEXT, TEXTY - 110 * index);
+		this.index=index % 6;
+		m_GameName.setPosition(GAMENAMEX, Y - 90 * index);
+		m_GameName.setTextLocation(GAMENAMETEXT, TEXTY - 90 * index);
+		m_Owner.setPosition(OWNERX, Y - 90 * index);
+		m_Owner.setTextLocation(OWNERTEXT, TEXTY - 90 * index);
+		m_Players.setPosition(PLAYERSX, Y - 90 * index);
+		m_Players.setTextLocation(PLAYERSTEXT, TEXTY - 90 * index);
 		setPosition();
 	}
 	
@@ -98,5 +98,12 @@ public class RoomObject extends GameObject {
 	}
 	public void setListener(KeyListener key, MouseListener mouse){
 		setEventListener(key, mouse);
+	}
+	
+	public void setActive(boolean b) {
+		isActived = b;
+	}
+	public boolean getActive() {
+		return isActived;
 	}
 }
