@@ -136,7 +136,7 @@ public class LoadingLevel extends GameLevel{
 									}
 									curRoomIndex--;
 									for(int i = 0; i < 6; i++) {
-										roomList.getIndex(i).setActive(true);
+										roomList.getIndex(i + curRoomIndex*6).setActive(true);
 										//addRoomObject(i + curRoomIndex*6);
 										System.out.println("Up클릭3 " + curRoomIndex + " " + maxRoomIndex);
 									}
@@ -173,14 +173,14 @@ public class LoadingLevel extends GameLevel{
 											max = 6;
 										}
 										for(int i = 0; i < max; i++) {
-											roomList.getIndex(i).setActive(true);
+											roomList.getIndex(i + curRoomIndex*6).setActive(true);
 											//	addRoomObject(i + curRoomIndex*6);	//마지막 페이지일 경우, 방의 갯수가 동적이므로 %7 연산을 함
 											System.out.println("Down클릭2 " + curRoomIndex + " " + maxRoomIndex);
 										}
 									}
 									else {
 										for(int i = 0; i < 6; i++) {
-											roomList.getIndex(i).setActive(true);
+											roomList.getIndex(i + curRoomIndex*6).setActive(true);
 											//addRoomObject(i + curRoomIndex*6);
 											System.out.println("Down클릭3 " + curRoomIndex + " " + maxRoomIndex);
 										}
@@ -239,7 +239,6 @@ public class LoadingLevel extends GameLevel{
 			}
 			for(int i = curRoomIndex*6; i < max; i++) {
 				addRoomObject(i);
-				updateRoomFlag = curRoomIndex;
 			}
 		}
 		
