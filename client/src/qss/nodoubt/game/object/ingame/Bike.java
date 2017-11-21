@@ -26,12 +26,12 @@ public class Bike extends GameObject {
 				move(new Vector2f(0, m_Direction.y).mul(SPEED).mul(deltaTime));
 			}
 			
-			if(Math.abs(m_Goal.x - getPosition().x) < 5) {
+			if(Math.abs(m_Goal.x - getPosition().x) < 15) {
 				setPosition(m_Goal.x, getPosition().y);
 				m_Direction.x = 0;
 			}
 			
-			if(Math.abs(m_Goal.y - getPosition().y) < 5) {
+			if(Math.abs(m_Goal.y - getPosition().y) < 15) {
 				setPosition(getPosition().x, m_Goal.y);
 				m_Direction.y = 0;
 			}
