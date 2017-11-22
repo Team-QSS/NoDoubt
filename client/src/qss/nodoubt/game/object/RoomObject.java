@@ -2,6 +2,7 @@ package qss.nodoubt.game.object;
 
 import org.joml.Vector3f;
 
+import qss.nodoubt.game.GameConstants;
 import qss.nodoubt.input.KeyListener;
 import qss.nodoubt.input.MouseListener;
 
@@ -22,6 +23,8 @@ public class RoomObject extends GameObject {
 	private static final float OWNERX = 1137;
 	private static final float PLAYERSX = 1627;
 	
+	private static final float GAP = 90;
+	
 	private static final float Y = 410;
 	
 	private static final Vector3f COLOR = new Vector3f(0x80/255f, 0x43/255f, 0x1b/255f);
@@ -29,15 +32,15 @@ public class RoomObject extends GameObject {
 	private int index=0;
 	private boolean isActived = false;
 	
-	public RoomObject(float depth, String gamename, String owner, int players, double id) {
+	public RoomObject(float depth, String gamename, String owner, int players, double id, int index) {
 		super("Blank", depth);
 		
-		m_GameName = new TextBox("fontB11", 0, GAMENAMEX, Y - 90 * index, GAMENAMETEXT, TEXTY - 90 * index, false, false, null, COLOR);
-		m_Owner    = new TextBox("fontB11", 0, OWNERX,    Y - 90 * index, OWNERTEXT,    TEXTY - 90 * index, false, false, null, COLOR);
-		m_Players  = new TextBox("fontB11", 0, PLAYERSX,  Y - 90 * index, PLAYERSTEXT,  TEXTY - 90 * index, false, false, null, COLOR);
-	
+		m_GameName = new TextBox("fontB11", 0, GAMENAMEX, Y - GAP * index, GAMENAMETEXT, TEXTY - GAP * index, false, false, null, COLOR);
+		m_Owner    = new TextBox("fontB11", 0, OWNERX,    Y - GAP * index, OWNERTEXT,    TEXTY - GAP * index, false, false, null, COLOR);
+		m_Players  = new TextBox("fontB11", 0, PLAYERSX,  Y - GAP * index, PLAYERSTEXT,  TEXTY - GAP * index, false, false, null, COLOR);
+		setIndex(index);	
 		m_ID = id;
-		
+				
 		m_GameName.m_Text.append(gamename);
 		m_Owner.m_Text.append(owner);
 		m_Players.m_Text.append(String.valueOf(players) + "  /  6" );
@@ -48,14 +51,15 @@ public class RoomObject extends GameObject {
 		setPosition(-10, 130 - 90 * index);
 	}
 	
+	
 	public void setIndex(int index){
-		this.index=index % 6;
-		m_GameName.setPosition(GAMENAMEX, Y - 90 * index);
-		m_GameName.setTextLocation(GAMENAMETEXT, TEXTY - 90 * index);
-		m_Owner.setPosition(OWNERX, Y - 90 * index);
-		m_Owner.setTextLocation(OWNERTEXT, TEXTY - 90 * index);
-		m_Players.setPosition(PLAYERSX, Y - 90 * index);
-		m_Players.setTextLocation(PLAYERSTEXT, TEXTY - 90 * index);
+		this.index=index % GameConstants.ROOM_NUM;
+		m_GameName.setPosition(GAMENAMEX, Y - GAP * this.index);
+		m_GameName.setTextLocation(GAMENAMETEXT, TEXTY - GAP * this.index);
+		m_Owner.setPosition(OWNERX, Y - GAP * this.index);
+		m_Owner.setTextLocation(OWNERTEXT, TEXTY - GAP * this.index);
+		m_Players.setPosition(PLAYERSX, Y - GAP * this.index);
+		m_Players.setTextLocation(PLAYERSTEXT, TEXTY - GAP * this.index);
 		setPosition();
 	}
 	
