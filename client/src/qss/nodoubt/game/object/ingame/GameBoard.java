@@ -205,4 +205,19 @@ public class GameBoard {
 	public boolean isIdle() {
 		return m_IsIdle;
 	}
+	
+	public void deleteBike(int n) {
+		int curPos = m_BikePoses[n];
+		Cell c = m_Cells[s_RoadPos[curPos].x][s_RoadPos[curPos].y];
+		Bike b = c.bikes[n];
+		c.bikeCount -= 1;
+		c.bikes[n] = null;
+		
+		for(int i = 0; i < c.bikes.length; i++) {
+			if(c.bikes[i] != null) {
+				setBike(i, curPos);
+				break;
+			}
+		}
+	}
 }

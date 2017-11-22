@@ -427,6 +427,7 @@ public class InGameLevel extends GameLevel{
 			}else
 			{
 				removeObject(m_Bikes[i]);
+				m_Board.deleteBike(i);
 			}
 		}
 		
