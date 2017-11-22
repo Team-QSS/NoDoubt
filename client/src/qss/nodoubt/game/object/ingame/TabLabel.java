@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 
 import qss.nodoubt.game.GameConstants;
 import qss.nodoubt.game.object.GameObject;
+import qss.nodoubt.graphics.FontManager;
 
 public class TabLabel extends GameObject{
 	
@@ -28,7 +29,7 @@ public class TabLabel extends GameObject{
 		}
 		
 		m_TextPosition = new Vector2f(getPosition()).add(new Vector2f(77, 16));
-		m_ScorePosition = new Vector2f(-420, m_TextPosition.y);
+		m_ScorePosition = new Vector2f(-420 - FontManager.getInstance().getFont("fontR10").getStringWidth(Integer.toString(m_Score)), m_TextPosition.y);
 		m_Name = name;
 		m_Score = score;
 	}

@@ -74,6 +74,9 @@ public class InGameLevel extends GameLevel{
 	
 	private GameBoard.State m_ConflictState;
 	
+	private NoDoubtPanel m_NoDoubtPanel = null;
+	
+	
 	/**
 	 * @param roomID 방 식별번호
 	 */
@@ -95,6 +98,7 @@ public class InGameLevel extends GameLevel{
 		addObject(m_Bikes[3] = new Bike('Y'));
 		addObject(m_Bikes[4] = new Bike('W'));
 		addObject(m_Bikes[5] = new Bike('P'));
+		addObject(m_NoDoubtPanel = new NoDoubtPanel());
 		
 		m_Board = new GameBoard(6, m_Bikes, (n) -> gameEnd(n));
 		
@@ -361,6 +365,7 @@ public class InGameLevel extends GameLevel{
 			moveBike(m_Turn, m_DeclareNum);
 			if(isNoDoubt) {
 				m_TurnInfo[m_Turn].score += 1;
+				m_NoDoubtPanel.show();
 			}
 		}
 	}
@@ -522,7 +527,7 @@ public class InGameLevel extends GameLevel{
 			addObject(new GameEndPanel(m_TurnInfo[n].name, n));
 			if(isMyTurn()){
 				JSONObject msg = new JSONObject();
-				msg.put("Protocol", Protocol.GAME_END_REPORT);
+				msg.put("Protocol", Protocol.GAME_END_REQUEST);
 				Network.getInstance().pushMessage(msg);
 			}
 		}
