@@ -356,11 +356,15 @@ public class LoadingLevel extends GameLevel{
 		case Protocol.UPDATE_ROOM_CURRENT_USER_NUM:{
 			double roomID = (double)data.get("RoomID");
 			int currentUserNum=((Long)data.get("UserNum")).intValue();
-			//수정중임 아직 룸리스트의 인원수가 업데이트 되지 않음
 			for(RoomObject room:roomList.roomList){
 				if(room.getID()==roomID)
 					room.setPlayers(currentUserNum);
 			}
+		}break;
+		
+		case Protocol.SET_ROOM_PLAYING:{
+			double roomID = (double)data.get("RoomID");
+			//룸매니저의 해당 방을 조회하여 방의 isPlaying을 true로 바꿔야함
 		}break;
 		
 		default:{

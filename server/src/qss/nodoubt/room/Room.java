@@ -15,6 +15,8 @@ public class Room {
 	
 	public ConcurrentHashMap<String,User> list=new ConcurrentHashMap<>();
 	
+	private boolean isPlaying=false;
+
 	public Room(String name){
 		this.name=name;
 	}
@@ -72,5 +74,13 @@ public class Room {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public boolean isPlaying() {
+		return isPlaying;
+	}
+
+	public void setPlaying(boolean isPlaying) {
+		this.isPlaying = isPlaying;
 	}
 }
