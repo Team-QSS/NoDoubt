@@ -1,5 +1,6 @@
 package qss.nodoubt.game.object;
 
+import qss.nodoubt.game.object.ingame.NoDoubtPanel;
 import qss.nodoubt.graphics.FontManager;
 import qss.nodoubt.graphics.Texture;
 import qss.nodoubt.graphics.TextureManager;
@@ -25,6 +26,7 @@ public abstract class GameObject {
 	private KeyListener m_KeyListener = null;
 	private MouseListener m_MouseListener = null;
 	private boolean m_IsActive = false;
+ 
 	
 	private Queue<Text> m_TextDrawingQueue = new LinkedList<Text>();
 	

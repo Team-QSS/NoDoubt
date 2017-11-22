@@ -93,6 +93,7 @@ CountPanel5:../res/image/Button&Obj/Game-Count5.png
 SuccessPanel:../res/image/Button&Obj/Game-Success.png
 FailurePanel:../res/image/Button&Obj/Game-Failure.png
 VictoryPanel:../res/image/Button&Obj/Game-Victory.png
+NoDoubtPanel:../res/image/Button&Obj/Game-NoDoubt.png
 
 //주사위
 Dice11:../res/image/Dice/Dice101.png
