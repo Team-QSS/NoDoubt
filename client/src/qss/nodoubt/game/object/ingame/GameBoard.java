@@ -210,6 +210,12 @@ public class GameBoard {
 		int curPos = m_BikePoses[n];
 		Cell c = m_Cells[s_RoadPos[curPos].x][s_RoadPos[curPos].y];
 		Bike b = c.bikes[n];
+		if(b == null) {
+			for(int i = 0; i < 36; i++) {
+				b = m_Cells[s_RoadPos[i].x][s_RoadPos[i].y].bikes[n];
+				if(b != null) break;
+			}
+		}
 		c.bikeCount -= 1;
 		c.bikes[n] = null;
 		

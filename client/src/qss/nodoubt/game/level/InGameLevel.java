@@ -217,6 +217,16 @@ public class InGameLevel extends GameLevel{
 				recievePushReport();
 			}break;
 			
+			case Protocol.QUIT_ROOM_REPORT:{
+				String pName = (String) msg.get("UserID");
+				int n = m_Room.list.get(pName).getRoomIndex();
+				recieveQuitReport(n);
+			}break;
+			
+			case Protocol.KICK_ROOM_REPORT:{
+				Game.getInstance().setNextLevel(new LobbyLevel());
+			}break;
+			
 			default:{
 				System.out.println("unknownProtocol");
 				System.out.println(msg);
@@ -398,6 +408,19 @@ public class InGameLevel extends GameLevel{
 		}
 		
 		goNextTurn();
+	}
+	
+	private void recieveQuitReport(int n) {
+		if(true) {
+			removeObject(m_Bikes[n]);
+			m_Board.deleteBike(n);
+			
+			m_TurnInfo[n] = null;
+			
+			if(m_Turn == n) goNextTurn();
+		}else {
+			
+		}
 	}
 	
 	private void setRoomData() {
