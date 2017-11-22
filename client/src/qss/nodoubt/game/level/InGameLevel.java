@@ -88,7 +88,7 @@ public class InGameLevel extends GameLevel{
 		addObject(new IButton("Roll", () -> rollDice()));
 		addObject(m_DeclarePanel = new DeclarePanel());
 		addObject(m_DicePanel = new DicePanel());
-		addObject(m_CountPanel = new CountDownPanel(() -> move()));
+		addObject(m_CountPanel = new CountDownPanel(() -> move(true)));
 		addObject(m_Bikes[0] = new Bike('R'));
 		addObject(m_Bikes[1] = new Bike('B'));
 		addObject(m_Bikes[2] = new Bike('G'));
@@ -96,7 +96,7 @@ public class InGameLevel extends GameLevel{
 		addObject(m_Bikes[4] = new Bike('W'));
 		addObject(m_Bikes[5] = new Bike('P'));
 		
-		m_Board = new GameBoard(6, m_Bikes, (n) -> game_End(n));
+		m_Board = new GameBoard(6, m_Bikes, (n) -> gameEnd(n));
 		
 		setEventListener((action, key) -> {
 			if(action == GLFW_PRESS) {
@@ -105,7 +105,7 @@ public class InGameLevel extends GameLevel{
 					addObject(m_TabPanel = new TabPanel());
 					for(int i = 0; i < 6; i++)
 					{
-						if(m_TurnInfo[i] != null) addObject(m_TabLabels[i] = new TabLabel(m_TurnInfo[i].name, m_TurnInfo[i].color));
+						if(m_TurnInfo[i] != null) addObject(m_TabLabels[i] = new TabLabel(m_TurnInfo[i].name, m_TurnInfo[i].score,m_TurnInfo[i].color));
 					}
 				}
 				
@@ -168,6 +168,15 @@ public class InGameLevel extends GameLevel{
 				}
 			}else {
 				goNextTurn();
+			}
+		}
+		
+		for(int i = 0; i < 6; i++)
+		{
+			if(m_IsInitialized)
+			{
+				TurnInfo ti = m_TurnInfo[i];
+				if(ti != null && ti.score >= 12) gameEnd(i);
 			}
 		}
 		
@@ -300,7 +309,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void doubt() {
-		if(m_State.equals(State.DOUBT) && !isMyTurn() && !m_IsTabPushed) {
+		if(m_State.equals(State.DOUBT) && !isMyTurn() && !m_IsTabPushed && m_TurnInfo[m_Turn].score > 0) {
 			JSONObject msg = new JSONObject();
 			msg.put("Protocol", "DoubtRequest");
 			msg.put("Target", m_TurnInfo[m_Turn].name);
@@ -325,27 +334,33 @@ public class InGameLevel extends GameLevel{
 	
 	private void recieveDoubtReport(JSONObject msg) {
 		String str = (String) msg.get("Player");
+		int n = m_Room.list.get(str).getRoomIndex();
 		boolean result = (Boolean) msg.get("Result");
 		
 		if(result) {
 			m_Board.push(m_Turn);
+			if(m_TurnInfo[m_Turn].score > 0) m_TurnInfo[m_Turn].score -= 1;
+			m_TurnInfo[n].score += 1;
 			m_CountPanel.countDownStop();
+			
 			goNextTurn();
 			addObject(new DoubtResultPanel(str, m_Room.list.get(str).getRoomIndex(), true));
 		}else {
+			if(m_TurnInfo[n].score > 0) m_TurnInfo[n].score -= 1;
+			m_TurnInfo[m_Turn].score += 1;
+			
 			m_CountPanel.countDownStop();
-			m_Board.push(m_Room.list.get(str).getRoomIndex());
-			move();
+			move(false);
 			addObject(new DoubtResultPanel(str, m_Room.list.get(str).getRoomIndex(), false));
 		}
 	}
 	
-	private void move() {
+	private void move(boolean isNoDoubt) {
 		if(m_State.equals(State.DOUBT)) {
 			m_State = State.MOVE;
 			moveBike(m_Turn, m_DeclareNum);
-			if(isMyTurn()) {
-				
+			if(isNoDoubt) {
+				m_TurnInfo[m_Turn].score += 1;
 			}
 		}
 	}
@@ -501,13 +516,18 @@ public class InGameLevel extends GameLevel{
 		return 'F';
 	}
 	
-	private void game_End(int n) {
-		m_State = State.END;
-		addObject(new GameEndPanel(m_TurnInfo[n].name, n));
-		if(isMyTurn()){
-			JSONObject msg = new JSONObject();
-			msg.put("Protocol", Protocol.GAME_END_REPORT);
-			Network.getInstance().pushMessage(msg);
+	private void gameEnd(int n) {
+		if(m_TurnInfo[n].score >= 3) {
+			m_State = State.END;
+			addObject(new GameEndPanel(m_TurnInfo[n].name, n));
+			if(isMyTurn()){
+				JSONObject msg = new JSONObject();
+				msg.put("Protocol", Protocol.GAME_END_REPORT);
+				Network.getInstance().pushMessage(msg);
+			}
+		}
+		else {
+			m_Board.push(n);
 		}
 	}
 }
