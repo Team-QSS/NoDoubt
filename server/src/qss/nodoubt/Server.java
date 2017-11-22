@@ -499,6 +499,9 @@ public class Server extends JFrame{
 				case Protocol.START_GAME_REQUEST:{
 					User user=client.getCurrentUser();
 					
+					Room room=user.getCurrentRoom();
+					room.setMaster(null);
+					
 					user.getCurrentRoom().setPlaying(true);
 					sendData=Util.packetGenerator(Protocol.SET_ROOM_PLAYING, new KeyValue("RoomID",user.getCurrentRoomId()));
 					//로비로 보냄

@@ -35,8 +35,8 @@ public class Server {
 	private JSONParser parser=Network.jsonParser;
 	
 	private RoomManager roomManager;
-	//현재 최대 동시접속 인원수는 4명으로 제한
-	private final int MAX_THREAD_NUM=4;
+	//현재 최대 동시접속 인원수는 4명으로 제한 (50명으로 변경)
+	private final int MAX_THREAD_NUM=50;
 	ExecutorService threadPool=Executors.newFixedThreadPool(MAX_THREAD_NUM);
 	
 	//현재 접속된클라이언트의 정보를 담는다
@@ -329,8 +329,8 @@ public class Server {
 						});
 						
 						sendData=Util.packetGenerator(
-								Protocol.KICK_ROOM_REPORT
-								);
+							Protocol.KICK_ROOM_REPORT
+						);
 
 						//자신의 유저와 같은방에있는 애들에게 보냄//자신제외
 						send(sendData,c->{
@@ -450,12 +450,15 @@ public class Server {
 				case Protocol.START_GAME_REQUEST:{
 					User user=client.getCurrentUser();
 					
+					Room room=user.getCurrentRoom();
+					room.setMaster(null);
+					
 					sendData=Util.packetGenerator(Protocol.START_GAME_REPORT);
 					
 					//자신의 유저와 같은방에있는 애들에게 보냄
 					send(sendData,c->{
 						User u=c.getCurrentUser();
-						return u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
+						return u!=null && u.isOnline()&&u.getCurrentRoomId()==user.getCurrentRoomId();
 					});
 				}break;
 				
