@@ -1,0 +1,34 @@
+﻿GET_ROOMMANAGER
+	모든 방에 대한 정보를 받아오면서,
+	첫 페이지에 해당하는 방일 경우에는 setActive(true)를 해줌
+
+
+ADD_ROOM
+	추가되는 방에 대한 정보를 받아오면서,
+	현재 페이지에 해당하는 방일 경우에는 setActive(true)를 해줌
+
+REMOVE_ROOM
+	삭제되는 방에 대한 정보를 받아오면서,
+	roomList의 컨테이너에서 removeRoomObject를 해 줌
+	현재 페이지에 해당하는 방일 경우에는 deleteRoom(index)로 그 방의 UI를 지움
+	방이 삭제됨으로서 방들의 index가 당겨지게 되는데,
+	삭제된 이후에 모든 방을 현재 페이지에 해당하는지 검사함.
+	(또는 처음부터 검사할 필요 없이 위의 index부터 끝까지 검사)
+
+Up버튼
+	curPage--
+	(cur가 0보다 커야함)
+
+Down버튼
+	curPage++
+	(cur가 최대 페이지를 벗어날 수는 없음)
+
+addRoomObject함수
+	LoadingLevel에서 RoomObject의 UI를 addObject 해줌.
+	RoomObject의 getActive값이 true여야 함.
+	이 함수로 동작을 하고 나면 setActive(false)가 적용됨.
+	(한 오브젝트 당 단 한번만 addObject가 호출되게 하기 위함)
+
+update함수
+	현재 페이지에 해당하는 방들을 addRoomObject(i) 해줌으로서
+	UI가 그려지게 함.
