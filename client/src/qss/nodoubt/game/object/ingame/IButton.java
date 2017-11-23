@@ -77,7 +77,7 @@ public class IButton extends GameObject{
 		Vector2f position = getPosition();
 		
 		if(Math.abs(mousePosition.x - position.x) <= 111) {
-			if(Math.abs(mousePosition.y - position.y) <= 83) {
+			if(Math.abs(mousePosition.y - position.y) <= 83 * 0.7) {
 				return true;
 			}
 		}
