@@ -118,6 +118,7 @@ public class LoadingLevel extends GameLevel{
 								//action	
 								if(curPage > 0) {
 									int max = roomList.getListSize() - (curPage+1) * 6;
+									System.out.println("ListSize : " + max);
 									System.out.println("max : " + max);
 									for(int i = 0; i < max; i++) {
 										deleteRoom(i + curPage*6);
