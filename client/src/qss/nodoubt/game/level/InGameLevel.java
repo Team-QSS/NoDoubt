@@ -15,7 +15,7 @@ import qss.nodoubt.game.GameState;
 import qss.nodoubt.game.object.Background;
 import qss.nodoubt.game.object.ingame.*;
 import qss.nodoubt.network.Network;
-
+import qss.nodoubt.sounds.Sound;
 import room.Room;
 import room.User;
 import util.KeyValue;
@@ -100,6 +100,7 @@ public class InGameLevel extends GameLevel{
 		addObject(m_Bikes[5] = new Bike('P'));
 		addObject(m_NoDoubtPanel = new NoDoubtPanel());
 		
+		
 		m_Board = new GameBoard(6, m_Bikes, (n) -> gameEnd(n));
 		
 		setEventListener((action, key) -> {
@@ -180,7 +181,7 @@ public class InGameLevel extends GameLevel{
 			if(m_IsInitialized)
 			{
 				TurnInfo ti = m_TurnInfo[i];
-				if(ti != null && ti.score >= 12) gameEnd(i);
+				if(ti != null && ti.score >= 36) gameEnd(i);
 			}
 		}
 		
@@ -271,6 +272,7 @@ public class InGameLevel extends GameLevel{
 			m_DiceResult = n;
 			m_IsDiceRolled = true;
 			m_State = State.DECLARE;
+			Sound.getInstance().play("dice");
 		}
 	}
 	
@@ -295,6 +297,8 @@ public class InGameLevel extends GameLevel{
 			m_DeclarePanel.setResult(n);
 			m_State = State.DOUBT;
 			m_CountPanel.setCountDown(5);
+			
+			Sound.getInstance().play(Integer.toString(n));
 		}
 	}
 	
@@ -304,8 +308,8 @@ public class InGameLevel extends GameLevel{
 			m_DeclareNum = n;
 			m_DeclarePanel.setResult(n);
 			m_CountPanel.setCountDown(5);
+			Sound.getInstance().play(Integer.toString(n));
 		}
-		
 	}
 	
 	private boolean isMyTurn() {
@@ -343,15 +347,21 @@ public class InGameLevel extends GameLevel{
 		
 		if(result) {
 			m_Board.push(m_Turn);
-			if(m_TurnInfo[m_Turn].score > 0) m_TurnInfo[m_Turn].score -= 1;
-			m_TurnInfo[n].score += 1;
+			if(m_TurnInfo[m_Turn].score > 2) m_TurnInfo[m_Turn].score -= 3;
+			else m_TurnInfo[m_Turn].score = 0;
+			m_TurnInfo[n].score += 2;
 			m_CountPanel.countDownStop();
+			
+			if(str.equals(GameState.getInstance().m_Me)) Sound.getInstance().play("correct");
 			
 			goNextTurn();
 			addObject(new DoubtResultPanel(str, m_Room.list.get(str).getRoomIndex(), true));
 		}else {
-			if(m_TurnInfo[n].score > 0) m_TurnInfo[n].score -= 1;
-			m_TurnInfo[m_Turn].score += 1;
+			if(m_TurnInfo[n].score > 1) m_TurnInfo[n].score -= 2;
+			else m_TurnInfo[n].score = 0;
+			m_TurnInfo[m_Turn].score += 2;
+			
+			if(str.equals(GameState.getInstance().m_Me)) Sound.getInstance().play("wrong");
 			
 			m_CountPanel.countDownStop();
 			move(false);
@@ -522,7 +532,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void gameEnd(int n) {
-		if(m_TurnInfo[n].score >= 3) {
+		if(m_TurnInfo[n].score >= 10) {
 			m_State = State.END;
 			addObject(new GameEndPanel(m_TurnInfo[n].name, n));
 			if(isMyTurn()){
@@ -530,6 +540,9 @@ public class InGameLevel extends GameLevel{
 				msg.put("Protocol", Protocol.GAME_END_REQUEST);
 				Network.getInstance().pushMessage(msg);
 			}
+			
+			if(GameState.getInstance().m_Me.equals(m_TurnInfo[n].name)) Sound.getInstance().play("win");
+			else Sound.getInstance().play("lose");
 		}
 		else {
 			m_Board.push(n);

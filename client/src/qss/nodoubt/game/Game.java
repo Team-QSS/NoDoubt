@@ -42,6 +42,9 @@ public class Game {
 		
 		str = FileUtils.loadTextFile("FontPaths");
 		ResourceUtils.loadFonts(str);
+		
+		str = FileUtils.loadTextFile("SoundPaths");
+		ResourceUtils.loadSounds(str);
 	}
 
 	/**

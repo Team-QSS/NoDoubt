@@ -5,7 +5,7 @@ package qss.nodoubt.game.level;
  * 세팅 레벨입니다.
  * 프로토타입에서는 미구현 예정입니다.
  * */
-/*
+
 import qss.nodoubt.game.Game;
 import qss.nodoubt.game.object.*;
 
@@ -57,4 +57,3 @@ public class SettingLevel extends GameLevel{
 	}
 
 }
-*/

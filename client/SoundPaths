@@ -1,0 +1,14 @@
+temp:../res/sound/1.ogg
+
+1:../res/sound/1.ogg
+2:../res/sound/2.ogg
+3:../res/sound/3.ogg
+4:../res/sound/4.ogg
+5:../res/sound/5.ogg
+6:../res/sound/6.ogg
+correct:../res/sound/correct.ogg
+wrong:../res/sound/wrong.ogg
+dice:../res/sound/dice.ogg
+beep:../res/sound/beep.ogg
+win:../res/sound/win.ogg
+lose:../res/sound/lose.ogg
