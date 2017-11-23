@@ -320,7 +320,7 @@ public class LoadingLevel extends GameLevel{
 			
 			for(int j = 0; j < roomList.getListSize(); j++) {
 				roomList.getIndex(j).setIndex(j);
-				if(j >= curPage && j < maxPage) {
+				if(j >= curPage*6 && j < (curPage+1) * 6) {
 					roomList.getIndex(j).setActive(true);
 				}
 				else {
