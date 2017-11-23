@@ -117,7 +117,7 @@ public class LoadingLevel extends GameLevel{
 							if(action == GLFW_RELEASE && m_Up.getPressedin()) {
 								//action	
 								if(curPage > 0) {
-									int max = roomList.getListSize() - (curPage+1) * 6;
+									int max = roomList.getListSize() - (curPage) * 6;
 									System.out.println("ListSize : " + max);
 									System.out.println("max : " + max);
 									for(int i = 0; i < max; i++) {
@@ -153,8 +153,8 @@ public class LoadingLevel extends GameLevel{
 									for(int i = 0; i < 6; i++) {
 										deleteRoom(i + curPage*6);
 									}
-									int max = roomList.getListSize() - (curPage+1) * 6;
 									curPage++;
+									int max = roomList.getListSize() - (curPage) * 6;
 									for(int i = 0; i < max; i++) {
 										roomList.getIndex(i+curPage*6).setActive(true);
 									}
