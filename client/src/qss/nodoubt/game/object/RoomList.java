@@ -1,18 +1,18 @@
 package qss.nodoubt.game.object;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-
 public class RoomList extends GameObject{
 	
-	public LinkedList<RoomObject> roomList = new LinkedList<RoomObject>();
-	
+	public LinkedList<RoomObject> roomList = new LinkedList <RoomObject>();
+
 	public RoomList() {
 		super("Blank", 0);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		for(RoomObject R : roomList){
+		for(RoomObject R:roomList){
 			R.update(deltaTime);
 		}
 	}

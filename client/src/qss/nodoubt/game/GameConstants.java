@@ -10,6 +10,8 @@ public class GameConstants {
 	
 	public static final boolean IS_FULLSCREEN = false;
 	
+	public static final int ROOM_NUM = 6;
+	
 	public static final Vector3f[] BIKE_COLORS = new Vector3f[]{
 			new Vector3f(0xc5 / 255f, 0x00 / 255f, 0x00 / 255f), 
 			new Vector3f(0x00 / 255f, 0x5a / 255f, 0xb8 / 255f), 
