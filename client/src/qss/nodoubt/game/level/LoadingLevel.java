@@ -318,7 +318,7 @@ public class LoadingLevel extends GameLevel{
 			System.out.println("maxPage : " + maxPage);
 			System.out.println("curPage : " + curPage);
 			
-			for(int j = i; j < roomList.getListSize(); j++) {
+			for(int j = 0; j < roomList.getListSize(); j++) {
 				roomList.getIndex(j).setIndex(j);
 				if(j >= curPage && j < maxPage) {
 					roomList.getIndex(j).setActive(true);
