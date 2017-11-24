@@ -10,7 +10,10 @@ public class Background extends GameObject {
 	@Override
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
-
+	}
+	
+	public void changeBG(String textureName) {
+		setTexture(textureName);
 	}
 
 }
