@@ -1,0 +1,13 @@
+//"//"로 시작하는 줄은 주석처리되어 무시됨
+//빈줄도 주석처리되어 무시됨
+//폰트 이름:폰트 경로 로 작성할것
+//공백도 포함하니 공백문자는 의도한 게 아니면 넣지 말것
+
+fontB8:../res/font/NanumB-8
+fontB10:../res/font/NanumB-10
+fontB11:../res/font/NanumB-11
+fontB21:../res/font/NanumB-21
+
+fontR10:../res/font/NanumR-10
+fontR11:../res/font/NanumR-11
+fontR21:../res/font/NanumR-21
