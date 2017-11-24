@@ -317,7 +317,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void doubt() {
-		if(m_State.equals(State.DOUBT) && !isMyTurn() && !m_IsTabPushed && m_TurnInfo[m_Turn].score > 0) {
+		if(m_State.equals(State.DOUBT) && !isMyTurn() && !m_IsTabPushed && m_TurnInfo[m_Room.list.get(GameState.getInstance().m_Me).getRoomIndex()].score > 0) {
 			JSONObject msg = new JSONObject();
 			msg.put("Protocol", "DoubtRequest");
 			msg.put("Target", m_TurnInfo[m_Turn].name);
