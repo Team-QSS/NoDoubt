@@ -79,7 +79,9 @@ public class Game {
 			
 			m_Window.pollEvents();
 			
-			m_CurLevel.update(m_FrameTimer.deltaTime());
+			float deltaTime = m_FrameTimer.deltaTime();
+			if(deltaTime > 0.1f) deltaTime = 0.1f;
+			m_CurLevel.update(deltaTime);
 			
 			m_Graphic.beginDraw();
 			
