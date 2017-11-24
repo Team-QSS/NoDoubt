@@ -453,6 +453,16 @@ public class Server {
 					Room room=user.getCurrentRoom();
 					room.setMaster(null);
 					
+					user.getCurrentRoom().setPlaying(true);
+					
+					sendData=Util.packetGenerator(Protocol.SET_ROOM_PLAYING, new KeyValue("RoomID",user.getCurrentRoomId()));
+					
+					//로비로 보냄
+					send(sendData,c->{
+					    User u=c.getCurrentUser();
+					    return u!=null&&!user.equals(u)&&u.isOnline()&&u.getCurrentRoomId()==RoomManager.LOBBY;
+					});
+					
 					sendData=Util.packetGenerator(Protocol.START_GAME_REPORT);
 					
 					//자신의 유저와 같은방에있는 애들에게 보냄

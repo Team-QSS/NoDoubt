@@ -13,14 +13,14 @@ import qss.nodoubt.network.Network;
 
 public class LobbyLevel extends GameLevel{
 	//버튼
-	private Button[] m_Buttons = new Button[3];
+	private Button[] m_Buttons = new Button[4];
 	private static int m_ActiveIndex = 0;
 	//배경
 	private Background m_LobbyBG = null;
 	//버튼 텍스처 경로
-	private String[] m_ButtonTexturePath = {
+	final private String[] m_ButtonTexturePath = {
 		"GameJoinButton1", "GameJoinButton2",
-//		"SettingButton1", "SettingButton2",
+		"HowButton1", "HowButton2",
 //		"StoreButton1", "StoreButton2",
 		"CreditButton1", "CreditButton2",
 		"QuitButton1", "QuitButton2"
@@ -41,8 +41,9 @@ public class LobbyLevel extends GameLevel{
 		
 		for(int i = 0; i < m_Buttons.length; i++){
 //			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -760 + 380*i,-360);
-			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -480 + 480 * i, -360);
+			m_Buttons[i] = new Button(m_ButtonTexturePath[2*i], m_ButtonTexturePath[2*i+1], -720 + 480 * i, -360);
 		}
+		
 		m_Buttons[0].setListener(
 				(action, key) ->{
 					if(action == GLFW_PRESS && m_Buttons[0].isActived()){
@@ -57,7 +58,7 @@ public class LobbyLevel extends GameLevel{
 				(action, key) ->{
 					if(action == GLFW_PRESS && m_Buttons[1].isActived()){
 						if(key == GLFW_KEY_ENTER){
-							Game.getInstance().setNextLevel(new CreditLevel());
+							Game.getInstance().setNextLevel(new HowToPlayLevel());
 						}
 					}
 				},
@@ -67,64 +68,29 @@ public class LobbyLevel extends GameLevel{
 				(action, key) ->{
 					if(action == GLFW_PRESS && m_Buttons[2].isActived()){
 						if(key == GLFW_KEY_ENTER){
+							Game.getInstance().setNextLevel(new CreditLevel());
+						}
+					}
+				},
+				null
+		);
+		m_Buttons[3].setListener(
+				(action, key) ->{
+					if(action == GLFW_PRESS && m_Buttons[3].isActived()){
+						if(key == GLFW_KEY_ENTER){
 							Game.getInstance().goodBye();
 						}
 					}
 				},
 				null
 		);
-//		m_Buttons[1].setListener(
-//				(action, key) ->{
-//					if(action == GLFW_PRESS && m_Buttons[1].isActived()){
-//						if(key == GLFW_KEY_ENTER){
-//						//	Game.getInstance().setNextLevel(new SettingLevel());
-//						}
-//					}
-//				}
-//				null,
-//				null
-//		);
-		
-//		m_Buttons[2].setListener(
-//				(action, key) ->{
-//					if(action == GLFW_PRESS && m_Buttons[2].isActived()){
-//						if(key == GLFW_KEY_ENTER){
-//						//	Game.getInstance().setNextLevel(new StoreLevel());
-//						}
-//					}
-//				}
-//				null,
-//				null
-//		);
-		
-//		m_Buttons[3].setListener(
-//				(action, key) ->{
-//					if(action == GLFW_PRESS && m_Buttons[3].isActived()){
-//						if(key == GLFW_KEY_ENTER){
-//							Game.getInstance().setNextLevel(new CreditLevel());
-//						}
-//					}
-//				},
-//				null
-//		);
-		
-//		m_Buttons[4].setListener(
-//				(action, key) ->{
-//					if(action == GLFW_PRESS && m_Buttons[4].isActived()){
-//						if(key == GLFW_KEY_ENTER){
-//							Game.getInstance().goodBye();
-//						}
-//					}
-//				},
-//				null
-//		);
 		
 		
 		this.setEventListener(
 			(action, key) -> {
 				if(action == GLFW_PRESS && m_Buttons[m_ActiveIndex].isActived()){
 					if(key == GLFW_KEY_RIGHT){
-						if(m_ActiveIndex < 2){
+						if(m_ActiveIndex < 3){
 							m_Buttons[m_ActiveIndex].toggle();
 							m_Buttons[++m_ActiveIndex].toggle();
 							
@@ -162,12 +128,9 @@ public class LobbyLevel extends GameLevel{
 								m_ActiveIndex = index;
 								switch(index){
 									case 0: Game.getInstance().setNextLevel(new LoadingLevel()); break;
-//									case 1: break;
-//									case 2: break;
-//									case 3: Game.getInstance().setNextLevel(new CreditLevel()); break;
-//									case 4: Game.getInstance().goodBye();
-									case 1: Game.getInstance().setNextLevel(new CreditLevel()); break;
-									case 2: Game.getInstance().goodBye(); break;
+									case 1: Game.getInstance().setNextLevel(new HowToPlayLevel()); break;
+									case 2: Game.getInstance().setNextLevel(new CreditLevel()); break;
+									case 3: Game.getInstance().goodBye(); break;
 								}
 							}
 							else {

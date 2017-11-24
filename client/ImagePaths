@@ -13,10 +13,8 @@ SignupButton:../res/image/Button&Obj/SignUp-Signup.png
 //로비화면버튼
 GameJoinButton1:../res/image/Button&Obj/Lobby-Start1.png
 GameJoinButton2:../res/image/Button&Obj/Lobby-Start2.png
-SettingButton1:../res/image/Button&Obj/Lobby-Setting1.png
-SettingButton2:../res/image/Button&Obj/Lobby-Setting2.png
-StoreButton1:../res/image/Button&Obj/Lobby-Store1.png
-StoreButton2:../res/image/Button&Obj/Lobby-Store2.png
+HowButton1:../res/image/Button&Obj/Lobby-How1.png
+HowButton2:../res/image/Button&Obj/Lobby-How2.png
 CreditButton1:../res/image/Button&Obj/Lobby-Credit1.png
 CreditButton2:../res/image/Button&Obj/Lobby-Credit2.png
 QuitButton1:../res/image/Button&Obj/Lobby-Quit1.png
@@ -43,6 +41,17 @@ LoadBG:../res/image/Background/ND-Loading-Background.png
 WaitingBG:../res/image/Background/ND-Waiting-Background.png
 CreditBG:../res/image/Background/ND-Credit-Background.png
 CreateBG:../res/image/Background/ND-Create-Background.png
+
+//HowToPlay 배경
+HTP1:../res/image/Main/ND-HTP1.png
+HTP2:../res/image/Main/ND-HTP2.png
+HTP3:../res/image/Main/ND-HTP3.png
+HTP4:../res/image/Main/ND-HTP4.png
+HTP5:../res/image/Main/ND-HTP5.png
+HTP6:../res/image/Main/ND-HTP6.png
+HTP7:../res/image/Main/ND-HTP7.png
+HTP8:../res/image/Main/ND-HTP8.png
+HTP9:../res/image/Main/ND-HTP9.png
 
 
 //Ingame

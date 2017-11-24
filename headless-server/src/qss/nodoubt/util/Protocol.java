@@ -47,6 +47,8 @@ public interface Protocol {
 	String START_GAME_REQUEST="StartGameRequest";
 	String START_GAME_REPORT="StartGameReport";
 	
+	String SET_ROOM_PLAYING="SetRoomPlaying";
+	
 	//인게임
 	String DECLARE_REQUEST="DeclareRequest";
 	String DECLARE_REPORT="DeclareReport";
