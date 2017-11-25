@@ -26,6 +26,9 @@ public class HowToPlayLevel extends GameLevel{
 		
 		setEventListener(
 				(action, key) ->{
+					if(key != GLFW_KEY_LEFT_SHIFT || key != GLFW_KEY_RIGHT_SHIFT || key != GLFW_KEY_LEFT_ALT || key != GLFW_KEY_RIGHT_ALT
+							|| key != GLFW_KEY_LEFT_CONTROL || key != GLFW_KEY_RIGHT_CONTROL
+							|| key != GLFW_KEY_CAPS_LOCK || key != GLFW_KEY_NUM_LOCK || key != GLFW_KEY_SCROLL_LOCK)
 					if(action == GLFW_PRESS){
 						if(key == GLFW_KEY_BACKSPACE && m_BGIndex >= 1) {
 							m_BGIndex--;
@@ -40,7 +43,17 @@ public class HowToPlayLevel extends GameLevel{
 						}
 					}
 				}
-				,null);
+				,(action, button) ->{
+					if(action == GLFW_PRESS) {
+						if(m_BGIndex <= 7){
+							m_BGIndex++;
+							m_HTPBG.changeBG(BackgroundTexturePath[m_BGIndex]);
+						}
+						else if(m_BGIndex <= 8) {
+							Game.getInstance().setNextLevel(new LobbyLevel());
+						}
+					}
+				});
 		
 		addObject(m_HTPBG);
 	}
