@@ -8,7 +8,7 @@ public class GameConstants {
 	public static final String SERVER_IP = "35.160.125.239";
 	public static final int NETWORK_PORT = 5000;
 	
-	public static final boolean IS_FULLSCREEN = false;
+	public static final boolean IS_FULLSCREEN = true;
 	
 	public static final int ROOM_NUM = 6;
 	
