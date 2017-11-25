@@ -21,7 +21,7 @@ public class NoDoubtPanel extends GameObject{
 			setTexture("NoDoubtPanel");
 		}
 	}
-	
+	 
 	public void show() {
 		m_AcTime = 0;
 	}
