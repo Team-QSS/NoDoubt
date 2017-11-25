@@ -1,11 +1,6 @@
 package qss.nodoubt.game.object;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_TAB;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
+import static org.lwjgl.glfw.GLFW.*;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -56,7 +51,7 @@ public class TextBox extends GameObject{
 				(action, key)->{
 					if(m_IsActived){
 						if(action == GLFW_PRESS){
-							if(key == GLFW_KEY_LEFT_SHIFT){
+							if(key == GLFW_KEY_LEFT_SHIFT || key == GLFW_KEY_RIGHT_SHIFT){
 								m_isShiftPressed = true;
 							}
 							if(m_Text.length() < 16){
@@ -104,7 +99,7 @@ public class TextBox extends GameObject{
 								}
 							}
 						}
-						else if(action == GLFW_RELEASE && key == GLFW_KEY_LEFT_SHIFT){
+						else if(action == GLFW_RELEASE && (key == GLFW_KEY_LEFT_SHIFT || key == GLFW_KEY_RIGHT_SHIFT)){
 								m_isShiftPressed = false;
 						}
 					}
