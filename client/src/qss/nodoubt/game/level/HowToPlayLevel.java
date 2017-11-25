@@ -40,7 +40,21 @@ public class HowToPlayLevel extends GameLevel{
 						}
 					}
 				}
-				,null);
+				,(action, button) ->{
+					if(action == GLFW_PRESS) {
+						if(button == GLFW_MOUSE_BUTTON_LEFT && m_BGIndex >= 1) {
+							m_BGIndex--;
+							m_HTPBG.changeBG(BackgroundTexturePath[m_BGIndex]);
+						}
+						else if(m_BGIndex <= 7){
+							m_BGIndex++;
+							m_HTPBG.changeBG(BackgroundTexturePath[m_BGIndex]);
+						}
+						else if(m_BGIndex <= 8) {
+							Game.getInstance().setNextLevel(new LobbyLevel());
+						}
+					}
+				});
 		
 		addObject(m_HTPBG);
 	}
