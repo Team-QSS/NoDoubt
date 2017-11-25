@@ -252,8 +252,6 @@ public class Server extends JFrame{
 						newRoom.setPassword((String)data.get("Password"));
 						User user=client.getCurrentUser();
 						
-						double roomID=user.getCurrentRoomId();
-						
 						newRoom.enterUser(user);
 						newRoom.setMaster(user);
 						//처음 입장하므로 룸인덱스를 0으로 설정한다.
@@ -638,7 +636,7 @@ public class Server extends JFrame{
 				}break;
 				
 				default:{
-					Util.printLog(mainTextArea, "알지못하는 프로토콜입니다.");
+					Util.printLog(mainTextArea, "알지못하는 프로토콜입니다["+(String)data.get("Protocol")+"]");
 				}
 				
 			}
