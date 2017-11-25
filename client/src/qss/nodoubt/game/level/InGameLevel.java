@@ -181,18 +181,13 @@ public class InGameLevel extends GameLevel{
 			if(m_IsInitialized)
 			{
 				TurnInfo ti = m_TurnInfo[i];
-				if(ti != null && ti.score >= 36) gameEnd(i);
+				if(ti != null && ti.score >= 15) gameEnd(i);
 			}
 		}
 		
-		
-		
-		if(m_IsInitialized) {
+		if(m_IsInitialized && m_TurnInfo[m_Turn] != null) {
 			drawTextCall("fontB11", m_TurnInfo[m_Turn].name, new Vector2f(465, 347), GameConstants.BIKE_COLORS[m_TurnInfo[m_Turn].user.getRoomIndex()]);
 		}
-		
-		
-		
 		
 	}
 	
@@ -344,6 +339,7 @@ public class InGameLevel extends GameLevel{
 		String str = (String) msg.get("Player");
 		int n = m_Room.list.get(str).getRoomIndex();
 		boolean result = (Boolean) msg.get("Result");
+		if(m_TurnInfo[m_Turn] == null || m_TurnInfo[n] == null) return;
 		
 		if(result) {
 			m_Board.push(m_Turn);
@@ -373,7 +369,7 @@ public class InGameLevel extends GameLevel{
 		if(m_State.equals(State.DOUBT)) {
 			m_State = State.MOVE;
 			moveBike(m_Turn, m_DeclareNum);
-			if(isNoDoubt) {
+			if(isNoDoubt && m_TurnInfo[m_Turn] != null) {
 				m_TurnInfo[m_Turn].score += 1;
 				m_NoDoubtPanel.show();
 			}
@@ -532,7 +528,7 @@ public class InGameLevel extends GameLevel{
 	}
 	
 	private void gameEnd(int n) {
-		if(m_TurnInfo[n].score >= 10) {
+		if(m_TurnInfo[n] != null && m_TurnInfo[n].score >= 5) {
 			m_State = State.END;
 			addObject(new GameEndPanel(m_TurnInfo[n].name, n));
 			if(isMyTurn()){

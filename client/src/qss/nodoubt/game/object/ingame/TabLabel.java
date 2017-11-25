@@ -36,6 +36,7 @@ public class TabLabel extends GameObject{
 
 	@Override
 	public void update(float deltaTime) {
+		m_ScorePosition.x = -420 - FontManager.getInstance().getFont("fontR10").getStringWidth(Integer.toString(m_Score));
 		drawTextCall("fontR10", m_Name, m_TextPosition, GameConstants.BIKE_COLORS[m_Color]);
 		drawTextCall("fontR10", Integer.toString(m_Score), m_ScorePosition, new Vector3f(1,1,1));
 	}
