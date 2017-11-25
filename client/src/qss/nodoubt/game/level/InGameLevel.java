@@ -185,7 +185,7 @@ public class InGameLevel extends GameLevel{
 			if(m_IsInitialized)
 			{
 				TurnInfo ti = m_TurnInfo[i];
-				if(ti != null && ti.score >= 15) gameEnd(i);
+				if(ti != null && ti.score >= 18) gameEnd(i);
 			}
 		}
 		
@@ -426,6 +426,7 @@ public class InGameLevel extends GameLevel{
 		m_DicePanel.setBlank();
 		m_DeclarePanel.setBlank();
 		m_State = State.DICEROLL;
+		addObject(new StepPanel());
 	}
 	
 	private void recievePushReport() {
@@ -437,6 +438,7 @@ public class InGameLevel extends GameLevel{
 			}
 		}
 		
+		addObject(new PushPanel());
 		goNextTurn();
 	}
 	
