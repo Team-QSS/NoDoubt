@@ -149,10 +149,14 @@ public class InGameLevel extends GameLevel{
 	
 	@Override
 	public void update(float deltaTime) {
-		JSONObject msg = Network.getInstance().pollMessage();
-		if(msg != null) {
-			protocolProcess(msg);
-		}
+		JSONObject msg;
+		do{
+			msg= Network.getInstance().pollMessage();
+			if(msg != null) {
+				protocolProcess(msg);
+			}
+		}while(msg != null);
+		
 		
 		updateObjects(deltaTime);
 		updateTime(deltaTime);
