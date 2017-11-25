@@ -14,7 +14,11 @@ public class CreditLevel extends GameLevel {
 				Game.getInstance().setNextLevel(new LobbyLevel());
 			}
 		}, 
-		null
+		(action, button) ->{
+			if(action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
+				Game.getInstance().setNextLevel(new LobbyLevel());
+			}
+		}
 	);
 		m_CreditBG = new Background("CreditBG");		//크레딧 배경화면
 		addObject(m_CreditBG);
