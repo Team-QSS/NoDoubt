@@ -50,26 +50,32 @@ public class WaitingRoomLevel extends GameLevel{
 		m_StartButton = new Button("GameJoinButton1", "GameJoinButton2", 320, 414);
 		m_StartButton.setListener(null,
 				(action, button) -> {
-					if(button == GLFW_MOUSE_BUTTON_LEFT){
-						if(m_StartButton.onButton(mouseX, mouseY)){
-							if(action == GLFW_PRESS){
-								System.out.println("press");
-								m_StartButton.focus();
+						if(button == GLFW_MOUSE_BUTTON_LEFT){
+							if(m_StartButton.onButton(mouseX, mouseY)){
+								if(action == GLFW_PRESS){
+									System.out.println("press");
+									m_StartButton.focus();
+								}
+								if(action == GLFW_RELEASE){
+									System.out.println("release");
+									if(room.list.size() >= 3) {
+										System.out.print(m_PlayerList.length);
+										JSONObject msg=Util.packetGenerator(Protocol.START_GAME_REQUEST);
+										Network.getInstance().pushMessage(msg);
+		//								Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
+									}
+									else {
+										m_StartButton.unfocus();
+									}
+								}
 							}
-							if(action == GLFW_RELEASE){
-								System.out.println("release");
-								JSONObject msg=Util.packetGenerator(Protocol.START_GAME_REQUEST);
-								Network.getInstance().pushMessage(msg);
-//								Game.getInstance().setNextLevel(new InGameLevel(m_Roomid));
+							else{
+								if(action == GLFW_RELEASE){
+									m_StartButton.unfocus();
+								}
 							}
+							
 						}
-						else{
-							if(action == GLFW_RELEASE){
-								m_StartButton.unfocus();
-							}
-						}
-						
-					}
 				});
 		
 		m_BackButton = new Button("BackButton1", "BackButton2", 667, 414);

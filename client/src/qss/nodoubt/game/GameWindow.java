@@ -79,8 +79,8 @@ public class GameWindow {
 		m_Width = vidMode.width();
 		m_Height = vidMode.height();
 		if(DEBUG){
-			m_Width = vidMode.width() / 3;
-			m_Height = vidMode.height() / 3;
+			m_Width = vidMode.width();
+			m_Height = vidMode.height();
 		}
 		
 		if(GameConstants.IS_FULLSCREEN) {
