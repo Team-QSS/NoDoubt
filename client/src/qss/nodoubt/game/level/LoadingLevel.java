@@ -259,14 +259,20 @@ public class LoadingLevel extends GameLevel{
 				if(id==RoomManager.LOBBY)
 					continue;
 				Room room=rm.list.get(id);
-				roomList.addRoomObject(i, new RoomObject(0, room.getName(), room.getMaster().getID(), room.list.size(), room.id, i));
-				if(i >= curPage*6 && i < curPage*6 + 6) {
-					roomList.getIndex(i).setActive(true);
+				
+				/**
+				 * 11.25. 5시 25분에 if(!room.isPlaying()) 조건문 추가함. 김경민
+				 */
+				if(!room.isPlaying()) {
+					roomList.addRoomObject(i, new RoomObject(0, room.getName(), room.getMaster().getID(), room.list.size(), room.id, i));
+					if(i >= curPage*6 && i < curPage*6 + 6) {
+						roomList.getIndex(i).setActive(true);
+					}
+					else {
+						roomList.getIndex(i).setActive(false);
+					}
+					i++;
 				}
-				else {
-					roomList.getIndex(i).setActive(false);
-				}
-				i++;
 			}
 		}break;
 		
@@ -278,6 +284,7 @@ public class LoadingLevel extends GameLevel{
 			if(room == null) {
 				System.out.println("Room이 Null : LoadingLevel");
 			}
+			
 			rm.addRoom(room);
 			
 			int i = roomList.getListSize();
@@ -327,7 +334,6 @@ public class LoadingLevel extends GameLevel{
 					roomList.getIndex(j).setActive(false);
 				}
 			}
-			
 		}break;
 		
 		case Protocol.UPDATE_ROOM_CURRENT_USER_NUM:{
@@ -342,6 +348,44 @@ public class LoadingLevel extends GameLevel{
 		case Protocol.SET_ROOM_PLAYING:{
 			double roomID = (double)data.get("RoomID");
 			//룸매니저의 해당 방을 조회하여 방의 isPlaying을 true로 바꿔야함
+			
+			/**
+			 * 11.25. 5시 25분에 SET_ROOM_PLAYING 구현함. 김경민
+			 */
+			rm.getRoom(roomID).setPlaying(true);
+			
+			int i=0;
+			for(i=0;i<roomList.roomList.size();i++){
+				if(roomList.roomList.get(i).getID()==roomID){
+					System.out.println("deleteRoom"+i);
+					if(i >= curPage*6 && i < curPage*6 + 6) {
+						deleteRoom(i);
+					}
+					roomList.removeRoomObject(i);
+					break;
+				}
+			}
+			
+			maxPage = (roomList.getListSize()-1)/6;
+			if(maxPage < 0) {
+				maxPage = 0;
+			}
+			if(curPage > maxPage) {
+				curPage = maxPage;
+			}
+			
+			System.out.println("maxPage : " + maxPage);
+			System.out.println("curPage : " + curPage);
+			
+			for(int j = 0; j < roomList.getListSize(); j++) {
+				roomList.getIndex(j).setIndex(j);
+				if(j >= curPage*6 && j < (curPage+1) * 6) {
+					roomList.getIndex(j).setActive(true);
+				}
+				else {
+					roomList.getIndex(j).setActive(false);
+				}
+			}
 		}break;
 		
 		default:{
