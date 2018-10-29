@@ -362,7 +362,7 @@ public class Server extends JFrame{
 					}
 					
 					//만약 나간 사람이 방장이면
-					if(user.getID()==room.getMaster().getID()){
+					if(user.getID().equals(room.getMaster().getID())){
 						
 						sendData=Util.packetGenerator(
 								Protocol.REMOVE_ROOM,
